@@ -1,37 +1,47 @@
 <template>
-  <div class="loginDiv">
-    <div>
-      <img src="http://xupt.edu.cn/newWeb/images/xy_logo.png" />
+
+  <div>
+    <CommonHeader></CommonHeader>
+    <div class="loginDiv">
+      <div>
+        <img src="http://xupt.edu.cn/newWeb/images/xy_logo.png" />
+      </div>
+      <el-form :model="ruleForm"
+               status-icon
+               :rules="rules"
+               label-position="right"
+               label-width="auto"
+               ref="ruleForm"
+               class="loginForm">
+        <el-form-item class="elementItem"
+                      label="职工账号|学生账号"
+                      prop="defaultUserAccount">
+          <el-input v-model="ruleForm.defaultUserAccount"
+                    autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="密码"
+                      prop="password">
+          <el-input type="password"
+                    v-model="ruleForm.password"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary"
+                     @click="submitForm('ruleForm')">登录</el-button>
+          <el-button @click="register()">注册</el-button>
+        </el-form-item>
+      </el-form>
     </div>
-    <el-form :model="ruleForm"
-             status-icon
-             :rules="rules"
-             label-position="right"
-             label-width="auto"
-             ref="ruleForm"
-             class="loginForm">
-      <el-form-item class="elementItem"
-                    label="职工账号|学生账号"
-                    prop="defaultUserAccount">
-        <el-input v-model="ruleForm.defaultUserAccount"
-                  autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="密码"
-                    prop="password">
-        <el-input type="password"
-                  v-model="ruleForm.password"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary"
-                   @click="submitForm('ruleForm')">登录</el-button>
-        <el-button @click="register()">注册</el-button>
-      </el-form-item>
-    </el-form>
   </div>
+
 </template>
 <script>
+import CommonHeader from './CommonHeader'
+
 export default {
   name: 'login',
+  components: {
+    CommonHeader
+  },
   data() {
     var validateAccount = (rule, value, callback) => {
       if (value === '') {
