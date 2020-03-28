@@ -7,16 +7,16 @@
              background-color="#545c64"
              text-color="#fff"
              active-text-color="#ffd04b">
-      <el-menu-item><i class="el-icon-s-tools"></i></el-menu-item>
+      <el-menu-item><i class="el-icon-s-platform"></i></el-menu-item>
 
-      <el-menu-item index="0">科研团队管理系统后台管理页</el-menu-item>
+      <el-menu-item index="0">用户中心</el-menu-item>
     </el-menu>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'adminHeader',
+  name: 'userCenterHeader',
   data() {
     return {
       activeIndex: '1',
@@ -30,3 +30,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+div {
+  padding: 0, 0, 0, 0;
+  margin: 0, 0, 0, 0;
+  width: 100%;
+  height: 100%;
+}
+</style>
