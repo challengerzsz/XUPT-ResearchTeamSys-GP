@@ -10,6 +10,7 @@
       <el-menu-item><i class="el-icon-s-platform"></i></el-menu-item>
 
       <el-menu-item index="0">用户中心</el-menu-item>
+      <el-menu-item @click="logout()"><i class="el-icon-moon-night"></i></el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -26,6 +27,19 @@ export default {
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath)
+    },
+    logout() {
+      this.$axios
+        .post('/api/logout')
+        .then(response => {
+          if (response.data.status == 1) {
+            localStorage.removeItem('TOKEN')
+            this.$router.push({ path: '/login' })
+          }
+        })
+        .catch(error => {
+          console.error(error)
+        })
     }
   }
 }
