@@ -13,7 +13,8 @@
             </template>
             <el-menu-item-group>
               <template slot="title">用户</template>
-              <el-menu-item index="1-1">查看详细信息</el-menu-item>
+              <el-menu-item @click="showUserInfo()"
+                            index="1-1">查看详细信息</el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group title="科研小组">
               <el-menu-item index="1-3">科研小组信息</el-menu-item>
@@ -26,7 +27,8 @@
             </template>
             <el-menu-item-group>
               <template slot="title">进度预览</template>
-              <el-menu-item index="2-1">总体学业进度预览</el-menu-item>
+              <el-menu-item @click="showPreview()"
+                            index="2-1">总体学业进度预览</el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group title="论文">
               <el-menu-item index="2-2">开题报告</el-menu-item>
@@ -41,7 +43,8 @@
             </el-menu-item-group>
           </el-submenu>
 
-          <el-menu-item index="3">
+          <el-menu-item index="3"
+                        @click="showWeeklyManagePage()">
             <i class="el-icon-document"></i>
             <span slot="title">周报管理</span>
           </el-menu-item>
@@ -64,6 +67,15 @@ export default {
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath)
+    },
+    showWeeklyManagePage() {
+      this.$router.push({ path: '/userCenter/weeklyManagement' })
+    },
+    showPreview() {
+      this.$router.push({ path: '/userCenter/progressPreview' })
+    },
+    showUserInfo() {
+      this.$router.push({ path: '/userCenter/userInfo' })
     }
   }
 }

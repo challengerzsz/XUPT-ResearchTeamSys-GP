@@ -7,13 +7,13 @@
         <el-dropdown-item @click.native="logout()">退出</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <span><b>科研团队后台管理</b></span>
+    <span><b>科研团队教师端</b></span>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'adminHeader',
+  name: 'teacher',
   data() {
     return {
       activeIndex: '1',
@@ -25,7 +25,6 @@ export default {
       console.log(key, keyPath)
     },
     logout() {
-
       this.$axios
         .post('/api/logout')
         .then(response => {

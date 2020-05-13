@@ -4,10 +4,13 @@ import Index from "@/components/Index";
 import Login from "@/components/Login";
 import Register from "@/components/Register";
 import Admin from "@/components/admin/Admin";
-import UserCenter from "@/components/UserCenter";
-import ProgressPreview from "@/components/ProgressPreview";
+import UserCenter from "@/components/user/UserCenter";
+import ProgressPreview from "@/components/user/ProgressPreview";
 import AdminManageUser from "@/components/admin/AdminManageUser";
 import AdminManageUserRole from "@/components/admin/AdminManageUserRole";
+import TeacherCenter from "@/components/teacher/TeacherCenter";
+import WeeklyManagement from "@/components/user/WeeklyManagement";
+import UserInfo from "@/components/user/UserInfo";
 
 Vue.use(Router);
 
@@ -54,11 +57,26 @@ export default new Router({
       component: UserCenter,
       children: [
         {
-          path: "/progressPreview",
+          path: "/userCenter/progressPreview",
           name: "ProgressPreview",
           component: ProgressPreview
+        },
+        {
+          path: "/userCenter/weeklyManagement",
+          name: "WeeklyManagement",
+          component: WeeklyManagement
+        },
+        {
+          path: "/userCenter/userInfo",
+          name: "UserInfo",
+          component: UserInfo
         }
       ]
+    },
+    {
+      path: "/teacherCenter",
+      name: "TeacherCenter",
+      component: TeacherCenter
     }
   ]
 });

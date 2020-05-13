@@ -13,13 +13,11 @@
             <el-input v-model="form.name"></el-input>
           </el-form-item>
           <el-form-item label="性别">
-            <el-checkbox-group v-model="
-                        form.type">
-              <el-checkbox label="男"
-                           name="type"></el-checkbox>
-              <el-checkbox label="女"
-                           name="type"></el-checkbox>
-            </el-checkbox-group>
+            <el-checkbox v-model="form.male"
+                         label="男"
+                         name="type"></el-checkbox>
+            <el-checkbox label="女"
+                         name="type"></el-checkbox>
           </el-form-item>
           <el-form-item label="专业">
             <el-input v-model="form.major"></el-input>
@@ -38,12 +36,12 @@
                            name="type"></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
-          <el-form-item label="特殊资源">
+          <!-- <el-form-item label="特殊资源">
             <el-radio-group v-model="form.resource">
               <el-radio label="线上品牌商赞助"></el-radio>
               <el-radio label="线下场地免费"></el-radio>
             </el-radio-group>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="个性签名">
             <el-input type="textarea"
                       v-model="form.desc"></el-input>
@@ -65,14 +63,12 @@ export default {
   data() {
     return {
       form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        name: '曾帅智',
+        male: true,
+        major: '软件工程',
+        delivery: true,
+        type: true,
+        desc: '越努力越幸运！'
       }
     }
   },

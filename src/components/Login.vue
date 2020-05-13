@@ -26,6 +26,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary"
+                     @keyup.enter="submitForm('ruleForm')"
                      @click="submitForm('ruleForm')">登录</el-button>
           <el-button @click="register()">注册</el-button>
         </el-form-item>
@@ -49,12 +50,13 @@ export default {
       if (value === '') {
         return callback(new Error('请输入工号或学号'))
       } else {
-        if (this.ruleForm.password !== '') {
-          this.$refs.ruleForm.validateField('checkPass')
-        }
+        // if (this.ruleForm.password !== '') {
+        //   this.$refs.ruleForm.validateField('checkPass')
+        // }
         callback()
       }
     }
+
     var checkPassword = (rule, value, callback) => {
       if (value === '') {
         return callback(new Error('密码不能为空'))
@@ -84,8 +86,14 @@ export default {
           var rspStatus = response.data.status
           console.log(rspStatus)
           // err
-          if (rspStatus != 1) console.error('bad')
+          if (rspStatus != 1) {
+            this.$message.error(response.data.msg)
+          }
           if (rspStatus == 1) {
+            this.$message({
+              message: '登录成功',
+              type: 'success'
+            })
             let backendToken = response.data.data
             window.localStorage.setItem('TOKEN', backendToken)
             console.log(backendToken)

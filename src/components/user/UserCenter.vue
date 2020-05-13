@@ -2,7 +2,7 @@
   <div>
     <el-container>
       <el-container>
-        <el-header>
+        <el-header class="userCenterHeader">
           <UserCenterHeader></UserCenterHeader>
         </el-header>
         <el-container>
@@ -10,10 +10,8 @@
           <el-aside width="200px">
             <UserCenterLeftTag></UserCenterLeftTag>
           </el-aside>
-          <el-main>
-            <!-- <UserInfo></UserInfo> -->
-            <!-- <router-view></router-view> -->
-            <ProgressPreview></ProgressPreview>
+          <el-main class="userCenterMain">
+            <router-view></router-view>
           </el-main>
         </el-container>
 
@@ -27,16 +25,12 @@
 <script>
 import UserCenterLeftTag from './UserCenterLeftTag'
 import UserCenterHeader from './UserCenterHeader'
-import UserInfo from './UserInfo'
-import ProgressPreview from './ProgressPreview'
 
 export default {
   name: 'userCenter',
   components: {
     UserCenterLeftTag,
-    UserCenterHeader,
-    UserInfo,
-    ProgressPreview
+    UserCenterHeader
   }
 }
 </script>
@@ -47,11 +41,14 @@ export default {
   width: 100%;
 }
 .el-main {
-  background-color: #e9eef3;
+  background-color: #ffffff;
   color: #333;
   text-align: center;
   height: 800px;
   width: 500px;
   line-height: 100%;
+}
+.userCenterHeader {
+  height: 500px;
 }
 </style>

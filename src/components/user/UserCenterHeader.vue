@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="userCenterHeader">
     <el-menu :default-active="activeIndex2"
              class="el-menu-demo"
              mode="horizontal"
@@ -10,7 +10,17 @@
       <el-menu-item><i class="el-icon-s-platform"></i></el-menu-item>
 
       <el-menu-item index="0">用户中心</el-menu-item>
-      <el-menu-item @click="logout()"><i class="el-icon-moon-night"></i></el-menu-item>
+      <el-menu-item class="logoutButton"
+                    @click="logout()"><i class="el-icon-moon-night"
+           style="margin-right: 15px;font-size:20px"></i></el-menu-item>
+
+      <el-menu-item style="float:right;margin-right: 40px;font-size:10px">
+        <el-badge value="new"
+                  class="item">
+          <el-button size="small">消息</el-button>
+        </el-badge>
+      </el-menu-item>
+
     </el-menu>
   </div>
 </template>
@@ -51,5 +61,8 @@ div {
   margin: 0, 0, 0, 0;
   width: 100%;
   height: 100%;
+}
+.logoutButton {
+  float: right;
 }
 </style>
