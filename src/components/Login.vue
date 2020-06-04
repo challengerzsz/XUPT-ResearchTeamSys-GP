@@ -85,7 +85,6 @@ export default {
               if (rspStatus != 1) {
               }
               if (rspStatus == 1) {
-                alert('成功')
                 let backendToken = response.data.data
                 window.localStorage.setItem('TOKEN', backendToken)
                 console.log(backendToken)
@@ -121,14 +120,10 @@ export default {
           var rspStatus = response.data.status
           console.log(rspStatus)
           // err
-          if (rspStatus != 1) {
-            this.$message.error(response.data.msg)
-          }
+          //   if (rspStatus != 1) {
+          //     this.$message.error(response.data.msg)
+          //   }
           if (rspStatus == 1) {
-            this.$message({
-              message: '登录成功',
-              type: 'success'
-            })
             let backendToken = response.data.data
             window.localStorage.setItem('TOKEN', backendToken)
 

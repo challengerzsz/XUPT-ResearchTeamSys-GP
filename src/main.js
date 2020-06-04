@@ -9,6 +9,7 @@ import "element-ui/lib/theme-chalk/index.css";
 import "layui-src/dist/css/layui.css";
 import "layui-src/dist/layui.all.js";
 import "jquery/dist/jquery.min.js";
+import { Message } from "element-ui";
 
 Vue.prototype.$axios = axios;
 Vue.prototype.HOST = "/api";
@@ -33,6 +34,30 @@ axios.interceptors.request.use(
     return config;
   },
   err => {
+    Message.error({ message: err });
     return Promise.reject(err);
+  }
+);
+
+axios.interceptors.response.use(
+  data => {
+    if (data.data.status == 0) {
+      Message.error({ message: data.data.msg });
+      return;
+    }
+    if (data.data.status == 1) {
+      Message.success({ message: data.data.msg });
+    }
+    return data;
+  },
+  err => {
+    if (err.response.status == 504) {
+      Message.error({ message: "请求API超时!" });
+    } else if (err.response.status == 401) {
+      Message.error({ message: "未通过鉴权!" });
+    } else {
+      Message.error({ message: "未知错误!" });
+    }
+    return Promise.resolve(err);
   }
 );

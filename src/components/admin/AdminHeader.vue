@@ -1,27 +1,22 @@
 <template>
-  <el-menu :default-active="activeIndex2"
-           class="el-menu-demo"
-           mode="horizontal"
-           @select="handleSelect"
-           background-color="#545c64"
-           text-color="#fff"
-           active-text-color="#ffd04b">
-    <el-menu-item><i class="el-icon-s-platform"></i></el-menu-item>
+  <div class="adminHeader">
+    <el-menu :default-active="activeIndex"
+             class="el-menu-demo"
+             mode="horizontal"
+             @select="handleSelect"
+             background-color="#545c64"
+             text-color="#fff"
+             active-text-color="#ffd04b">
+      <el-menu-item index="0"><i class="el-icon-s-platform"></i></el-menu-item>
 
-    <el-menu-item index="0">用户中心</el-menu-item>
-    <el-menu-item class="logoutButton"
-                  @click="logout()"><i class="el-icon-moon-night"
-         style="margin-right: 15px;font-size:20px"></i></el-menu-item>
-
-    <el-menu-item class="messageItem"
-                  style="float:right;margin-right: 40px;font-size:10px">
-      <el-badge value="new"
-                class="item">
-        <el-button size="small">消息</el-button>
-      </el-badge>
-    </el-menu-item>
-
-  </el-menu>
+      <el-menu-item index="1">管理后台</el-menu-item>
+      <el-button class="logoutButton"
+                 type="info"
+                 icon="el-icon-s-home"
+                 @click="logout()"
+                 round>退出</el-button>
+    </el-menu>
+  </div>
 </template>
 
 <script>
@@ -29,8 +24,7 @@ export default {
   name: 'adminHeader',
   data() {
     return {
-      activeIndex: '1',
-      activeIndex2: '1'
+      activeIndex: '0'
     }
   },
   methods: {
@@ -53,3 +47,17 @@ export default {
   }
 }
 </script>
+<style scoped>
+.adminHeader {
+  height: auto;
+  width: 100%;
+  position: absolute;
+  margin-left: 0;
+}
+.logoutButton {
+  float: right;
+  margin-top: 10px;
+  margin-right: 10px;
+  background-color: rgba(84, 92, 100, 1);
+}
+</style>

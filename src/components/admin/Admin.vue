@@ -1,20 +1,17 @@
 <template>
-  <div>
+  <div class="admin">
+
     <el-container>
+      <el-header class="userCenterHeader">
+        <AdminHeader></AdminHeader>
+      </el-header>
       <el-container>
-        <el-header class="userCenterHeader">
-          <AdminHeader></AdminHeader>
-        </el-header>
-        <el-container>
-
-          <el-aside>
-            <AdminLeftTag></AdminLeftTag>
-          </el-aside>
-          <el-main class="userCenterMain">
-            <router-view></router-view>
-          </el-main>
-        </el-container>
-
+        <el-aside>
+          <AdminLeftTag></AdminLeftTag>
+        </el-aside>
+        <el-main class="userCenterMain">
+          <router-view></router-view>
+        </el-main>
       </el-container>
 
     </el-container>
@@ -37,6 +34,12 @@ export default {
 </script>
 
 <style scoped>
+.admin {
+  position: fixed;
+  margin-left: 0;
+  height: 100%;
+  width: 100%;
+}
 .el-container {
   height: 100%;
   width: 100%;
@@ -50,6 +53,10 @@ export default {
   line-height: 100%;
 }
 .userCenterHeader {
-  height: 500px;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  height: 200px;
+  width: 100%;
 }
 </style>

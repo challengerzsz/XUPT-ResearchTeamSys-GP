@@ -25,10 +25,6 @@
                          label="用户姓名"
                          width="150">
         </el-table-column>
-        <el-table-column prop="major"
-                         label="专业"
-                         width="150">
-        </el-table-column>
         <el-table-column prop="researchDirection"
                          label="研究方向"
                          width="150"
@@ -41,10 +37,12 @@
         </el-table-column>
         <el-table-column prop="guideTeacherAccount"
                          label="指导老师账号"
-                         width="150">
+                         width="150"
+                         :formatter="setGuideTeacherAccount">
         </el-table-column>
         <el-table-column prop="guideTeacherName"
-                         label="指导老师姓名">
+                         label="指导老师姓名"
+                         :formatter="setGuideTeacherName">
         </el-table-column>
       </el-table>
     </div>
@@ -108,14 +106,23 @@ export default {
     },
     setResearchDireciton(row, column) {
       var researchDirectionId = row.researchDirection - 1
-      if (
-        typeof row.researchDirection != 'undefined' &&
-        researchDirectionId >= 0
-      ) {
-        return this.researchDirections[researchDirectionId].directionName
-      } else {
+      if (row.researchDirection != '') {
         return '无'
       }
+
+      return row.guideTeacherName
+    },
+    setGuideTeacherName(row, column) {
+      if (row.guideTeacherAccount === '') {
+        return '无'
+      }
+      return row.guideTeacherName
+    },
+    setGuideTeacherAccount(row, column) {
+      if (row.guideTeacherAccount === '') {
+        return '无'
+      }
+      return row.guideTeacherAccount
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)

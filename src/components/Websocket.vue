@@ -1,4 +1,14 @@
 <template>
+  <div>
+    <el-input v-model="who"
+              placeholder="who"></el-input>
+    <el-input v-model="content"
+              placeholder="内容"></el-input>
+    <el-button type="success"
+               icon="el-icon-check"
+               circle
+               @click="click()"></el-button>
+  </div>
 
 </template>
 <script>
@@ -7,15 +17,21 @@ import Stomp from 'stompjs'
 export default {
   data() {
     return {
-      socketUrl: 'http://127.0.0.1:8081/im-server?token='
+      socketUrl: 'http://127.0.0.1:8081/im-server?token=',
+      who: '',
+      content: ''
     }
   },
   mounted() {
     this.initWebSocket()
   },
   methods: {
+    click() {
+      console.log(this.who), console.log(this.content)
+      this.stompClient.send('/app/chat', {}, this.content)
+    },
     // 接收到消息并对消息做处理
-    onMessageReceived(payload) {
+    onMessageReceived1(payload) {
       //   var message = JSON.parse(payload.body)
       //   console.info('Message', message)
       console.log(payload)
@@ -23,12 +39,12 @@ export default {
     // 连接成功
     successCallback() {
       console.info('onConnected')
-      this.stompClient.subscribe('/topic/all', this.onMessageReceived)
-      this.stompClient.send(
-        '/app/msg',
-        {},
-        JSON.stringify({ sender: 'sender', type: 'JOIN' })
-      )
+      this.stompClient.subscribe('/user/private', this.onMessageReceived1)
+      //   this.stompClient.send(
+      //     '/app/msg',
+      //     {},
+      //     JSON.stringify({ sender: 'sender', type: 'JOIN' })
+      //   )
     },
     initWebSocket() {
       let token = localStorage.getItem('TOKEN')
