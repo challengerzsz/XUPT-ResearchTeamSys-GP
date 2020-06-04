@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div class="role">
       <el-main>
         <el-table :data="tableData">
           <el-table-column prop="id"
@@ -17,6 +17,17 @@
           </el-table-column>
           <el-table-column prop="roleName"
                            label="角色">
+          </el-table-column>
+          <el-table-column prop="option"
+                           label="操作">
+            <el-row>
+              <el-button type="primary"
+                         icon="el-icon-edit"
+                         circle></el-button>
+              <el-button type="danger"
+                         icon="el-icon-delete"
+                         circle></el-button>
+            </el-row>
           </el-table-column>
         </el-table>
       </el-main>
@@ -68,3 +79,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.role {
+  width: 100%;
+}
+</style>

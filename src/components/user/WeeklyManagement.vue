@@ -10,6 +10,9 @@
     <el-dialog :visible.sync="dialogVisible"
                width="70%"
                :before-close="handleClose">
+      <div>
+        <h2> 2020-5 第2周周报</h2>
+      </div>
       <div class="editor">
         <mavon-editor v-model="content"
                       ref="md"

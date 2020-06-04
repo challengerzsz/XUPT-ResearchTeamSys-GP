@@ -6,6 +6,9 @@ import router from "./router";
 import ElementUI from "element-ui";
 import axios from "axios";
 import "element-ui/lib/theme-chalk/index.css";
+import "layui-src/dist/css/layui.css";
+import "layui-src/dist/layui.all.js";
+import "jquery/dist/jquery.min.js";
 
 Vue.prototype.$axios = axios;
 Vue.prototype.HOST = "/api";
