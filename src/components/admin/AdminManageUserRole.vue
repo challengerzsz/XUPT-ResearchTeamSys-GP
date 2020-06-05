@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div>
+  <div class="userRole">
+    <div class="userRole2" >
       <el-dialog title="修改用户权限"
                  :visible.sync="dialogFormVisible"
                  width="500px">
@@ -186,4 +186,8 @@ export default {
 .role {
   width: 100%;
 }
+.userRole, .userRole2 {
+  width: 100%;
+}
+
 </style>

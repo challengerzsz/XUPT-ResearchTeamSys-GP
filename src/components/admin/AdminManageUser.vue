@@ -98,6 +98,7 @@ export default {
       this.$axios
         .get('/api/admin/getAllResearchDirections')
         .then(response => {
+          console.log(response.data)
           this.researchDirections = response.data.data
         })
         .catch(error => {
