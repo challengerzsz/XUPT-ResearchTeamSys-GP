@@ -21,7 +21,7 @@
                    class="x-admin-backlog-body">
                   <h3>小组数</h3>
                   <p>
-                    <cite>{{}}</cite>
+                    <cite>{{teamCount}}</cite>
                   </p>
                 </a>
               </li>
@@ -30,7 +30,7 @@
                    class="x-admin-backlog-body">
                   <h3>成员数量</h3>
                   <p>
-                    <cite>66</cite>
+                    <cite>{{memberCount}}</cite>
                   </p>
                 </a>
               </li>
@@ -39,7 +39,7 @@
                    class="x-admin-backlog-body">
                   <h3>论文数量</h3>
                   <p>
-                    <cite>12</cite>
+                    <cite>{{paperCount}}</cite>
                   </p>
                 </a>
               </li>
@@ -48,7 +48,7 @@
                    class="x-admin-backlog-body">
                   <h3>成果数量</h3>
                   <p>
-                    <cite>99</cite>
+                    <cite>{{achievementCount}}</cite>
                   </p>
                 </a>
               </li>
@@ -57,7 +57,7 @@
                    class="x-admin-backlog-body">
                   <h3>文献数</h3>
                   <p>
-                    <cite>67</cite>
+                    <cite>{{documentCount}}</cite>
                   </p>
                 </a>
               </li>
@@ -209,7 +209,12 @@
 export default {
   data() {
     return {
-      nowDateTime: null
+      nowDateTime: null,
+      teamCount:null,
+      memberCount:null,
+      paperCount:null,
+      achievementCount:null,
+      documentCount:null
     }
   },
   methods: {
@@ -222,7 +227,21 @@ export default {
       var getWeek = '星期' + weeks[week]
       this.nowDateTime = nowTime + ' ' + getWeek
     },
-    getTotalCount() {}
+    getTotalCount() {
+      this.$axios
+        .get('/api/admin/countAll')
+        .then(response => {
+          console.log(response.data)
+          this.teamCount = response.data.data.teamCount;
+          this.memberCount = response.data.data.memberCount;
+          this.paperCount = response.data.data.paperCount;
+          this.achievementCount = response.data.data.achievementCount;
+          this.documentCount = response.data.data.documentCount;
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    }
   },
   mounted() {
     this.showTime(), this.getTotalCount()

@@ -98,6 +98,7 @@ export default {
       this.$axios
         .get('/api/admin/getAllResearchDirections')
         .then(response => {
+          console.log(response.data)
           this.researchDirections = response.data.data
         })
         .catch(error => {
@@ -106,7 +107,7 @@ export default {
     },
     setResearchDireciton(row, column) {
       var researchDirectionId = row.researchDirection - 1
-      if (row.researchDirection != '') {
+      if (row.researchDirection == '') {
         return '无'
       }
 
