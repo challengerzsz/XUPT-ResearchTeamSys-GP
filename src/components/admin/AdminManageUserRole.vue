@@ -51,6 +51,7 @@
       </el-pagination>
     </div>
     <el-dialog title="修改用户权限"
+               :modal-append-to-body='false'
                :visible.sync="dialogFormVisible"
                width="500px">
       <el-form :model="form">
