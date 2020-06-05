@@ -57,12 +57,6 @@
                      :label="item.directionName"
                      :value="item.directionName">
           </el-option>
-          <!-- <el-option label="脑电"
-                     value="脑电"></el-option>
-          <el-option label="大数据"
-                     value="大数据"></el-option>
-          <el-option label="人工智能"
-                     value="人工智能"></el-option> -->
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -135,7 +129,6 @@ export default {
         .get('/api/researchDirection/getAll')
         .then(response => {
           this.researchDirections = response.data.data
-          console.log(this.researchDirections)
         })
         .catch(error => {
           console.error(error)

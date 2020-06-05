@@ -18,6 +18,10 @@
           <el-table-column prop="roleName"
                            label="角色">
           </el-table-column>
+          <el-table-column prop="ban"
+                           label="状态"
+                           :formatter="setBan">
+          </el-table-column>
           <el-table-column prop="option"
                            label="操作">
             <el-row>
@@ -25,7 +29,8 @@
                          icon="el-icon-edit"
                          circle></el-button>
               <el-button type="danger"
-                         icon="el-icon-delete"
+                         v-bind:icon=iconData
+                         @click="open"
                          circle></el-button>
             </el-row>
           </el-table-column>
@@ -55,7 +60,8 @@ export default {
     return {
       tableData: null,
       currentPage: 1,
-      totalCount: 0
+      totalCount: 0,
+      iconData: null
     }
   },
   methods: {
@@ -75,6 +81,34 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
+    },
+    open(row, col) {
+      alert(row.ban)
+      this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.$message({
+            type: 'success',
+            message: this.tableData.userAccount
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消操作'
+          })
+        })
+    },
+    setBan(row, column) {
+      if (row.ban == 0) {
+        this.iconData = 'el-icon-error'
+      } else {
+        this.iconData = 'el-icon-check'
+      }
+      return row.ban == 0 ? '已启用' : '已禁用'
     }
   }
 }

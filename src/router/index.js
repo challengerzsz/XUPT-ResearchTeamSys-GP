@@ -15,6 +15,7 @@ import Document from "@/components/Document.vue";
 import ProcessDocument from "@/components/user/ProcessDocument.vue";
 import TeamInfo from "@/components/user/TeamInfo.vue";
 import Websocket from "@/components/Websocket.vue";
+import Welcome from "@/components/admin/AdminWelcome.vue";
 
 Vue.use(Router);
 
@@ -38,6 +39,11 @@ export default new Router({
       name: "Admin",
       component: Admin,
       children: [
+        {
+          path: "/admin/welcome",
+          name: "Welcome",
+          component: Welcome
+        },
         {
           path: "/admin/manageUser",
           name: "AdminManageUser",

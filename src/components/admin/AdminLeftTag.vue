@@ -23,8 +23,8 @@
               <el-menu-item index="1-4"
                             @click="showuserRole()">权限控制</el-menu-item>
             </el-menu-item-group>
-            <el-menu-item-group title="系统重要信息维护">
-              <el-menu-item index="1-6">研究方向维护</el-menu-item>
+            <el-menu-item-group title="统计">
+              <el-menu-item index="1-6">查看统计信息</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
 
