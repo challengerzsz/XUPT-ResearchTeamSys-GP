@@ -30,9 +30,9 @@
                    placeholder="请选择用户角色"
                    @click="checkRole()">
           <el-option label="教师"
-                     value=1></el-option>
-          <el-option label="学生"
                      value=2></el-option>
+          <el-option label="学生"
+                     value=3></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="类型"
@@ -77,6 +77,7 @@ export default {
         userAccount: '',
         sex: '',
         role: '',
+        classify: '',
         researchDirection: '',
         guideTeacher: ''
       },
@@ -105,6 +106,9 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
+          if (this.registerForm.role == 2) {
+            this.registerForm.classify = null
+          }
           this.$axios
             .post('/api/user/register', QS.stringify(this.registerForm))
             .then(response => {
@@ -142,6 +146,7 @@ export default {
 </script>
 <style scoped>
 .register {
+  margin: 0 100px;
   width: 500px;
 }
 </style>

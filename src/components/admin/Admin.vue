@@ -29,9 +29,6 @@ export default {
   components: {
     AdminHeader,
     AdminLeftTag
-  },
-  mounted() {
-    this.$router.push({ path: '/admin/welcome' })
   }
 }
 </script>

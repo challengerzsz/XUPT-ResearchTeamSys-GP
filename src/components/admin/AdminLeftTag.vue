@@ -8,9 +8,13 @@
                  @close="handleClose">
 
           <el-submenu index="1">
+            <el-menu-item-group title="统计">
+              <el-menu-item index="1-6"
+                            @click="showCountPage()">查看统计信息</el-menu-item>
+            </el-menu-item-group>
             <template slot="title">
               <i class="el-icon-user-solid"></i>
-              <span>用户与权限管理</span>
+              <span>综合管理</span>
             </template>
             <el-menu-item-group>
               <template slot="title">用户管理</template>
@@ -22,9 +26,6 @@
             <el-menu-item-group title="权限控制">
               <el-menu-item index="1-4"
                             @click="showuserRole()">权限控制</el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group title="统计">
-              <el-menu-item index="1-6">查看统计信息</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
 
@@ -58,6 +59,9 @@ export default {
     },
     showRegister() {
       this.$router.push({ path: '/admin/register' })
+    },
+    showCountPage() {
+      this.$router.push({ path: '/admin/welcome' })
     }
   }
 }
