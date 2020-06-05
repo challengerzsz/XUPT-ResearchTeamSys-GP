@@ -1,82 +1,44 @@
 <template>
-  <div class="userRole">
-    <div class="userRole2" >
-      <el-dialog title="修改用户权限"
-                 :visible.sync="dialogFormVisible"
-                 width="500px">
-        <el-form :model="form">
-          <el-form-item label="用户账户"
-                        :label-width="formLabelWidth">
-            <el-input disabled
-                      v-model="form.userAccount"
-                      autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="用户姓名"
-                        :label-width="formLabelWidth">
-            <el-input v-model="form.userName"
-                      disabled
-                      autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="用户角色"
-                        :label-width="formLabelWidth">
-            <el-select v-model="form.roleId"
-                       placeholder="请选择更新的角色">
-              <el-option label="TEACHER"
-                         value=2></el-option>
-              <el-option label="STUDENT"
-                         value=3></el-option>
-            </el-select>
-          </el-form-item>
-        </el-form>
-        <div slot="footer"
-             class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary"
-                     @click="modifyUserRole()">确 定</el-button>
-        </div>
-      </el-dialog>
-    </div>
+  <div>
     <div class="role">
-      <el-main>
-        <el-table :data="tableData">
-          <el-table-column prop="id"
-                           label="用户ID"
-                           width="200">
-          </el-table-column>
-          <el-table-column prop="userAccount"
-                           label="用户账户"
-                           width="200">
-          </el-table-column>
-          <el-table-column prop="userName"
-                           label="用户姓名"
-                           width="200">
-          </el-table-column>
-          <el-table-column prop="roleName"
-                           label="角色">
-          </el-table-column>
-          <el-table-column prop="ban"
-                           label="状态"
-                           :formatter="setBan">
-          </el-table-column>
-          <el-table-column prop="option"
-                           label="操作">
-            <template slot-scope="scope">
-              <el-row>
+      <el-table :data="tableData">
+        <el-table-column prop="id"
+                         label="用户ID"
+                         width="200">
+        </el-table-column>
+        <el-table-column prop="userAccount"
+                         label="用户账户"
+                         width="200">
+        </el-table-column>
+        <el-table-column prop="userName"
+                         label="用户姓名"
+                         width="200">
+        </el-table-column>
+        <el-table-column prop="roleName"
+                         label="角色">
+        </el-table-column>
+        <el-table-column prop="ban"
+                         label="状态"
+                         :formatter="setBan">
+        </el-table-column>
+        <el-table-column prop="option"
+                         label="操作">
+          <template slot-scope="scope">
+            <el-row>
 
-                <el-button type="primary"
-                           @click.native.prevent="modify(scope.row)"
-                           icon="el-icon-edit"
-                           circle></el-button>
-                <el-button type="danger"
-                           icon="el-icon-setting"
-                           @click.native.prevent="ban(scope.row)"
-                           circle></el-button>
+              <el-button type="primary"
+                         @click.native.prevent="modify(scope.row)"
+                         icon="el-icon-edit"
+                         circle></el-button>
+              <el-button type="danger"
+                         icon="el-icon-setting"
+                         @click.native.prevent="ban(scope.row)"
+                         circle></el-button>
 
-              </el-row>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-main>
+            </el-row>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
     <div>
       <el-pagination @size-change="handleSizeChange"
@@ -88,6 +50,40 @@
                      :total="totalCount">
       </el-pagination>
     </div>
+    <el-dialog title="修改用户权限"
+               :visible.sync="dialogFormVisible"
+               width="500px">
+      <el-form :model="form">
+        <el-form-item label="用户账户"
+                      :label-width="formLabelWidth">
+          <el-input disabled
+                    v-model="form.userAccount"
+                    autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="用户姓名"
+                      :label-width="formLabelWidth">
+          <el-input v-model="form.userName"
+                    disabled
+                    autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="用户角色"
+                      :label-width="formLabelWidth">
+          <el-select v-model="form.roleId"
+                     placeholder="请选择更新的角色">
+            <el-option label="TEACHER"
+                       value=2></el-option>
+            <el-option label="STUDENT"
+                       value=3></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer"
+           class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary"
+                   @click="modifyUserRole()">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 
 </template>
@@ -186,8 +182,4 @@ export default {
 .role {
   width: 100%;
 }
-.userRole, .userRole2 {
-  width: 100%;
-}
-
 </style>
