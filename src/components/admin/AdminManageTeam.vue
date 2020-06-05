@@ -154,7 +154,9 @@ export default {
         .then(() => {
           this.$axios
             .post('/api/team/deleteTeam/' + row.id)
-            .then(response => {})
+            .then(response => {
+              this.reload()
+            })
             .catch(error => {
               console.error(error)
             })
