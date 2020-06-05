@@ -222,7 +222,16 @@ export default {
       var getWeek = '星期' + weeks[week]
       this.nowDateTime = nowTime + ' ' + getWeek
     },
-    getTotalCount() {}
+    getTotalCount() {
+      this.$axios
+        .get('/api/admin/countAll')
+        .then(response => {
+          console.log(response.data.data)
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    }
   },
   mounted() {
     this.showTime(), this.getTotalCount()
