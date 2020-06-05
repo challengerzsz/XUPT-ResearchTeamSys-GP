@@ -111,6 +111,7 @@ export default {
         .get('/api/researchDirection/getAll')
         .then(response => {
           this.types = response.data.data
+          console.log(response.data.data)
         })
         .catch(error => {
           console.error(error)
