@@ -16,6 +16,7 @@ import ProcessDocument from "@/components/user/ProcessDocument.vue";
 import TeamInfo from "@/components/user/TeamInfo.vue";
 import Websocket from "@/components/Websocket.vue";
 import Welcome from "@/components/admin/AdminWelcome.vue";
+import Team from "@/components/admin/AdminManageTeam.vue";
 
 Vue.use(Router);
 
@@ -58,6 +59,11 @@ export default new Router({
           path: "/admin/register",
           name: "register",
           component: Register
+        },
+        {
+          path: "/admin/team",
+          name: "team",
+          component: Team
         }
       ]
     },

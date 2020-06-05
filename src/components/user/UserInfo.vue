@@ -3,24 +3,35 @@
     <div>
       <div class="userImg">
         <el-avatar :size="150"
-                   src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+                   :src="form.avatar"></el-avatar>
       </div>
       <div class="userInfo">
         <el-form ref="form"
                  :model="form"
                  label-width="150px">
+          <el-form-item label="学号">
+            <el-input :disabled="true"
+                      v-model="form.account"></el-input>
+          </el-form-item>
           <el-form-item label="姓名">
             <el-input v-model="form.name"></el-input>
           </el-form-item>
           <el-form-item label="性别">
-            <el-checkbox v-model="form.male"
-                         label="男"
-                         name="type"></el-checkbox>
-            <el-checkbox label="女"
-                         name="type"></el-checkbox>
+            <el-radio v-model="form.male"
+                      label="0">男</el-radio>
+            <el-radio v-model="form.male"
+                      label="1">女</el-radio>
           </el-form-item>
-          <el-form-item label="专业">
-            <el-input v-model="form.major"></el-input>
+          <el-form-item label="学历">
+            <el-select style="width:100%;"
+                       size="medium"
+                       v-model="form.education"
+                       placeholder="请选择">
+              <el-option v-for="item in educations"
+                         :key="item.value"
+                         :label="item.value"
+                         :value="item.value"></el-option>
+            </el-select>
           </el-form-item>
 
           <el-form-item label="接收实时推送">
@@ -28,20 +39,11 @@
           </el-form-item>
           <el-form-item label="研究方向">
             <el-checkbox-group v-model="form.type">
-              <el-checkbox label="大数据"
-                           name="type"></el-checkbox>
-              <el-checkbox label="云计算"
-                           name="type"></el-checkbox>
-              <el-checkbox label="脑电"
-                           name="type"></el-checkbox>
+              <el-checkbox v-for="item in types"
+                           :label="item.directionName"
+                           :key="item.id"></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
-          <!-- <el-form-item label="特殊资源">
-            <el-radio-group v-model="form.resource">
-              <el-radio label="线上品牌商赞助"></el-radio>
-              <el-radio label="线下场地免费"></el-radio>
-            </el-radio-group>
-          </el-form-item> -->
           <el-form-item label="个性签名">
             <el-input type="textarea"
                       v-model="form.desc"></el-input>
@@ -53,29 +55,90 @@
         </el-form>
       </div>
     </div>
-
   </div>
-
 </template>
 <script>
+import QS from 'qs'
 export default {
   name: 'userInfo',
   data() {
     return {
       form: {
-        name: '曾帅智',
-        male: true,
-        major: '软件工程',
+        id: '',
+        account: '04163104',
+        avatar:
+          'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+        name: '张三',
+        male: '1',
         delivery: true,
-        type: true,
-        desc: '越努力越幸运！'
-      }
+        type: [],
+        desc: '',
+        education: ''
+      },
+      types: [],
+      educations: [
+        {
+          value: '学硕'
+        },
+        {
+          value: '专硕'
+        },
+        {
+          value: '工程硕士'
+        }
+      ]
     }
   },
   methods: {
+    getUserInfo() {
+      this.$axios
+        .get('/api/user/info')
+        .then(response => {
+          this.form.account = response.data.data.userAccount
+          this.form.name = response.data.data.userName
+          this.form.male = response.data.data.sex + ''
+          this.form.desc = response.data.data.personalSignature
+          var researchDirection = response.data.data.researchDirection
+          this.form.type = researchDirection.split(';')
+          this.form.education = response.data.data.classify
+          this.form.type.pop()
+          this.form.id = response.data.data.id
+        })
+        .catch(error => {
+          console.error(error)
+        })
+      this.$axios
+        .get('/api/researchDirection/getAll')
+        .then(response => {
+          this.types = response.data.data
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    },
     onSubmit() {
-      console.log('submit!')
+      var data = {
+        id: this.form.id,
+        username: this.form.name,
+        sex: this.form.male + '',
+        classify: this.form.education,
+        researchDirection: this.form.type.join(';') + ';',
+        personalSignature: this.form.desc
+      }
+      this.$axios
+        .post('/api/user/modifyInfo', QS.stringify(data), {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        })
+        .then(response => {
+          console.log(response.data)
+        })
+        .catch(error => {
+          console.error(error)
+        })
     }
+  },
+  mounted() {
+    this.getUserInfo()
   }
 }
 </script>
