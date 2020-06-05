@@ -16,7 +16,7 @@
       </el-form-item>
       <el-form-item label="性别"
                     prop="sex">
-        <el-select v-model="registerForm.sex"
+        <el-select v-model="registerForm.sex" style="width:100%"
                    placeholder="请选择性别">
           <el-option label="男"
                      value=0></el-option>
@@ -24,9 +24,9 @@
                      value=1></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="用户角色"
+      <el-form-item label="用户角色" 
                     prop="role">
-        <el-select v-model="registerForm.role"
+        <el-select v-model="registerForm.role" style="width:100%"
                    placeholder="请选择用户角色"
                    @click="checkRole()">
           <el-option label="教师"
@@ -37,7 +37,7 @@
       </el-form-item>
       <el-form-item label="类型"
                     prop="classify">
-        <el-select v-model="registerForm.classify"
+        <el-select v-model="registerForm.classify" style="width:100%"
                    :disabled=isDisable()
                    placeholder="请选择学生类型">
           <el-option label="学硕"
@@ -50,7 +50,7 @@
       </el-form-item>
       <el-form-item label="研究方向"
                     prop="researchDirection">
-        <el-select v-model="registerForm.researchDirection"
+        <el-select v-model="registerForm.researchDirection" style="width:100%"
                    placeholder="请选择研究方向">
           <el-option v-for="item in researchDirections"
                      :key="item.directionName"
