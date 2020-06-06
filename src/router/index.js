@@ -17,6 +17,7 @@ import TeamInfo from "@/components/user/TeamInfo.vue";
 import Websocket from "@/components/Websocket.vue";
 import Welcome from "@/components/admin/AdminWelcome.vue";
 import Team from "@/components/admin/AdminManageTeam.vue";
+import SecurityCenter from "@/components/user/SecurityCenter.vue";
 
 Vue.use(Router);
 
@@ -72,6 +73,11 @@ export default new Router({
       name: "UserCenter",
       component: UserCenter,
       children: [
+        {
+          path: "/userCenter/securityCenter",
+          name: "SecurityCenter",
+          component: SecurityCenter
+        },
         {
           path: "/userCenter/progressPreview",
           name: "ProgressPreview",

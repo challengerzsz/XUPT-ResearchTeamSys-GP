@@ -15,6 +15,8 @@
               <template slot="title">用户</template>
               <el-menu-item @click="showUserInfo()"
                             index="1-1">个人详细信息</el-menu-item>
+              <el-menu-item @click="resetPassword()"
+                            index="1-2">安全中心</el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group title="科研小组">
               <el-menu-item @click="showTeamInfo()"
@@ -94,6 +96,9 @@ export default {
     },
     showTeamInfo() {
       this.$router.push({ path: '/userCenter/teamInfo' })
+    },
+    resetPassword() {
+      this.$router.push({ path: '/userCenter/securityCenter' })
     }
   }
 }
