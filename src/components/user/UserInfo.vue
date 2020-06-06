@@ -6,7 +6,7 @@
         <el-upload class="avatar-uploader"
                    action="/api/user/uploadUserImg"
                    :show-file-list="false"
-                   :headers=token
+                   :headers="token"
                    :on-success="handleAvatarSuccess"
                    :before-upload="beforeAvatarUpload">
           <el-avatar :size="150"
