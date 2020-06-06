@@ -3,7 +3,7 @@
                type="card"
                height="400px">
     <el-carousel-item v-for="item in teamInfo"
-                      :key="item">
+                      :key="item.index">
       <h3 class="medium"
           v-if="item">{{ item.key }}<br>{{item.value}}</h3>
     </el-carousel-item>
@@ -16,15 +16,15 @@ export default {
       teamInfo: {
         teamName: {
           key: '小组名:',
-          value: null
+          value: ''
         },
         guideTeacherName: {
           key: '指导老师姓名:',
-          value: null
+          value: ''
         },
         guideTeacherAccount: {
           key: '指导老师账号:',
-          value: null
+          value: ''
         },
         teamDirection: {
           key: '小组研究方向:',
@@ -33,7 +33,7 @@ export default {
         // teamImg: null,
         studentCount: {
           key: '小组学生人数:',
-          value: null
+          value: ''
         }
       }
     }

@@ -31,6 +31,9 @@ export default {
   components: {
     UserCenterLeftTag,
     UserCenterHeader
+  },
+  mounted() {
+    this.$router.push({ path: '/userCenter/userInfo' })
   }
 }
 </script>

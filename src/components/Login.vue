@@ -27,7 +27,7 @@
           <el-button class="el-button"
                      type="primary"
                      size="medium"
-                     @keyup.enter="submitForm('loginForm')"
+                     @keyup.enter.native="submitForm('loginForm')"
                      @click="submitForm('loginForm')">登录</el-button>
         </el-form-item>
       </el-form>

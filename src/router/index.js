@@ -12,7 +12,7 @@ import WeeklyManagement from "@/components/user/WeeklyManagement";
 import UserInfo from "@/components/user/UserInfo";
 import Register from "@/components/admin/Register";
 import Document from "@/components/Document.vue";
-import ProcessDocument from "@/components/user/ProcessDocument.vue";
+import UserWork from "@/components/user/UserWork.vue";
 import TeamInfo from "@/components/user/TeamInfo.vue";
 import Websocket from "@/components/Websocket.vue";
 import Welcome from "@/components/admin/AdminWelcome.vue";
@@ -93,9 +93,9 @@ export default new Router({
           component: Document
         },
         {
-          path: "/userCenter/processDocument",
-          name: "ProcessDocument",
-          component: ProcessDocument
+          path: "/userCenter/userWork",
+          name: "UserWork",
+          component: UserWork
         },
         {
           path: "/userCenter/teamInfo",
