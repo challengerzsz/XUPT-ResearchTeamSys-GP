@@ -2,60 +2,69 @@
   <div>
     <div class="options">
       <el-row class="elRow">
-        <el-button type="primary"
-                   @click="postDialogVisible = true">上传文献</el-button>
+        <el-button type="primary" @click="postDialogVisible = true">上传文献</el-button>
       </el-row>
     </div>
-    <el-table :data="tableData"
-              style="width: 100%">
+    <div class="selectDiv">
+      <el-input style="width:600px" placeholder="请输入内容" v-model="content" class="input-with-select">
+        <el-select style="width:100px" v-model="SelectValue1" placeholder="请选择" slot="prepend">
+          <el-option
+            v-for="item in options1"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
+        <el-select style="width:120px;margin-left:10px" v-model="SelectValue2" placeholder="请选择" slot="prepend">
+          <el-option
+            v-for="item in options2"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
+        <el-button slot="append" @click="searchDocument()" icon="el-icon-search"></el-button>
+      </el-input>
+    </div>
+    <el-table :data="tableData" style="width: 100%">
       <el-table-column type="expand">
         <template slot-scope="props">
-          <el-form label-position="left"
-                   inline
-                   class="demo-table-expand">
+          <el-form label-position="left" inline class="demo-table-expand">
             <el-form-item label="作者">
-              <span>{{ props.row.name }}</span>
+              <span>{{ props.row.author }}</span>
             </el-form-item>
             <el-form-item label="论文题目">
-              <span>{{ props.row.id }}</span>
+              <span>{{ props.row.topic }}</span>
             </el-form-item>
             <el-form-item label="使用方法">
-              <span>{{ props.row.shopId }}</span>
+              <span>{{ props.row.useMethod }}</span>
             </el-form-item>
             <el-form-item label="单位(机构)">
-              <span>{{ props.row.category }}</span>
+              <span>{{ props.row.organ }}</span>
             </el-form-item>
             <el-form-item label="摘要(中文)">
-              <span>{{ props.row.address }}</span>
+              <span>{{ props.row.abstractContent }}</span>
             </el-form-item>
             <el-form-item label="创新点">
-              <span>{{ props.row.new }}</span>
+              <span>{{ props.row.innovation }}</span>
             </el-form-item>
           </el-form>
         </template>
       </el-table-column>
-      <el-table-column label="论文题目"
-                       prop="id">
-      </el-table-column>
-      <el-table-column label="作者"
-                       prop="name">
-      </el-table-column>
-      <el-table-column label="关键字"
-                       prop="desc">
-      </el-table-column>
-      <el-table-column label="浏览"
-                       prop="desc">
-        <el-button type="success"
-                   icon="el-icon-document-copy"
-                   @click="dialogVisible = true"
-                   circle></el-button>
+      <el-table-column label="论文题目" prop="topic"></el-table-column>
+      <el-table-column label="作者" prop="author"></el-table-column>
+      <el-table-column label="研究方向" prop="direction"></el-table-column>
+      <el-table-column label="浏览" prop="desc">
+        <el-button type="success" icon="el-icon-document-copy" @click="dialogVisible = true" circle></el-button>
       </el-table-column>
     </el-table>
-    <el-dialog :visible.sync="dialogVisible"
-               width="70%"
-               height="500px"
-               :before-close="handleClose"
-               class="dialog">
+    <el-dialog
+      :visible.sync="dialogVisible"
+      width="70%"
+      height="500px"
+      :before-close="handleClose"
+      class="dialog"
+    >
       <div>
         <div class="downloadButton">
           <el-button type="success">下载该文档PDF文件</el-button>
@@ -63,67 +72,75 @@
         <div style="clear:both" />
         <br />
         <div class="commentArea">
-          <el-tree :data="data"
-                   :props="defaultProps"
-                   @node-click="handleNodeClick"></el-tree>
+          <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
         </div>
       </div>
-      <span slot="footer"
-            class="dialog-footer">
+      <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
       </span>
     </el-dialog>
 
-    <el-dialog :visible.sync="postDialogVisible"
-               width="70%"
-               height="500px"
-               :before-close="handleClose"
-               class="dialog">
-      <div class="postDocument">
-        <el-form ref="form"
-                 :model="form"
-                 label-width="80px">
+    <!-- -----------------------------------------上传文献弹出框 -->
+    <el-dialog
+      :visible.sync="postDialogVisible"
+      width="70%"
+      height="500px"
+      :before-close="handleClose"
+      class="dialog"
+    >
+      <el-steps :active="uploadDocumentData.active" align-center finish-status="success">
+        <el-step title="完善文献信息"></el-step>
+        <el-step title="上传文献附件"></el-step>
+      </el-steps>
+      <div class="postDocument" v-show="uploadDocumentData.postDocumentShow">
+        <el-form ref="form" :model="form" label-width="80px">
           <el-form-item label="论文题目">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.topic"></el-input>
           </el-form-item>
           <el-form-item label="作者">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.author"></el-input>
           </el-form-item>
-          <el-form-item label="关键字">
-            <el-input v-model="form.name"></el-input>
+          <el-form-item label="研究方向">
+            <el-input v-model="form.direction"></el-input>
           </el-form-item>
           <el-form-item label="单位(机构)">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.organ"></el-input>
           </el-form-item>
           <el-form-item label="创新点">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.innovation"></el-input>
           </el-form-item>
           <el-form-item label="使用方法">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.useMethod"></el-input>
           </el-form-item>
           <el-form-item label="摘要(中文)">
-            <el-input type="textarea"
-                      v-model="form.desc"></el-input>
+            <el-input type="textarea" v-model="form.abstractContent"></el-input>
+          </el-form-item>
+          <el-form-item label="备注">
+            <el-input type="textarea" v-model="form.comments"></el-input>
+          </el-form-item>
+          <el-form-item label="论文原地址">
+            <el-input v-model="form.orginPath"></el-input>
           </el-form-item>
         </el-form>
       </div>
-      <div>
-        <el-upload class="upload-demo"
-                   drag
-                   action="https://jsonplaceholder.typicode.com/posts/"
-                   multiple>
+
+      <div class="uploadDocument" v-show="uploadDocumentData.uploadDocumentShow">
+        <el-upload
+          class="upload-demo"
+          drag
+          :headers="token"
+          :action="uploadDocumentData.uploadDocumentAction"
+          multiple
+        >
           <i class="el-icon-upload"></i>
-          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-          <div class="el-upload__tip"
-               slot="tip">只能上传.pdf文件</div>
+          <div class="el-upload__text">
+            将文件拖到此处，或
+            <em>点击上传</em>
+          </div>
+          <div class="el-upload__tip" slot="tip">只能上传.pdf文件</div>
         </el-upload>
       </div>
-      <span slot="footer"
-            class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary"
-                   @click="dialogVisible = false, submit()">提 交</el-button>
-      </span>
+      <el-button style="margin-top: 12px;" @click="next">{{uploadDocumentData.mention}}</el-button>
     </el-dialog>
   </div>
 </template>
@@ -144,101 +161,74 @@
 </style>
 
 <script>
+import QS from "qs";
 export default {
+  inject: ["reload"],
   data() {
     return {
-      dialogVisible: false,
-      postDialogVisible: false,
-      tableData: [
+      content: '',
+      SelectValue1: 0,
+      SelectValue2: 0,
+      options1: [
         {
-          id: '浅议人工智能背景下的大学英语口语教学与评价',
-          name: '	王璐',
-          category: '西安邮电大学',
-          desc: '人工智能 ; 大学英语 ; 口语教学 ; 口语评价 ;',
-          address:
-            '科技与网络的发展,带来教育的重大变革。人工智能的出现为大学英语口语教学与评价提供了全新的技术支持和更广阔的资源平台。口语教学与评价与人工智能及互联网相融合,大大地改善了传统教学模式和评价模式的弊端。极大地提高了口语教学效果与口语评价的客观性与科学性。 ',
-          originUrl: 'www.cnki.com/xxxx',
-          shopId: '10333',
-          new: 'AI'
+          value: 0,
+          label: "本人"
         },
         {
-          id: '浅议人工智能背景下的大学英语口语教学与评价',
-          name: '	王璐',
-          category: '西安邮电大学',
-          desc: '人工智能 ; 大学英语 ; 口语教学 ; 口语评价 ;',
-          address:
-            '科技与网络的发展,带来教育的重大变革。人工智能的出现为大学英语口语教学与评价提供了全新的技术支持和更广阔的资源平台。口语教学与评价与人工智能及互联网相融合,大大地改善了传统教学模式和评价模式的弊端。极大地提高了口语教学效果与口语评价的客观性与科学性。 ',
-          originUrl: 'www.cnki.com/xxxx',
-          shopId: '10333',
-          new: 'AI'
-        },
-        {
-          id: '浅议人工智能背景下的大学英语口语教学与评价',
-          name: '	王璐',
-          category: '西安邮电大学',
-          desc: '人工智能 ; 大学英语 ; 口语教学 ; 口语评价 ;',
-          address:
-            '科技与网络的发展,带来教育的重大变革。人工智能的出现为大学英语口语教学与评价提供了全新的技术支持和更广阔的资源平台。口语教学与评价与人工智能及互联网相融合,大大地改善了传统教学模式和评价模式的弊端。极大地提高了口语教学效果与口语评价的客观性与科学性。 ',
-          originUrl: 'www.cnki.com/xxxx',
-          shopId: '10333',
-          new: 'AI'
-        },
-        {
-          id: '浅议人工智能背景下的大学英语口语教学与评价',
-          name: '	王璐',
-          category: '西安邮电大学',
-          desc: '人工智能 ; 大学英语 ; 口语教学 ; 口语评价 ;',
-          address:
-            '科技与网络的发展,带来教育的重大变革。人工智能的出现为大学英语口语教学与评价提供了全新的技术支持和更广阔的资源平台。口语教学与评价与人工智能及互联网相融合,大大地改善了传统教学模式和评价模式的弊端。极大地提高了口语教学效果与口语评价的客观性与科学性。 ',
-          originUrl: 'www.cnki.com/xxxx',
-          shopId: '10333',
-          new: 'AI'
-        },
-        {
-          id: '浅议人工智能背景下的大学英语口语教学与评价',
-          name: '	王璐',
-          category: '西安邮电大学',
-          desc: '人工智能 ; 大学英语 ; 口语教学 ; 口语评价 ;',
-          address:
-            '科技与网络的发展,带来教育的重大变革。人工智能的出现为大学英语口语教学与评价提供了全新的技术支持和更广阔的资源平台。口语教学与评价与人工智能及互联网相融合,大大地改善了传统教学模式和评价模式的弊端。极大地提高了口语教学效果与口语评价的客观性与科学性。 ',
-          originUrl: 'www.cnki.com/xxxx',
-          shopId: '10333',
-          new: 'AI'
-        },
-        {
-          id: '浅议人工智能背景下的大学英语口语教学与评价',
-          name: '	王璐',
-          category: '西安邮电大学',
-          desc: '人工智能 ; 大学英语 ; 口语教学 ; 口语评价 ;',
-          address:
-            '科技与网络的发展,带来教育的重大变革。人工智能的出现为大学英语口语教学与评价提供了全新的技术支持和更广阔的资源平台。口语教学与评价与人工智能及互联网相融合,大大地改善了传统教学模式和评价模式的弊端。极大地提高了口语教学效果与口语评价的客观性与科学性。 ',
-          originUrl: 'www.cnki.com/xxxx',
-          shopId: '10333',
-          new: 'AI'
+          value: 1,
+          label: "系统"
         }
       ],
+      options2: [
+        {
+          value: 0,
+          label: "论文题目"
+        },
+        {
+          value: 1,
+          label: "作者"
+        },
+        {
+          value: 2,
+          label: "研究方向"
+        }
+      ],
+      dialogVisible: false,
+      postDialogVisible: false,
+      uploadDocumentData: {
+        active: 0,
+        mention: "下一步",
+        postDocumentShow: true,
+        uploadDocumentShow: false,
+        uploadDocumentAction: "",
+        documentId: ""
+      },
+      token: {
+        Authorization: ""
+      },
+      tableData: [],
       data: [
         {
-          label: '这篇论文对AI技术进行了认真的分析，可以查阅',
+          label: "这篇论文对AI技术进行了认真的分析，可以查阅",
           children: [
             {
-              label: 'AI应用',
+              label: "AI应用",
               children: [
                 {
-                  label: '赞同楼上观点'
+                  label: "赞同楼上观点"
                 }
               ]
             }
           ]
         },
         {
-          label: '这篇文章建议给英文好的同学阅读哈',
+          label: "这篇文章建议给英文好的同学阅读哈",
           children: [
             {
-              label: '英语不好还真读不了',
+              label: "英语不好还真读不了",
               children: [
                 {
-                  label: '哈哈哈 看个论文还得英语好'
+                  label: "哈哈哈 看个论文还得英语好"
                 }
               ]
             }
@@ -246,42 +236,109 @@ export default {
         }
       ],
       defaultProps: {
-        children: 'children',
-        label: 'label'
+        children: "children",
+        label: "label"
       },
       form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        topic: "",
+        author: "",
+        direction: "",
+        organ: "",
+        innovation: "",
+        useMethod: "",
+        abstractContent: "",
+        comments: "",
+        orginPath: ""
       }
-    }
+    };
   },
   methods: {
-    handleClose(done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done()
+    getAllDocument() {
+      this.$axios
+        .get("/api/document/getAllDocument")
+        .then(response => {
+          console.log(response.data);
+          this.tableData = response.data.data;
         })
-        .catch(_ => {})
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then(_ => {
+          this.reset();
+        })
+        .catch(_ => {});
+    },
+    next() {
+      this.uploadDocumentData.uploadDocumentAction =
+        "/api/document/uploadDocumentFile/" +
+        this.uploadDocumentData.documentId;
+      this.uploadDocumentData.active++;
+      if (this.uploadDocumentData.active == 1) {
+        this.$axios
+          .post("/api/document/uploadDocument", QS.stringify(this.form))
+          .then(response => {
+            console.log(response.data);
+            this.uploadDocumentData.documentId = response.data.data;
+          })
+          .catch(error => {
+            console.error(error);
+          });
+        this.uploadDocumentData.postDocumentShow = false;
+        this.uploadDocumentData.uploadDocumentShow = true;
+      }
+      if (this.uploadDocumentData.active == 2) {
+        this.uploadDocumentData.mention = "完成";
+      }
+      if (this.uploadDocumentData.active == 3) {
+        this.postDialogVisible = false;
+        this.reload();
+      }
+    },
+    reset() {
+      this.postDialogVisible = false;
+      this.uploadDocumentData.active = 0;
+      this.uploadDocumentData.mention = "下一步";
+      this.uploadDocumentData.postDocumentShow = true;
+      this.uploadDocumentData.uploadDocumentShow = false;
+      this.dialogVisible = false;
+    },
+    searchDocument() {
+      //alert(this.content)
+      var data = {
+        content: this.content
+      }
+      this.$axios
+        .get("/api/document/search/"+this.SelectValue1+"/"+this.SelectValue2+"?"+QS.stringify(data))
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.error(error);
+        });
     },
     // 提交
     submit() {
-      console.log(this.content)
-      console.log(this.html)
+      console.log(this.content);
+      console.log(this.html);
     },
     handleNodeClick(data) {
-      console.log(data)
+      console.log(data);
     },
     onSubmit() {
-      console.log('submit!')
+      console.log("submit!");
+    },
+    getToken() {
+      this.token.Authorization = localStorage.getItem("TOKEN");
     }
+  },
+  mounted() {
+    this.getToken();
+    this.getAllDocument();
   }
-}
+};
 </script>
 <style scoped>
 .options {
@@ -298,5 +355,7 @@ export default {
 }
 .postDocument {
   width: 500px;
+  margin: 0 auto;
+  margin-top: 40px;
 }
 </style>

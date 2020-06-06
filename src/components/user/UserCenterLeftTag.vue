@@ -28,7 +28,7 @@
             </template>
             <el-menu-item-group title="论文">
               <el-menu-item index="2-2"
-                            @click="showProcessDocument()">开题、中期报告</el-menu-item>
+                            @click="showUserWork()">开题、中期报告</el-menu-item>
               <el-menu-item index="2-4">小论文</el-menu-item>
               <el-menu-item index="2-5">毕业论文</el-menu-item>
             </el-menu-item-group>
@@ -75,12 +75,8 @@
 export default {
   name: 'userCenterLeftTag',
   methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath)
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath)
-    },
+    handleOpen(key, keyPath) {},
+    handleClose(key, keyPath) {},
     showWeeklyManagePage() {
       this.$router.push({ path: '/userCenter/weeklyManagement' })
     },
@@ -93,8 +89,8 @@ export default {
     shouDocument() {
       this.$router.push({ path: '/userCenter/document' })
     },
-    showProcessDocument() {
-      this.$router.push({ path: '/userCenter/processDocument' })
+    showUserWork() {
+      this.$router.push({ path: '/userCenter/userWork' })
     },
     showTeamInfo() {
       this.$router.push({ path: '/userCenter/teamInfo' })
