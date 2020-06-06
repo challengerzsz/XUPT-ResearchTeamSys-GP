@@ -210,11 +210,11 @@ export default {
   data() {
     return {
       nowDateTime: null,
-      teamCount:null,
-      memberCount:null,
-      paperCount:null,
-      achievementCount:null,
-      documentCount:null
+      teamCount: null,
+      memberCount: null,
+      paperCount: null,
+      achievementCount: null,
+      documentCount: null
     }
   },
   methods: {
@@ -231,12 +231,11 @@ export default {
       this.$axios
         .get('/api/admin/countAll')
         .then(response => {
-          console.log(response.data)
-          this.teamCount = response.data.data.teamCount;
-          this.memberCount = response.data.data.memberCount;
-          this.paperCount = response.data.data.paperCount;
-          this.achievementCount = response.data.data.achievementCount;
-          this.documentCount = response.data.data.documentCount;
+          this.teamCount = response.data.data.teamCount
+          this.memberCount = response.data.data.memberCount
+          this.paperCount = response.data.data.paperCount
+          this.achievementCount = response.data.data.achievementCount
+          this.documentCount = response.data.data.documentCount
         })
         .catch(error => {
           console.error(error)

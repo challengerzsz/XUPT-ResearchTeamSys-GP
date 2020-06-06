@@ -2,9 +2,10 @@
   <el-carousel :interval="4000"
                type="card"
                height="400px">
-    <el-carousel-item v-for="item in array"
+    <el-carousel-item v-for="item in teamInfo"
                       :key="item">
-      <h3 class="medium">{{ item }}</h3>
+      <h3 class="medium"
+          v-if="item">{{ item.key }}<br>{{item.value}}</h3>
     </el-carousel-item>
   </el-carousel>
 </template>
@@ -12,12 +13,52 @@
 export default {
   data() {
     return {
-      array: {
-        teamName: '第一研究组',
-        teamTeacher: '张荣',
-        teamCount: '40人'
+      teamInfo: {
+        teamName: {
+          key: '小组名:',
+          value: null
+        },
+        guideTeacherName: {
+          key: '指导老师姓名:',
+          value: null
+        },
+        guideTeacherAccount: {
+          key: '指导老师账号:',
+          value: null
+        },
+        teamDirection: {
+          key: '小组研究方向:',
+          value: null
+        },
+        // teamImg: null,
+        studentCount: {
+          key: '小组学生人数:',
+          value: null
+        }
       }
     }
+  },
+  methods: {
+    getMyTeamInfo() {
+      this.$axios
+        .get('/api/team/getMyTeamInfo')
+        .then(response => {
+          this.teamInfo.guideTeacherAccount.value =
+            response.data.data.guideTeacherAccount
+          this.teamInfo.guideTeacherName.value =
+            response.data.data.guideTeacherName
+          this.teamInfo.teamName.value = response.data.data.teamName
+          //   this.teamInfo.teamImg = response.data.data.teamImg
+          this.teamInfo.studentCount.value = response.data.data.studentCount
+          this.teamInfo.teamDirection.value = response.data.data.teamDirection
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    }
+  },
+  mounted() {
+    this.getMyTeamInfo()
   }
 }
 </script>
