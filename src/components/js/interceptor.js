@@ -24,10 +24,6 @@ axios.interceptors.response.use(
   data => {
     if (data.data.status == 0) {
       Message.error({ message: data.data.msg });
-      return;
-    }
-    if (data.data.status == 1) {
-      Message.success({ message: data.data.msg });
     }
     return data;
   },

@@ -130,8 +130,10 @@
                    name="arrangeTeamMembers">
         <div class="arrangeTeamMembersDiv">
 
-          <el-form :model="arrangeTeamMembersFrom">
+          <el-form :model="arrangeTeamMembersFrom"
+                   ref="arrangeTeamMembersFrom">
             <el-form-item label="指导老师姓名"
+                          prop="guideTeacherName"
                           :label-width="formLabelWidth">
               <el-autocomplete popper-class="search-input"
                                v-model="arrangeTeamMembersFrom.guideTeacherName"
@@ -146,11 +148,60 @@
               </el-autocomplete>
             </el-form-item>
             <el-form-item label="指导老师账号"
+                          prop="guideTeacherAccount"
                           :label-width="formLabelWidth">
               <el-input v-model="arrangeTeamMembersFrom.guideTeacherAccount"
                         disabled
                         autocomplete="off"></el-input>
             </el-form-item>
+            <el-form-item label="选择小组"
+                          prop="teamName"
+                          :label-width="formLabelWidth">
+              <el-autocomplete popper-class="search-input"
+                               v-model="arrangeTeamMembersFrom.teamName"
+                               :fetch-suggestions="getTeamSearchAsync"
+                               placeholder="请输入指导老师负责小组名进行检索"
+                               @select="handleGetTeamSelect">
+
+                <template slot-scope="{ item }">
+                  <div class="name">{{ item.teamName }}</div>
+                  <span class="account">{{ item.teamDirection }}</span>
+                </template>
+              </el-autocomplete>
+            </el-form-item>
+            <el-form-item label="小组成员数"
+                          prop="teamStudentCount"
+                          :label-width="formLabelWidth">
+              <el-input v-model="arrangeTeamMembersFrom.teamStudentCount"
+                        disabled
+                        autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="小组研究方向"
+                          prop="researchDir"
+                          :label-width="formLabelWidth">
+              <el-input v-model="arrangeTeamMembersFrom.researchDir"
+                        disabled
+                        autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="选择学生"
+                          :label-width="formLabelWidth">
+              <el-select v-model="selectStudent"
+                         multiple
+                         placeholder="请选择">
+                <el-option v-for="item in noTeamStudent"
+                           :key="item.value"
+                           :label="item.userName + ' ' + item.userAccount"
+                           :value="item.userAccount">
+                </el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item>
+              <el-button @click="resetForm('arrangeTeamMembersFrom')">重 置</el-button>
+              <el-button type="primary"
+                         @click="submitArrangeTeamMember()">提 交</el-button>
+            </el-form-item>
+
           </el-form>
 
         </div>
@@ -193,7 +244,7 @@
            class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary"
-                   @click="modifyTeamInfo()">提 交</el-button>
+                   @click="sumbitArrangeTeamMember()">分 配</el-button>
       </div>
     </el-dialog>
   </div>
@@ -228,8 +279,14 @@ export default {
       timeout: null,
       arrangeTeamMembersFrom: {
         guideTeacherName: '',
-        guideTeacherAccount: ''
-      }
+        guideTeacherAccount: '',
+        guideTeacherTeam: [],
+        teamName: '',
+        teamStudentCount: null,
+        researchDir: null
+      },
+      noTeamStudent: [],
+      selectStudent: []
     }
   },
   methods: {
@@ -277,6 +334,28 @@ export default {
           console.error(error)
         })
     },
+    getTeamSearchAsync(queryString, cb) {
+      var teamInfo = this.arrangeTeamMembersFrom.guideTeacherTeam
+      var results = queryString
+        ? teamInfo.filter(this.createGetTeamFilter(queryString))
+        : teamInfo
+
+      clearTimeout(this.timeout)
+      this.timeout = setTimeout(() => {
+        cb(results)
+      }, 2000 * Math.random())
+    },
+    createGetTeamFilter(queryString) {
+      return teamInfo => {
+        return teamInfo.teamName.indexOf(queryString) === 0
+      }
+    },
+    handleGetTeamSelect(item) {
+      this.teamForm.id = item.id
+      this.arrangeTeamMembersFrom.teamName = item.teamName
+      this.arrangeTeamMembersFrom.teamStudentCount = item.studentCount
+      this.arrangeTeamMembersFrom.researchDir = item.teamDirection
+    },
     createTeamQuerySearchAsync(queryString, cb) {
       var teacherInfo = this.teamForm.guideTeacherInfo
       var results = queryString
@@ -290,7 +369,6 @@ export default {
     },
     createStateFilter(queryString) {
       return state => {
-        console.log(state.userName)
         return state.userName.indexOf(queryString) === 0
       }
     },
@@ -357,6 +435,42 @@ export default {
     handleArrangeTeamMembersSelect(item) {
       this.arrangeTeamMembersFrom.guideTeacherAccount = item.userAccount
       this.arrangeTeamMembersFrom.guideTeacherName = item.userName
+      this.$axios
+        .get('/api/team/getTeamInfoByTeacherAccount/' + item.userAccount)
+        .then(response => {
+          this.arrangeTeamMembersFrom.guideTeacherTeam = response.data.data
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    },
+    submitArrangeTeamMember() {
+      var data = {
+        teamId: this.teamForm.id,
+        guideTeacherAccount: this.arrangeTeamMembersFrom.guideTeacherAccount,
+        guideTeacherName: this.arrangeTeamMembersFrom.guideTeacherName,
+        memberAccountList: this.selectStudent
+      }
+      this.$axios
+        .post('/api/admin/arrangeTeamMember', data)
+        .then(response => {
+          this.reload()
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    },
+    getAllNoteamStudent() {
+      this.$axios
+        .get('/api/user/getAllNoTeamStudent')
+        .then(response => {
+          if (response.data.status === 1) {
+            this.noTeamStudent = response.data.data
+          }
+        })
+        .catch(error => {
+          console.error(error)
+        })
     }
   },
 
@@ -364,6 +478,7 @@ export default {
     this.getAllTeamInfo()
     this.getAllTeamResearchDirection()
     this.getAllguideTeacher()
+    this.getAllNoteamStudent()
   }
 }
 </script>
@@ -402,5 +517,8 @@ li {
 }
 .highlighted .addr {
   color: #ddd;
+}
+.el-select {
+  width: 380px;
 }
 </style>

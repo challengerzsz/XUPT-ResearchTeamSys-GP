@@ -2,9 +2,18 @@
   <div class="userInfoMain">
     <div>
       <div class="userImg">
-        <el-avatar :size="150"
-                   :src="form.avatar"></el-avatar>
+
+        <el-upload class="avatar-uploader"
+                   action="/api/user/uploadUserImg"
+                   :show-file-list="false"
+                   :headers=token
+                   :on-success="handleAvatarSuccess"
+                   :before-upload="beforeAvatarUpload">
+          <el-avatar :size="150"
+                     :src="imageUrl"></el-avatar>
+        </el-upload>
       </div>
+
       <div class="userInfo">
         <el-form ref="form"
                  :model="form"
@@ -33,10 +42,6 @@
                          :value="item.value"></el-option>
             </el-select>
           </el-form-item>
-
-          <el-form-item label="接收实时推送">
-            <el-switch v-model="form.delivery"></el-switch>
-          </el-form-item>
           <el-form-item label="研究方向">
             <el-checkbox-group v-model="form.type">
               <el-checkbox v-for="item in types"
@@ -63,11 +68,12 @@ export default {
   name: 'userInfo',
   data() {
     return {
+      token: {
+        Authorization: ''
+      },
       form: {
         id: '',
         account: '04163104',
-        avatar:
-          'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
         name: '张三',
         male: '1',
         delivery: true,
@@ -86,7 +92,8 @@ export default {
         {
           value: '工程硕士'
         }
-      ]
+      ],
+      imageUrl: ''
     }
   },
   methods: {
@@ -94,6 +101,7 @@ export default {
       this.$axios
         .get('/api/user/info')
         .then(response => {
+          this.imageUrl = response.data.data.img
           this.form.account = response.data.data.userAccount
           this.form.name = response.data.data.userName
           this.form.male = response.data.data.sex + ''
@@ -111,7 +119,6 @@ export default {
         .get('/api/researchDirection/getAll')
         .then(response => {
           this.types = response.data.data
-          console.log(response.data.data)
         })
         .catch(error => {
           console.error(error)
@@ -136,10 +143,29 @@ export default {
         .catch(error => {
           console.error(error)
         })
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw)
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M
+    },
+    getToken() {
+      this.token.Authorization = localStorage.getItem('TOKEN')
     }
   },
   mounted() {
     this.getUserInfo()
+    this.getToken()
   }
 }
 </script>
@@ -151,7 +177,7 @@ export default {
 .userImg {
   height: 10px;
   width: 10px;
-  margin-top: 10px;
+  margin-top: 30px;
   margin-left: 100px;
   float: left;
 }
