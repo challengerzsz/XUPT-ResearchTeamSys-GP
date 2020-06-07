@@ -20,6 +20,7 @@ import Team from "@/components/admin/AdminManageTeam.vue";
 import SecurityCenter from "@/components/user/SecurityCenter.vue";
 import Paper from "@/components/Paper.vue";
 import ClaimExpense from "@/components/user/ClaimExpenseCenter.vue";
+import GPPaper from "@/components/user/GPPaper.vue";
 
 Vue.use(Router);
 
@@ -119,7 +120,11 @@ export default new Router({
           path: "/userCenter/claimExpenseCenter",
           name: "claimExpenseCenter",
           component: ClaimExpense
-          
+        },
+        {
+          path: "/userCenter/gp-paper",
+          name: "GPPaper",
+          component: GPPaper
         }
       ]
     },

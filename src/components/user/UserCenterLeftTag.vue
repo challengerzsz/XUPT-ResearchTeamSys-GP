@@ -33,7 +33,8 @@
                             @click="showUserWork()">开题、中期报告</el-menu-item>
               <el-menu-item index="2-4"
                             @click="showPaper()">小论文</el-menu-item>
-              <el-menu-item index="2-5">毕业论文</el-menu-item>
+              <el-menu-item index="2-5"
+                            @click="showGpPaper()">毕业论文</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="3">
@@ -48,7 +49,7 @@
             </el-menu-item-group>
           </el-submenu>
           <el-menu-item index="4"
-                        @click="shouDocument()">
+                        @click="showDocument()">
             <i class="el-icon-document"></i>
             <span slot="title">文献管理</span>
           </el-menu-item>
@@ -63,7 +64,8 @@
               <span slot="title">日常工作</span>
             </template>
             <el-menu-item-group title="个人荣誉">
-              <el-menu-item @click="showClaimExpense()" index="2-6">报销</el-menu-item>
+              <el-menu-item @click="showClaimExpense()"
+                            index="2-6">报销</el-menu-item>
               <el-menu-item index="2-7">项目</el-menu-item>
               <el-menu-item index="2-8">统计</el-menu-item>
             </el-menu-item-group>
@@ -89,7 +91,7 @@ export default {
     showUserInfo() {
       this.$router.push({ path: '/userCenter/userInfo' })
     },
-    shouDocument() {
+    showDocument() {
       this.$router.push({ path: '/userCenter/document' })
     },
     showUserWork() {
@@ -106,6 +108,9 @@ export default {
     },
     showClaimExpense() {
       this.$router.push({ path: '/userCenter/claimExpenseCenter' })
+    },
+    showGpPaper() {
+      this.$router.push({ path: '/userCenter/gp-paper' })
     }
   }
 }
