@@ -18,6 +18,7 @@ import Websocket from "@/components/Websocket.vue";
 import Welcome from "@/components/admin/AdminWelcome.vue";
 import Team from "@/components/admin/AdminManageTeam.vue";
 import SecurityCenter from "@/components/user/SecurityCenter.vue";
+import Paper from "@/components/Paper.vue";
 
 Vue.use(Router);
 
@@ -107,6 +108,11 @@ export default new Router({
           path: "/userCenter/teamInfo",
           name: "TeamInfo",
           component: TeamInfo
+        },
+        {
+          path: "/userCenter/paper",
+          name: "Paper",
+          component: Paper
         }
       ]
     },

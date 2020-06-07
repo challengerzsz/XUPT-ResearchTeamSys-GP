@@ -80,10 +80,6 @@ export default {
             .post('/api/login', QS.stringify(data.field))
             .then(response => {
               var rspStatus = response.data.status
-              console.log(rspStatus)
-              // err
-              if (rspStatus != 1) {
-              }
               if (rspStatus == 1) {
                 let backendToken = response.data.data
                 window.localStorage.setItem('TOKEN', backendToken)
