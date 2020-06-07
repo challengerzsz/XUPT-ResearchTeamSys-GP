@@ -63,7 +63,7 @@
               <span slot="title">日常工作</span>
             </template>
             <el-menu-item-group title="个人荣誉">
-              <el-menu-item index="2-6">报销</el-menu-item>
+              <el-menu-item @click="showClaimExpense()" index="2-6">报销</el-menu-item>
               <el-menu-item index="2-7">项目</el-menu-item>
               <el-menu-item index="2-8">统计</el-menu-item>
             </el-menu-item-group>
@@ -103,6 +103,9 @@ export default {
     },
     showPaper() {
       this.$router.push({ path: '/userCenter/paper' })
+    },
+    showClaimExpense() {
+      this.$router.push({ path: '/userCenter/claimExpenseCenter' })
     }
   }
 }
