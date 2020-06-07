@@ -26,7 +26,6 @@ import Competition from "@/components/user/achievement/Competition.vue";
 import Patent from "@/components/user/achievement/Patent.vue";
 import SoftwareCopyright from "@/components/user/achievement/SoftwareCopyright.vue";
 import TeacherTeamInfo from "@/components/teacher/TeacherTeamInfo.vue";
-import TeacherInfo from "@/components/teacher/TeacherInfo.vue";
 import TeacherPaper from "@/components/teacher/TeacherPaper.vue";
 import TeacherGpPaper from "@/components/teacher/TeacherGpPaper.vue";
 import TeacherDocument from "@/components/Document.vue";
@@ -170,8 +169,8 @@ export default new Router({
       children: [
         {
           path: "/teacherCenter/teacherInfo",
-          name: "TeacherInfo",
-          component: TeacherInfo
+          name: "UserInfo",
+          component: UserInfo
         },
         {
           path: "/teacherCenter/teacherTeamInfo",

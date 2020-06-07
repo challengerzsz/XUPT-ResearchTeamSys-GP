@@ -78,9 +78,7 @@
   </div>
 </template>
 <script>
-import QS from "qs";
 export default {
-  inject: ["reload"],
   data() {
     return {
       // 初始显示哪个pane
