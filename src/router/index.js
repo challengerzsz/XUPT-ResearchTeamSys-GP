@@ -35,6 +35,7 @@ import TeacherProject from "@/components/teacher/TeacherProject.vue";
 import TeacherCompetition from "@/components/teacher/achievement/TeacherCompetition.vue";
 import TeacherPatent from "@/components/teacher/achievement/TeacherPatent.vue";
 import TeacherSoftwareCopyright from "@/components/teacher/achievement/TeacherSoftwareCopyright.vue";
+import TeacherWork from "@/components/teacher/TeacherWork.vue"
 
 Vue.use(Router);
 
@@ -225,7 +226,11 @@ export default new Router({
         {
           path: "/teacher/achievement/softwareCopyright",
           name: "TeacherSoftwareCopyright",
-          component: TeacherSoftwareCopyright
+          component: TeacherSoftwareCopyright},
+        {
+          path: "/teacherCenter/teacherWork",
+          name: "TeacherWork",
+          component: TeacherWork
         }
       ]
     },

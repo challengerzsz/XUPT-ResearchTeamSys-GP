@@ -30,7 +30,7 @@
             </template>
             <el-menu-item-group title="论文">
               <el-menu-item index="2-2"
-                            @click="showUserWork()">开题、中期报告</el-menu-item>
+                            @click="showTeacherWork()">开题、中期报告</el-menu-item>
               <el-menu-item index="2-4"
                             @click="showPaper()">小论文</el-menu-item>
               <el-menu-item index="2-5"
@@ -98,8 +98,8 @@ export default {
     shouDocument() {
       this.$router.push({ path: '/teacher/document' })
     },
-    showUserWork() {
-      this.$router.push({ path: '/userCenter/userWork' })
+    showTeacherWork() {
+      this.$router.push({ path: '/teacherCenter/teacherWork' })
     },
     showTeamInfo() {
       this.$router.push({ path: '/teacherCenter/teacherTeamInfo' })
