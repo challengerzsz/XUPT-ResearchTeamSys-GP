@@ -284,7 +284,6 @@ export default {
       this.$axios
         .get('/api/document/getAllDocument')
         .then(response => {
-          console.log(response.data)
           this.tableData = response.data.data
         })
         .catch(error => {

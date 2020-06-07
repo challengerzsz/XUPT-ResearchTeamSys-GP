@@ -21,6 +21,10 @@ import SecurityCenter from "@/components/user/SecurityCenter.vue";
 import Paper from "@/components/Paper.vue";
 import ClaimExpense from "@/components/user/ClaimExpenseCenter.vue";
 import GPPaper from "@/components/user/GPPaper.vue";
+import Project from "@/components/user/Project";
+import Competition from "@/components/user/achievement/Competition.vue";
+import Patent from "@/components/user/achievement/Patent.vue";
+import SoftwareCopyright from "@/components/user/achievement/SoftwareCopyright";
 
 Vue.use(Router);
 
@@ -125,6 +129,26 @@ export default new Router({
           path: "/userCenter/gp-paper",
           name: "GPPaper",
           component: GPPaper
+        },
+        {
+          path: "/userCenter/project",
+          name: "Project",
+          component: Project
+        },
+        {
+          path: "/userCenter/achievement/competition",
+          name: "Competition",
+          component: Competition
+        },
+        {
+          path: "/userCenter/achievement/patent",
+          name: "Patent",
+          component: Patent
+        },
+        {
+          path: "/userCenter/achievement/softwareCopyright",
+          name: "SoftwareCopyright",
+          component: SoftwareCopyright
         }
       ]
     },

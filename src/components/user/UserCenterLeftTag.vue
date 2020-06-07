@@ -37,17 +37,6 @@
                             @click="showGpPaper()">毕业论文</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
-          <el-submenu index="3">
-            <template slot="title">
-              <i class="el-icon-menu"></i>
-              <span slot="title">成果管理</span>
-            </template>
-            <el-menu-item-group title="个人荣誉">
-              <el-menu-item index="2-6">竞赛</el-menu-item>
-              <el-menu-item index="2-7">专利</el-menu-item>
-              <el-menu-item index="2-8">软件著作权</el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
           <el-menu-item index="4"
                         @click="showDocument()">
             <i class="el-icon-document"></i>
@@ -58,6 +47,20 @@
             <i class="el-icon-document"></i>
             <span slot="title">周报管理</span>
           </el-menu-item>
+          <el-submenu index="3">
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span slot="title">成果管理</span>
+            </template>
+            <el-menu-item-group title="成果相关信息查询">
+              <el-menu-item index="2-6"
+                            @click="showCompetition">竞赛</el-menu-item>
+              <el-menu-item index="2-7"
+                            @click="showPatent">专利</el-menu-item>
+              <el-menu-item index="2-8"
+                            @click="showSoftwareCopyright">软件著作权</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
           <el-submenu index="6">
             <template slot="title">
               <i class="el-icon-menu"></i>
@@ -66,7 +69,8 @@
             <el-menu-item-group title="个人荣誉">
               <el-menu-item @click="showClaimExpense()"
                             index="2-6">报销</el-menu-item>
-              <el-menu-item index="2-7">项目</el-menu-item>
+              <el-menu-item index="2-7"
+                            @click="showProject">项目</el-menu-item>
               <el-menu-item index="2-8">统计</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
@@ -111,6 +115,18 @@ export default {
     },
     showGpPaper() {
       this.$router.push({ path: '/userCenter/gp-paper' })
+    },
+    showProject() {
+      this.$router.push({ path: '/userCenter/project' })
+    },
+    showCompetition() {
+      this.$router.push({ path: '/userCenter/achievement/competition' })
+    },
+    showPatent() {
+      this.$router.push({ path: '/userCenter/achievement/patent' })
+    },
+    showSoftwareCopyright() {
+      this.$router.push({ path: '/userCenter/achievement/softwareCopyright' })
     }
   }
 }
