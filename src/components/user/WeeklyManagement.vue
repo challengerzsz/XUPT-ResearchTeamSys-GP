@@ -1,17 +1,43 @@
 <template>
   <div>
-
     <div class="options">
       <el-row class="elRow">
         <el-button type="primary"
-                   @click="dialogVisible = true">开始写这周的周报</el-button>
+                   style="float:left;margin-left:10px"
+                   @click="writeDialogVisible = true">开始写本周周报</el-button>
       </el-row>
+
+      <el-divider style="width:100%">历史周报</el-divider>
+      <el-table :data="tableData"
+                stripe
+                style="width: 100%">
+        <el-table-column prop="title"
+                         label="周报标题"
+                         width="180">
+          <template slot-scope="scope">
+            <div slot="reference"
+                 class="name-wrapper">
+              <el-tag size="medium">{{ scope.row.title }}</el-tag>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button size="mini"
+                       @click="handleSelect(scope.$index, scope.row)">查看周报内容</el-button>
+            <el-button size="mini"
+                       @click="getComment(scope.$index, scope.row)">查看周报批注</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
-    <el-dialog :visible.sync="dialogVisible"
+
+    <!-- ----------------------------------------写周报弹窗--------------------------- -->
+    <el-dialog :visible.sync="writeDialogVisible"
                width="70%"
                :before-close="handleClose">
       <div>
-        <h2> 2020-5 第2周周报</h2>
+        <h2> {{weeklyReportName}}</h2>
       </div>
       <div class="editor">
         <mavon-editor v-model="content"
@@ -21,133 +47,78 @@
       </div>
       <span slot="footer"
             class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button @click="writeDialogVisible = false">取 消</el-button>
         <el-button type="primary"
-                   @click="dialogVisible = false, submit()">提 交</el-button>
+                   @click="submit()">提 交</el-button>
       </span>
     </el-dialog>
 
-    <el-dialog title="2020-1 第一周周报内容"
-               :visible.sync="weeklyByIddialogVisible"
+    <!-- ------------------------------------------------获取某一周周报内容弹窗------------------------------------ -->
+    <el-dialog :title="weeklyReportInfoTitle"
+               :visible.sync="weeklyReportInfoDialogVisible"
                width="70%"
                :before-close="handleClose">
       <div class="editor">
-        <mavon-editor v-model="weeklyByIdContent"
+        <mavon-editor v-model="content"
                       ref="md"
                       @change="change"
                       style="min-height: 600px" />
       </div>
       <span slot="footer"
             class="dialog-footer">
-        <el-button @click="weeklyByIddialogVisible = false">关闭</el-button>
+        <el-button @click="weeklyReportInfoDialogVisible = false">关闭</el-button>
       </span>
     </el-dialog>
 
-    <div class="oldWeeklyContent">
-      <el-row :gutter="12">
+    <!-- ----------------------------------------------获取某周周报批注弹窗--------------------------- -->
+    <el-dialog :title="weeklyReportCommentTitle"
+               :visible.sync="weeklyReportCommentDialogVisible"
+               width="1000px"
+               :before-close="handleClose">
 
-        <el-divider content-position="left">2020-1 周报内容</el-divider>
-        <el-col :span="50">
-          <el-card shadow="hover"
-                   @click.native="showWeeklyById()">
-            2020-1 第一周 周报内容
-          </el-card>
-        </el-col>
-        <el-col :span="50">
-          <el-card shadow="hover">
-            2020-1 第二周 周报内容
-          </el-card>
-        </el-col>
-        <el-col :span="50">
-          <el-card shadow="hover">
-            2020-1 第三周 周报内容
-          </el-card>
-        </el-col>
-        <el-col :span="50">
-          <el-card shadow="hover">
-            2020-1 第四周 周报内容
-          </el-card>
-        </el-col>
+      <el-table :data="commentTable"
+                style="width: 100%">
+        <el-table-column prop="weeklyReportId"
+                         label="周报ID"
+                         width="180">
+          <template slot-scope="scope">
+            <div slot="reference"
+                 class="name-wrapper">
+              <el-tag size="medium">{{ scope.row.weeklyReportId }}</el-tag>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="teacherAccount"
+                         label="教师工号"
+                         width="180">
+          <template slot-scope="scope">
+            <div slot="reference"
+                 class="name-wrapper">
+              <el-tag size="medium">{{ scope.row.teacherAccount }}</el-tag>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="teacherName"
+                         label="教师姓名"
+                         width="180">
+          <template slot-scope="scope">
+            <div slot="reference"
+                 class="name-wrapper">
+              <el-tag size="medium">{{ scope.row.teacherName }}</el-tag>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="content"
+                         label="批注内容"
+                         width="180">
+        </el-table-column>
+      </el-table>
 
-      </el-row>
-
-      <el-row :gutter="12">
-
-        <el-divider content-position="left">2020-2 周报内容</el-divider>
-        <el-col :span="50">
-          <el-card shadow="hover">
-            2020-2 第一周 周报内容
-          </el-card>
-        </el-col>
-        <el-col :span="50">
-          <el-card shadow="hover">
-            2020-2 第二周 周报内容
-          </el-card>
-        </el-col>
-        <el-col :span="50">
-          <el-card shadow="hover">
-            2020-2 第三周 周报内容
-          </el-card>
-        </el-col>
-        <el-col :span="50">
-          <el-card shadow="hover">
-            2020-2 第四周 周报内容
-          </el-card>
-        </el-col>
-
-      </el-row>
-      <el-row :gutter="12">
-
-        <el-divider content-position="left">2020-3 周报内容</el-divider>
-        <el-col :span="50">
-          <el-card shadow="hover">
-            2020-3 第一周 周报内容
-          </el-card>
-        </el-col>
-        <el-col :span="50">
-          <el-card shadow="hover">
-            2020-3 第二周 周报内容
-          </el-card>
-        </el-col>
-        <el-col :span="50">
-          <el-card shadow="hover">
-            2020-3 第三周 周报内容
-          </el-card>
-        </el-col>
-        <el-col :span="50">
-          <el-card shadow="hover">
-            2020-3 第四周 周报内容
-          </el-card>
-        </el-col>
-
-      </el-row>
-      <el-row :gutter="12">
-
-        <el-divider content-position="left">2020-4 周报内容</el-divider>
-        <el-col :span="50">
-          <el-card shadow="hover">
-            2020-4 第一周 周报内容
-          </el-card>
-        </el-col>
-        <el-col :span="50">
-          <el-card shadow="hover">
-            2020-4 第二周 周报内容
-          </el-card>
-        </el-col>
-        <el-col :span="50">
-          <el-card shadow="hover">
-            2020-4 第三周 周报内容
-          </el-card>
-        </el-col>
-        <el-col :span="50">
-          <el-card shadow="hover">
-            2020-4 第四周 周报内容
-          </el-card>
-        </el-col>
-
-      </el-row>
-
-    </div>
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button @click="weeklyReportCommentDialogVisible = false">关闭</el-button>
+      </span>
+    </el-dialog>
 
   </div>
 
@@ -156,31 +127,103 @@
 <script>
 import { mavonEditor } from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
-
+import QS from 'qs'
 export default {
+  inject: ['reload'],
   name: 'weeklyManagement',
   components: {
     mavonEditor
   },
   data() {
     return {
+      weeklyReportName: '',
       content: '', // 输入的markdown
       html: '', // 及时转的html
-      dialogVisible: false,
+      writeDialogVisible: false,
       weeklyByIdContent: '',
-      weeklyByIddialogVisible: false
+      weeklyReportInfoDialogVisible: false,
+      weeklyReportCommentDialogVisible: false,
+      tableData: null,
+      weeklyReportInfoTitle: '',
+      weeklyReportCommentTitle: '',
+      commentTable: null
     }
   },
   methods: {
-    // 所有操作都会被解析重新渲染
+    handleSelect(index, row) {
+      this.weeklyReportInfoTitle = row.title
+      this.content = row.reportContentMd
+      this.weeklyReportInfoDialogVisible = true
+    },
+    getComment(index, row) {
+      this.weeklyReportCommentTitle = row.title + '的批注'
+      this.$axios
+        .get('/api/weeklyReport/getComments/' + row.id)
+        .then(response => {
+          if (response.data.status == 1) {
+            this.commentTable = response.data.data
+            this.weeklyReportCommentDialogVisible = true
+          }
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    },
+    getAllMyWeeklyReport() {
+      this.$axios
+        .get('/api/weeklyReport/getAllWeeklyReport')
+        .then(response => {
+          if (response.data.status == 1) {
+            this.tableData = response.data.data
+          }
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    },
+    getWeeklyReportName() {
+      var date = new Date()
+      var w = date.getDay()
+      var d = date.getDate()
+      if (w == 0) {
+        w = 7
+      }
+      var week = ['第一周', '第二周', '第三周', '第四周']
+      var config = {
+        getMonth: date.getMonth() + 1,
+        getYear: date.getFullYear(),
+        getWeek: week[Math.ceil((d + 6 - w) / 7) - 1]
+      }
+      this.weeklyReportName =
+        config.getYear +
+        '年 ' +
+        config.getMonth +
+        '月 ' +
+        config.getWeek +
+        '周报'
+    },
     change(value, render) {
       // render 为 markdown 解析后的结果[html]
       this.html = render
     },
     // 提交
     submit() {
-      console.log(this.content)
-      console.log(this.html)
+      var data = {
+        title: this.weeklyReportName,
+        reportContentMd: this.content,
+        reportContentH5: this.html
+      }
+
+      this.$axios
+        .post('/api/weeklyReport/uploadWeeklyReport', QS.stringify(data))
+        .then(response => {
+          if (response.data.status == 1) {
+            this.reload()
+          }
+        })
+        .catch(error => {
+          console.error(error)
+        })
     },
     handleClose(done) {
       this.$confirm('确认关闭？')
@@ -188,15 +231,12 @@ export default {
           done()
         })
         .catch(_ => {})
-    },
-    showWeeklyById() {
-      console.log(123)
-      this.weeklyByIdContent =
-        '# 2020-1 第一周周报\n## 目标\n- AI入门\n- 吃饭\n- 睡觉\n## 已完成\n- AI入门了\n- 吃了饭\n- 睡了觉'
-      this.weeklyByIddialogVisible = true
     }
   },
-  mounted() {}
+  mounted() {
+    this.getWeeklyReportName()
+    this.getAllMyWeeklyReport()
+  }
 }
 </script>
 <style scoped>
@@ -205,6 +245,7 @@ export default {
 }
 .options {
   float: left;
+  width: 100%;
 }
 .oldWeeklyContent {
   float: left;

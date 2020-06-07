@@ -2,69 +2,87 @@
   <div>
     <div class="options">
       <el-row class="elRow">
-        <el-button type="primary" @click="postDialogVisible = true">上传文献</el-button>
+        <el-button type="primary"
+                   @click="postDialogVisible = true">上传文献</el-button>
       </el-row>
     </div>
     <div class="selectDiv">
-      <el-input style="width:600px" placeholder="请输入内容" v-model="content" class="input-with-select">
-        <el-select style="width:100px" v-model="SelectValue1" placeholder="请选择" slot="prepend">
-          <el-option
-            v-for="item in options1"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
+      <el-input style="width:600px"
+                placeholder="请输入内容"
+                v-model="content"
+                class="input-with-select">
+        <el-select style="width:100px"
+                   v-model="SelectValue1"
+                   placeholder="请选择"
+                   slot="prepend">
+          <el-option v-for="item in options1"
+                     :key="item.value"
+                     :label="item.label"
+                     :value="item.value"></el-option>
         </el-select>
-        <el-select style="width:120px;margin-left:10px" v-model="SelectValue2" placeholder="请选择" slot="prepend">
-          <el-option
-            v-for="item in options2"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
+        <el-select style="width:120px;margin-left:10px"
+                   v-model="SelectValue2"
+                   placeholder="请选择"
+                   slot="prepend">
+          <el-option v-for="item in options2"
+                     :key="item.value"
+                     :label="item.label"
+                     :value="item.value"></el-option>
         </el-select>
-        <el-button slot="append" @click="searchDocument()" icon="el-icon-search"></el-button>
+        <el-button slot="append"
+                   @click="searchDocument()"
+                   icon="el-icon-search"></el-button>
       </el-input>
     </div>
-    <el-table :data="tableData" style="width: 100%">
-      <el-table-column type="expand">
-        <template slot-scope="props">
-          <el-form label-position="left" inline class="demo-table-expand">
-            <el-form-item label="作者">
-              <span>{{ props.row.author }}</span>
-            </el-form-item>
-            <el-form-item label="论文题目">
-              <span>{{ props.row.topic }}</span>
-            </el-form-item>
-            <el-form-item label="使用方法">
-              <span>{{ props.row.useMethod }}</span>
-            </el-form-item>
-            <el-form-item label="单位(机构)">
-              <span>{{ props.row.organ }}</span>
-            </el-form-item>
-            <el-form-item label="摘要(中文)">
-              <span>{{ props.row.abstractContent }}</span>
-            </el-form-item>
-            <el-form-item label="创新点">
-              <span>{{ props.row.innovation }}</span>
-            </el-form-item>
-          </el-form>
-        </template>
-      </el-table-column>
-      <el-table-column label="论文题目" prop="topic"></el-table-column>
-      <el-table-column label="作者" prop="author"></el-table-column>
-      <el-table-column label="研究方向" prop="direction"></el-table-column>
-      <el-table-column label="浏览" prop="desc">
-        <el-button type="success" icon="el-icon-document-copy" @click="dialogVisible = true" circle></el-button>
-      </el-table-column>
-    </el-table>
-    <el-dialog
-      :visible.sync="dialogVisible"
-      width="70%"
-      height="500px"
-      :before-close="handleClose"
-      class="dialog"
-    >
+    <div>
+      <el-table :data="tableData"
+                style="width: 100%">
+        <el-table-column type="expand">
+          <template slot-scope="props">
+            <el-form label-position="left"
+                     inline
+                     class="demo-table-expand">
+              <el-form-item label="作者">
+                <span>{{ props.row.author }}</span>
+              </el-form-item>
+              <el-form-item label="论文题目">
+                <span>{{ props.row.topic }}</span>
+              </el-form-item>
+              <el-form-item label="使用方法">
+                <span>{{ props.row.useMethod }}</span>
+              </el-form-item>
+              <el-form-item label="单位(机构)">
+                <span>{{ props.row.organ }}</span>
+              </el-form-item>
+              <el-form-item label="摘要(中文)">
+                <span>{{ props.row.abstractContent }}</span>
+              </el-form-item>
+              <el-form-item label="创新点">
+                <span>{{ props.row.innovation }}</span>
+              </el-form-item>
+            </el-form>
+          </template>
+        </el-table-column>
+        <el-table-column label="论文题目"
+                         prop="topic"></el-table-column>
+        <el-table-column label="作者"
+                         prop="author"></el-table-column>
+        <el-table-column label="研究方向"
+                         prop="direction"></el-table-column>
+        <el-table-column label="浏览"
+                         prop="desc">
+          <el-button type="success"
+                     icon="el-icon-document-copy"
+                     @click="dialogVisible = true"
+                     circle></el-button>
+        </el-table-column>
+      </el-table>
+    </div>
+    <el-dialog :visible.sync="dialogVisible"
+               width="70%"
+               height="500px"
+               :before-close="handleClose"
+               class="dialog">
       <div>
         <div class="downloadButton">
           <el-button type="success">下载该文档PDF文件</el-button>
@@ -72,28 +90,34 @@
         <div style="clear:both" />
         <br />
         <div class="commentArea">
-          <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+          <el-tree :data="data"
+                   :props="defaultProps"
+                   @node-click="handleNodeClick"></el-tree>
         </div>
       </div>
-      <span slot="footer" class="dialog-footer">
+      <span slot="footer"
+            class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
       </span>
     </el-dialog>
 
     <!-- -----------------------------------------上传文献弹出框 -->
-    <el-dialog
-      :visible.sync="postDialogVisible"
-      width="70%"
-      height="500px"
-      :before-close="handleClose"
-      class="dialog"
-    >
-      <el-steps :active="uploadDocumentData.active" align-center finish-status="success">
+    <el-dialog :visible.sync="postDialogVisible"
+               width="700px"
+               height="500px"
+               :before-close="handleClose"
+               class="dialog">
+      <el-steps :active="uploadDocumentData.active"
+                align-center
+                finish-status="success">
         <el-step title="完善文献信息"></el-step>
         <el-step title="上传文献附件"></el-step>
       </el-steps>
-      <div class="postDocument" v-show="uploadDocumentData.postDocumentShow">
-        <el-form ref="form" :model="form" label-width="80px">
+      <div class="postDocument"
+           v-show="uploadDocumentData.postDocumentShow">
+        <el-form ref="form"
+                 :model="form"
+                 label-width="90px">
           <el-form-item label="论文题目">
             <el-input v-model="form.topic"></el-input>
           </el-form-item>
@@ -113,10 +137,12 @@
             <el-input v-model="form.useMethod"></el-input>
           </el-form-item>
           <el-form-item label="摘要(中文)">
-            <el-input type="textarea" v-model="form.abstractContent"></el-input>
+            <el-input type="textarea"
+                      v-model="form.abstractContent"></el-input>
           </el-form-item>
           <el-form-item label="备注">
-            <el-input type="textarea" v-model="form.comments"></el-input>
+            <el-input type="textarea"
+                      v-model="form.comments"></el-input>
           </el-form-item>
           <el-form-item label="论文原地址">
             <el-input v-model="form.orginPath"></el-input>
@@ -124,23 +150,24 @@
         </el-form>
       </div>
 
-      <div class="uploadDocument" v-show="uploadDocumentData.uploadDocumentShow">
-        <el-upload
-          class="upload-demo"
-          drag
-          :headers="token"
-          :action="uploadDocumentData.uploadDocumentAction"
-          multiple
-        >
+      <div class="uploadDocument"
+           v-show="uploadDocumentData.uploadDocumentShow">
+        <el-upload class="upload-demo"
+                   drag
+                   :headers="token"
+                   :action="uploadDocumentData.uploadDocumentAction"
+                   multiple>
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">
             将文件拖到此处，或
             <em>点击上传</em>
           </div>
-          <div class="el-upload__tip" slot="tip">只能上传.pdf文件</div>
+          <div class="el-upload__tip"
+               slot="tip">只能上传.pdf文件</div>
         </el-upload>
       </div>
-      <el-button style="margin-top: 12px;" @click="next">{{uploadDocumentData.mention}}</el-button>
+      <el-button style="margin-top: 12px;"
+                 @click="next">{{uploadDocumentData.mention}}</el-button>
     </el-dialog>
   </div>
 </template>
@@ -161,9 +188,9 @@
 </style>
 
 <script>
-import QS from "qs";
+import QS from 'qs'
 export default {
-  inject: ["reload"],
+  inject: ['reload'],
   data() {
     return {
       content: '',
@@ -172,63 +199,63 @@ export default {
       options1: [
         {
           value: 0,
-          label: "本人"
+          label: '本人'
         },
         {
           value: 1,
-          label: "系统"
+          label: '系统'
         }
       ],
       options2: [
         {
           value: 0,
-          label: "论文题目"
+          label: '论文题目'
         },
         {
           value: 1,
-          label: "作者"
+          label: '作者'
         },
         {
           value: 2,
-          label: "研究方向"
+          label: '研究方向'
         }
       ],
       dialogVisible: false,
       postDialogVisible: false,
       uploadDocumentData: {
         active: 0,
-        mention: "下一步",
+        mention: '下一步',
         postDocumentShow: true,
         uploadDocumentShow: false,
-        uploadDocumentAction: "",
-        documentId: ""
+        uploadDocumentAction: '',
+        documentId: ''
       },
       token: {
-        Authorization: ""
+        Authorization: ''
       },
       tableData: [],
       data: [
         {
-          label: "这篇论文对AI技术进行了认真的分析，可以查阅",
+          label: '这篇论文对AI技术进行了认真的分析，可以查阅',
           children: [
             {
-              label: "AI应用",
+              label: 'AI应用',
               children: [
                 {
-                  label: "赞同楼上观点"
+                  label: '赞同楼上观点'
                 }
               ]
             }
           ]
         },
         {
-          label: "这篇文章建议给英文好的同学阅读哈",
+          label: '这篇文章建议给英文好的同学阅读哈',
           children: [
             {
-              label: "英语不好还真读不了",
+              label: '英语不好还真读不了',
               children: [
                 {
-                  label: "哈哈哈 看个论文还得英语好"
+                  label: '哈哈哈 看个论文还得英语好'
                 }
               ]
             }
@@ -236,74 +263,72 @@ export default {
         }
       ],
       defaultProps: {
-        children: "children",
-        label: "label"
+        children: 'children',
+        label: 'label'
       },
       form: {
-        topic: "",
-        author: "",
-        direction: "",
-        organ: "",
-        innovation: "",
-        useMethod: "",
-        abstractContent: "",
-        comments: "",
-        orginPath: ""
+        topic: '',
+        author: '',
+        direction: '',
+        organ: '',
+        innovation: '',
+        useMethod: '',
+        abstractContent: '',
+        comments: '',
+        orginPath: ''
       }
-    };
+    }
   },
   methods: {
     getAllDocument() {
       this.$axios
-        .get("/api/document/getAllDocument")
+        .get('/api/document/getAllDocument')
         .then(response => {
-          console.log(response.data);
-          this.tableData = response.data.data;
+          this.tableData = response.data.data
         })
         .catch(error => {
-          console.error(error);
-        });
+          console.error(error)
+        })
     },
     handleClose(done) {
-      this.$confirm("确认关闭？")
+      this.$confirm('确认关闭？')
         .then(_ => {
-          this.reset();
+          this.reset()
         })
-        .catch(_ => {});
+        .catch(_ => {})
     },
     next() {
       this.uploadDocumentData.uploadDocumentAction =
-        "/api/document/uploadDocumentFile/" +
-        this.uploadDocumentData.documentId;
-      this.uploadDocumentData.active++;
+        '/api/document/uploadDocumentFile/' + this.uploadDocumentData.documentId
+      this.uploadDocumentData.active++
       if (this.uploadDocumentData.active == 1) {
         this.$axios
-          .post("/api/document/uploadDocument", QS.stringify(this.form))
+          .post('/api/document/uploadDocument', QS.stringify(this.form))
           .then(response => {
-            console.log(response.data);
-            this.uploadDocumentData.documentId = response.data.data;
+            console.log(response.data)
+            this.uploadDocumentData.documentId = response.data.data
           })
           .catch(error => {
-            console.error(error);
-          });
-        this.uploadDocumentData.postDocumentShow = false;
-        this.uploadDocumentData.uploadDocumentShow = true;
+            console.error(error)
+          })
+        this.uploadDocumentData.postDocumentShow = false
+        this.uploadDocumentData.uploadDocumentShow = true
       }
       if (this.uploadDocumentData.active == 2) {
-        this.uploadDocumentData.mention = "完成";
+        this.uploadDocumentData.mention = '完成'
       }
       if (this.uploadDocumentData.active == 3) {
-        this.postDialogVisible = false;
-        this.reload();
+        this.postDialogVisible = false
+        this.reload()
       }
     },
     reset() {
-      this.postDialogVisible = false;
-      this.uploadDocumentData.active = 0;
-      this.uploadDocumentData.mention = "下一步";
-      this.uploadDocumentData.postDocumentShow = true;
-      this.uploadDocumentData.uploadDocumentShow = false;
-      this.dialogVisible = false;
+      this.postDialogVisible = false
+      this.uploadDocumentData.active = 0
+      this.uploadDocumentData.mention = '下一步'
+      this.uploadDocumentData.postDocumentShow = true
+      this.uploadDocumentData.uploadDocumentShow = false
+      this.dialogVisible = false
     },
     searchDocument() {
       //alert(this.content)
@@ -311,34 +336,43 @@ export default {
         content: this.content
       }
       this.$axios
-        .get("/api/document/search/"+this.SelectValue1+"/"+this.SelectValue2+"?"+QS.stringify(data))
+        .get(
+          '/api/document/search/' +
+            this.SelectValue1 +
+            '/' +
+            this.SelectValue2 +
+            '?' +
+            QS.stringify(data)
+        )
         .then(response => {
-          console.log(response.data);
+          if (response.data.status == 1) {
+            this.tableData = response.data.data
+          }
         })
         .catch(error => {
-          console.error(error);
-        });
+          console.error(error)
+        })
     },
     // 提交
     submit() {
-      console.log(this.content);
-      console.log(this.html);
+      console.log(this.content)
+      console.log(this.html)
     },
     handleNodeClick(data) {
-      console.log(data);
+      console.log(data)
     },
     onSubmit() {
-      console.log("submit!");
+      console.log('submit!')
     },
     getToken() {
-      this.token.Authorization = localStorage.getItem("TOKEN");
+      this.token.Authorization = localStorage.getItem('TOKEN')
     }
   },
   mounted() {
-    this.getToken();
-    this.getAllDocument();
+    this.getToken()
+    this.getAllDocument()
   }
-};
+}
 </script>
 <style scoped>
 .options {

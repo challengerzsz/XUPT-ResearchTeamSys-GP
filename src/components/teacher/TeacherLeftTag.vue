@@ -1,44 +1,79 @@
 <template>
   <div>
-    <el-row class="tac">
+    <el-row>
       <el-col :span="12">
-        <el-menu default-active="1"
+        <el-menu default-active="1-1"
                  class="el-menu-vertical-demo"
                  @open="handleOpen"
                  @close="handleClose">
-
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-user-solid"></i>
-              <span>教学管理</span>
+              <span>用户信息管理</span>
             </template>
             <el-menu-item-group>
-              <template slot="title">小组管理</template>
-              <el-menu-item @click="showUsers()"
-                            index="1-1">成员总览</el-menu-item>
-              <el-menu-item index="1-2">周报情况</el-menu-item>
-              <el-menu-item index="1-3">成员调整</el-menu-item>
+              <template slot="title">用户</template>
+              <el-menu-item @click="showUserInfo()"
+                            index="1-1">个人详细信息</el-menu-item>
+              <el-menu-item @click="resetPassword()"
+                            index="1-2">安全中心</el-menu-item>
+            </el-menu-item-group>
+            <el-menu-item-group title="科研小组">
+              <el-menu-item @click="showTeamInfo()"
+                            index="1-3">科研小组信息</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
-
           <el-submenu index="2">
             <template slot="title">
-              <i class="el-icon-s-data"></i>
-              <span slot="title">小组各项信息总览</span>
+              <i class="el-icon-menu"></i>
+              <span slot="title">过程文档管理</span>
             </template>
-            <el-menu-item-group title="成果总览">
-              <el-menu-item index="2-1">获奖相关</el-menu-item>
-              <el-menu-item index="2-2">专利相关</el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group title="报销">
-              <el-menu-item index="2-1">报销申请</el-menu-item>
+            <el-menu-item-group title="论文">
+              <el-menu-item index="2-2"
+                            @click="showTeacherWork()">开题、中期报告</el-menu-item>
+              <el-menu-item index="2-4"
+                            @click="showPaper()">小论文</el-menu-item>
+              <el-menu-item index="2-5"
+                            @click="showGpPaper()">毕业论文</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
-          <el-menu-item index="3">
+          <el-submenu index="3">
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span slot="title">成果管理</span>
+            </template>
+            <el-menu-item-group title="个人荣誉">
+              <el-menu-item index="2-6"
+                            @click="showCompetition()">竞赛</el-menu-item>
+              <el-menu-item index="2-7"
+                            @click="showPatent()">专利</el-menu-item>
+              <el-menu-item index="2-8"
+                            @click="showSoftwareCopyright()">软件著作权</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-menu-item index="4"
+                        @click="shouDocument()">
             <i class="el-icon-document"></i>
-            <span slot="title">个人信息维护</span>
+            <span slot="title">文献管理</span>
           </el-menu-item>
-
+          <el-menu-item index="5"
+                        @click="showWeeklyManagePage()">
+            <i class="el-icon-document"></i>
+            <span slot="title">周报管理</span>
+          </el-menu-item>
+          <el-submenu index="6">
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span slot="title">日常工作</span>
+            </template>
+            <el-menu-item-group title="个人荣誉">
+              <el-menu-item index="2-6"
+                            @click="showClaimExpense()">报销</el-menu-item>
+              <el-menu-item index="2-7"
+                            @click="showProject()">项目</el-menu-item>
+              <el-menu-item index="2-8">统计</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
         </el-menu>
       </el-col>
     </el-row>
@@ -47,33 +82,59 @@
 
 <script>
 export default {
-  name: 'teacherLeftTag',
-  data() {
-    return {
-      isCollapse: true
-    }
-  },
+  name: 'userCenterLeftTag',
   methods: {
-    handleOpen(key, keyPath) {
-      console.log(key)
-      console.log(keyPath)
+    handleOpen(key, keyPath) {},
+    handleClose(key, keyPath) {},
+    showWeeklyManagePage() {
+      this.$router.push({ path: '/teacher/weeklyReport' })
     },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath)
+    showPreview() {
+      this.$router.push({ path: '/userCenter/progressPreview' })
     },
-    showUsers() {
-      this.$router.push({ path: '/admin/manageUser' })
+    showUserInfo() {
+      this.$router.push({ path: '/teacherCenter/teacherInfo' })
     },
-    showuserRole() {
-      this.$router.push({ path: '/admin/manageUserRole' })
+    shouDocument() {
+      this.$router.push({ path: '/teacher/document' })
+    },
+    showTeacherWork() {
+      this.$router.push({ path: '/teacherCenter/teacherWork' })
+    },
+    showTeamInfo() {
+      this.$router.push({ path: '/teacherCenter/teacherTeamInfo' })
+    },
+    resetPassword() {
+      this.$router.push({ path: '/teacherCenter/securityCenter' })
+    },
+    showPaper() {
+      this.$router.push({ path: '/teacherCenter/paper' })
+    },
+    showGpPaper() {
+      this.$router.push({ path: '/teacherCenter/gp-paper' })
+    },
+    showClaimExpense() {
+      this.$router.push({ path: '/teacher/claimExpense' })
+    },
+    showProject() {
+      this.$router.push({ path: '/teacher/project' })
+    },
+    showCompetition() {
+      this.$router.push({ path: '/teacher/achievement/competition' })
+    },
+    showPatent() {
+      this.$router.push({ path: '/teacher/achievement/patent' })
+    },
+    showSoftwareCopyright() {
+      this.$router.push({ path: '/teacher/achievement/softwareCopyright' })
     }
   }
 }
 </script>
 
 <style scoped>
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 220px;
-  min-height: 400px;
+div {
+  height: 100%;
+  width: 100%;
 }
 </style>
