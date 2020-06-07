@@ -24,7 +24,17 @@ import GPPaper from "@/components/user/GPPaper.vue";
 import Project from "@/components/user/Project";
 import Competition from "@/components/user/achievement/Competition.vue";
 import Patent from "@/components/user/achievement/Patent.vue";
-import SoftwareCopyright from "@/components/user/achievement/SoftwareCopyright";
+import SoftwareCopyright from "@/components/user/achievement/SoftwareCopyright.vue";
+import TeacherTeamInfo from "@/components/teacher/TeacherTeamInfo.vue";
+import TeacherInfo from "@/components/teacher/TeacherInfo.vue";
+import TeacherPaper from "@/components/teacher/TeacherPaper.vue";
+import TeacherGpPaper from "@/components/teacher/TeacherGpPaper.vue";
+import TeacherDocument from "@/components/Document.vue";
+import TeacherWeeklyReport from "@/components/teacher/TeacherWeeklyReport.vue";
+import TeacherProject from "@/components/teacher/TeacherProject.vue";
+import TeacherCompetition from "@/components/teacher/achievement/TeacherCompetition.vue";
+import TeacherPatent from "@/components/teacher/achievement/TeacherPatent.vue";
+import TeacherSoftwareCopyright from "@/components/teacher/achievement/TeacherSoftwareCopyright.vue";
 
 Vue.use(Router);
 
@@ -155,7 +165,69 @@ export default new Router({
     {
       path: "/teacherCenter",
       name: "TeacherCenter",
-      component: TeacherCenter
+      component: TeacherCenter,
+      children: [
+        {
+          path: "/teacherCenter/teacherInfo",
+          name: "TeacherInfo",
+          component: TeacherInfo
+        },
+        {
+          path: "/teacherCenter/teacherTeamInfo",
+          name: "TeacherTeamInfo",
+          component: TeacherTeamInfo
+        },
+        {
+          path: "/teacherCenter/securityCenter",
+          name: "SecurityCenter",
+          component: SecurityCenter
+        },
+        {
+          path: "/teacherCenter/paper",
+          name: "TeacherPaper",
+          component: TeacherPaper
+        },
+        {
+          path: "/teacherCenter/gp-paper",
+          name: "TeacherGpPaper",
+          component: TeacherGpPaper
+        },
+        {
+          path: "/teacher/document",
+          name: "TeacherDocument",
+          component: TeacherDocument
+        },
+        {
+          path: "/teacher/weeklyReport",
+          name: "TeacherWeeklyReport",
+          component: TeacherWeeklyReport
+        },
+        {
+          path: "/teacher/claimExpense",
+          name: "ClaimExpense",
+          component: ClaimExpense
+        },
+        {
+          path: "/teacher/project",
+          name: "TeacherProject",
+          component: TeacherProject
+        },
+        {
+          path: "/teacher/achievement/competition",
+          name: "TeacherCompetition",
+          component: TeacherCompetition
+        },
+        {
+          path: "/teacher/achievement/patent",
+          name: "TeacherPatent",
+          component: TeacherPatent
+        },
+        {
+          path: "/teacher/achievement/softwareCopyright",
+          name: "TeacherSoftwareCopyright",
+          component: TeacherSoftwareCopyright
+        }
+      ]
     },
     {
       path: "/websocket",
