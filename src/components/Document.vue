@@ -71,10 +71,23 @@
                          prop="direction"></el-table-column>
         <el-table-column label="浏览"
                          prop="desc">
-          <el-button type="success"
-                     icon="el-icon-document-copy"
-                     @click="dialogVisible = true"
-                     circle></el-button>
+
+          <template slot-scope="scope">
+            <el-button type="success"
+                       icon="el-icon-document-copy"
+                       @click="dialogVisible = true"
+                       circle></el-button>
+            <el-button type="primary"
+                       size="medium"><a :href="scope.row.pdfUrl"
+                 style="color:#FFFFFF"
+                 target="_blank">下载文献附件</a><i class="el-icon-download el-icon--right"></i></el-button>
+
+            <div slot="reference"
+                 class="name-wrapper">
+
+            </div>
+          </template>
+
         </el-table-column>
       </el-table>
     </div>
@@ -84,9 +97,6 @@
                :before-close="handleClose"
                class="dialog">
       <div>
-        <div class="downloadButton">
-          <el-button type="success">下载该文档PDF文件</el-button>
-        </div>
         <div style="clear:both" />
         <br />
         <div class="commentArea">
@@ -298,15 +308,15 @@ export default {
         .catch(_ => {})
     },
     next() {
-      this.uploadDocumentData.uploadDocumentAction =
-        '/api/document/uploadDocumentFile/' + this.uploadDocumentData.documentId
       this.uploadDocumentData.active++
       if (this.uploadDocumentData.active == 1) {
         this.$axios
           .post('/api/document/uploadDocument', QS.stringify(this.form))
           .then(response => {
-            console.log(response.data)
             this.uploadDocumentData.documentId = response.data.data
+            this.uploadDocumentData.uploadDocumentAction =
+              '/api/document/uploadDocumentFile/' +
+              this.uploadDocumentData.documentId
           })
           .catch(error => {
             console.error(error)

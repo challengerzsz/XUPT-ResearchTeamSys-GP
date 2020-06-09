@@ -30,13 +30,17 @@
 
             <div slot="reference"
                  class="name-wrapper">
-              <el-button size="mini"
+              <el-button size="medium"
                          @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-              <el-tag size="medium">
-                <i class="el-icon-share"></i>
-                <a :href="scope.row.pdfUrl"
-                   target="_blank">下载附件</a>
-              </el-tag>
+
+              <el-button size="medium"
+                         type="danger"
+                         @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+
+              <el-button type="primary"
+                         size="medium"><a :href="scope.row.pdfUrl"
+                   style="color:#FFFFFF"
+                   target="_blank">下载报告附件</a><i class="el-icon-download el-icon--right"></i></el-button>
             </div>
 
           </template>
@@ -217,12 +221,12 @@ export default {
       this.uploadPaperActive++
       if (this.uploadPaperActive == 1) {
         this.$axios
-          .post('/api/paper/upload', QS.stringify(this.modifyForm))
+          .post('/api/paper/upload', QS.stringify(this.form))
           .then(response => {
             if (response.data.status == 1) {
               this.uploadPaperId = response.data.data
               this.uploadPaperFileApi =
-                '/api/paper/uploadFile/' + this.modifyForm.id
+                '/api/paper/uploadFile/' + this.uploadPaperId
             }
           })
           .catch(error => {
@@ -310,6 +314,31 @@ export default {
         })
         .catch(error => {
           console.error(error)
+        })
+    },
+    handleDelete(index, row) {
+      this.$confirm('确认删除该小论文记录？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.$axios
+            .post('/api/paper/deleteSmallPaper/' + row.id + '/0')
+            .then(response => {
+              if (response.data.status == 1) {
+                this.reload()
+              }
+            })
+            .catch(error => {
+              console.error(error)
+            })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消操作'
+          })
         })
     }
   },
