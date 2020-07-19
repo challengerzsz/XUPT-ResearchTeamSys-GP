@@ -73,10 +73,9 @@ export default {
       },
       form: {
         id: '',
-        account: '04163104',
-        name: '张三',
-        male: '1',
-        delivery: true,
+        account: '',
+        name: '',
+        male: '',
         type: [],
         desc: '',
         education: ''

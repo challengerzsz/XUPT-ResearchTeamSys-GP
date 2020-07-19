@@ -24,7 +24,9 @@
         </div>
         <div style="margin-top:20px;margin-left:20px;display: inline-block;">
           <el-button type="primary"
-                     @click="postDialogVisible = true">下载报告附件<i class="el-icon-download el-icon--right"></i></el-button>
+                     v-show="showDownloadOpeningButton"><a :href="openingReport.reportUrl"
+               style="color:#FFFFFF"
+               target="_blank">下载报告附件</a><i class="el-icon-download el-icon--right"></i></el-button>
         </div>
       </div>
 
@@ -53,7 +55,9 @@
       </div>
       <div style="margin-top:20px;margin-left:20px;display: inline-block;">
         <el-button type="primary"
-                   @click="postDialogVisible = true">下载报告附件<i class="el-icon-download el-icon--right"></i></el-button>
+                   v-show="showDownloadMidButton"><a :href="midReport.reportUrl"
+             style="color:#FFFFFF"
+             target="_blank">下载报告附件</a><i class="el-icon-download el-icon--right"></i></el-button>
       </div>
     </div>
 
@@ -155,6 +159,8 @@ export default {
   inject: ['reload'],
   data() {
     return {
+      showDownloadOpeningButton: false,
+      showDownloadMidButton: false,
       postDialogVisibleModify: false,
       uploadReportAction: '',
       progressWidth: 100,
@@ -170,8 +176,8 @@ export default {
       modifyReportAction: '',
       modifyName: '',
       mention: '下一步',
-      openingReport: null,
-      midReport: null,
+      openingReport: {},
+      midReport: {},
       form: {
         id: null,
         paperName: ''
@@ -271,6 +277,8 @@ export default {
     reset() {
       this.postDialogVisibleModify = false
       this.postDialogVisible = false
+      this.showUploader = false
+      this.showForm = true
       this.active = 0
       this.mention = '下一步'
     },
@@ -284,7 +292,9 @@ export default {
             this.openingReportUploadButton = true
             this.openingReportIcon = 'success'
             this.openingReportStatus = 100
+            this.showDownloadOpeningButton = true
           } else {
+            this.showDownloadOpeningButton = false
           }
         })
         .catch(error => {
@@ -300,7 +310,9 @@ export default {
             this.midReportUploadButton = true
             this.midReportIcon = 'success'
             this.midReportStatus = 100
+            this.showDownloadMidButton = true
           } else {
+            this.showDownloadMidButton = false
           }
         })
         .catch(error => {

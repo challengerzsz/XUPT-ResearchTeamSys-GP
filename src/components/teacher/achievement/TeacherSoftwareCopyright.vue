@@ -262,6 +262,7 @@ export default {
         this.showUploadSCFrom = true
         this.showUploadSCFile = false
         this.uploadSCActive = 0
+        this.reload()
       }
     },
     handleUploadSuccess() {

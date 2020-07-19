@@ -72,6 +72,7 @@
               <el-button size="small"
                          @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
               <el-button size="small"
+                         type="danger"
                          @click="handleDelete(scope.$index, scope.row)">删除</el-button>
             </div>
 
@@ -395,6 +396,7 @@ export default {
     },
     uploadPatentComplete() {
       this.uploadPatentDialogVisible = false
+      alert(111)
       this.reload()
     },
     handleUploadPatentFileSuccess() {

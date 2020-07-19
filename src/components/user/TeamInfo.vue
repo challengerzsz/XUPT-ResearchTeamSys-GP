@@ -1,13 +1,25 @@
 <template>
-  <el-carousel :interval="4000"
-               type="card"
-               height="400px">
-    <el-carousel-item v-for="item in teamInfo"
-                      :key="item.index">
-      <h3 class="medium"
-          v-if="item">{{ item.key }}<br>{{item.value}}</h3>
-    </el-carousel-item>
-  </el-carousel>
+  <div class="layui-col-md12">
+    <div class="layui-card">
+      <el-divider>您所在的小组信息</el-divider>
+
+      <div class="layui-card-body">
+        <table class="layui-table">
+          <tbody v-for="item in teamInfo"
+                 :key="item.index">
+            <tr align="center"
+                v-if="item">
+              <template>
+                <th>{{ item.key }}</th>
+                <td>{{item.value}}</td>
+              </template>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
 </template>
 <script>
 export default {

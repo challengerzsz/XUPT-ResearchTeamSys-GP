@@ -37,68 +37,149 @@
     <div>
       <el-table :data="tableData"
                 style="width: 100%">
-        <el-table-column type="expand">
-          <template slot-scope="props">
-            <el-form label-position="left"
-                     inline
-                     class="demo-table-expand">
-              <el-form-item label="作者">
-                <span>{{ props.row.author }}</span>
-              </el-form-item>
-              <el-form-item label="论文题目">
-                <span>{{ props.row.topic }}</span>
-              </el-form-item>
-              <el-form-item label="使用方法">
-                <span>{{ props.row.useMethod }}</span>
-              </el-form-item>
-              <el-form-item label="单位(机构)">
-                <span>{{ props.row.organ }}</span>
-              </el-form-item>
-              <el-form-item label="摘要(中文)">
-                <span>{{ props.row.abstractContent }}</span>
-              </el-form-item>
-              <el-form-item label="创新点">
-                <span>{{ props.row.innovation }}</span>
-              </el-form-item>
-            </el-form>
-          </template>
-        </el-table-column>
+
         <el-table-column label="论文题目"
                          prop="topic"></el-table-column>
         <el-table-column label="作者"
                          prop="author"></el-table-column>
         <el-table-column label="研究方向"
                          prop="direction"></el-table-column>
+        <el-table-column label="创新点"
+                         prop="innovation"></el-table-column>
         <el-table-column label="浏览"
+                         prop="desc"
+                         width="70px">
+
+          <template slot-scope="scope">
+            <el-button type="success"
+                       icon="el-icon-document-copy"
+                       @click="seeDetail(scope.row)"
+                       circle></el-button>
+
+            <div slot="reference"
+                 class="name-wrapper">
+            </div>
+          </template>
+
+        </el-table-column>
+        <el-table-column label="操作"
                          prop="desc">
-          <el-button type="success"
-                     icon="el-icon-document-copy"
-                     @click="dialogVisible = true"
-                     circle></el-button>
+
+          <template slot-scope="scope">
+            <el-button type="primary"
+                       size="medium"><a :href="scope.row.pdfUrl"
+                 style="color:#FFFFFF"
+                 target="_blank">下载附件</a><i class="el-icon-download el-icon--right"></i></el-button>
+
+            <div slot="reference"
+                 class="name-wrapper">
+            </div>
+          </template>
+
         </el-table-column>
       </el-table>
     </div>
     <el-dialog :visible.sync="dialogVisible"
-               width="70%"
-               height="500px"
+               width="800px"
+               height="auto"
                :before-close="handleClose"
                class="dialog">
+      <el-divider>文献详细信息</el-divider>
       <div>
-        <div class="downloadButton">
-          <el-button type="success">下载该文档PDF文件</el-button>
-        </div>
-        <div style="clear:both" />
-        <br />
-        <div class="commentArea">
-          <el-tree :data="data"
-                   :props="defaultProps"
-                   @node-click="handleNodeClick"></el-tree>
-        </div>
+        <el-collapse v-model="collapseActiveNames"
+                     @change="handleChange">
+          <el-collapse-item title="作者"
+                            name="1">
+            <div>
+              <h2 v-if="documentDetail">{{documentDetail.author}}</h2>
+            </div>
+          </el-collapse-item>
+          <el-collapse-item title="论文题目"
+                            name="2">
+            <div>
+              <h3 v-if="documentDetail">{{documentDetail.topic}}</h3>
+            </div>
+          </el-collapse-item>
+          <el-collapse-item title="使用方法"
+                            name="3">
+            <div>
+              <h3 v-if="documentDetail">{{documentDetail.useMethod}}</h3>
+            </div>
+          </el-collapse-item>
+          <el-collapse-item title="单位(机构)"
+                            name="4">
+            <div>
+              <h3 v-if="documentDetail">{{documentDetail.organ}}</h3>
+            </div>
+          </el-collapse-item>
+          <el-collapse-item title="摘要"
+                            name="5">
+            <div>
+              <h3 v-if="documentDetail">{{documentDetail.abstractContent}}</h3>
+            </div>
+          </el-collapse-item>
+          <el-collapse-item title="创新点"
+                            name="6">
+            <div>
+              <h3 v-if="documentDetail">{{documentDetail.innovation}}</h3>
+            </div>
+          </el-collapse-item>
+        </el-collapse>
+      </div>
+
+      <el-divider><i class="el-icon-s-comment"> 评论区</i></el-divider>
+      <div>
+        <el-table :data="commentData"
+                  style="width: 100%">
+          <el-table-column label="日期"
+                           width="180">
+            <template slot-scope="scope">
+              <i class="el-icon-time"></i>
+              <span style="margin-left: 10px">{{ scope.row.createTime }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="用户名"
+                           width="180">
+            <template slot-scope="scope">
+
+              <div slot="reference"
+                   class="name-wrapper">
+                <el-tag size="medium">{{ scope.row.userName }}</el-tag>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="内容"
+                           prop="content">
+          </el-table-column>
+        </el-table>
       </div>
       <span slot="footer"
             class="dialog-footer">
+        <el-button type="success"
+                   icon="el-icon-edit"
+                   @click="showWriteCommentDialog = true">写评论</el-button>
         <el-button @click="dialogVisible = false">取 消</el-button>
       </span>
+    </el-dialog>
+
+    <!-- -----------------------------------------写评论弹窗 -->
+    <el-dialog :visible.sync="showWriteCommentDialog"
+               width="700px"
+               height="500px"
+               :before-close="handleCloseWriteCommentDialog"
+               class="dialog">
+      <el-divider>在这里写下你对该文献的批注</el-divider>
+      <el-form label-width="100px"
+               ref="commentForm"
+               :model="commentForm">
+        <el-form-item label="内容">
+          <el-input type="textarea"
+                    v-model="commentForm.content"></el-input>
+        </el-form-item>
+      </el-form>
+      <el-button type="primary"
+                 @click="commentOnDocument()">提交</el-button>
+      <el-button @click="showWriteCommentDialog = false">取 消</el-button>
     </el-dialog>
 
     <!-- -----------------------------------------上传文献弹出框 -->
@@ -233,39 +314,10 @@ export default {
       token: {
         Authorization: ''
       },
+      collapseActiveNames: ['1', '2', '3', '4', '5', '6'],
       tableData: [],
-      data: [
-        {
-          label: '这篇论文对AI技术进行了认真的分析，可以查阅',
-          children: [
-            {
-              label: 'AI应用',
-              children: [
-                {
-                  label: '赞同楼上观点'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: '这篇文章建议给英文好的同学阅读哈',
-          children: [
-            {
-              label: '英语不好还真读不了',
-              children: [
-                {
-                  label: '哈哈哈 看个论文还得英语好'
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      defaultProps: {
-        children: 'children',
-        label: 'label'
-      },
+      documentDetail: null,
+      commentData: null,
       form: {
         topic: '',
         author: '',
@@ -276,10 +328,44 @@ export default {
         abstractContent: '',
         comments: '',
         orginPath: ''
-      }
+      },
+      commentForm: {
+        content: ''
+      },
+      showWriteCommentDialog: false
     }
   },
   methods: {
+    seeDetail(row) {
+      this.getAllDoeumentComments(row.id)
+      this.dialogVisible = true
+      this.documentDetail = row
+    },
+    getAllDoeumentComments(documentId) {
+      this.$axios
+        .get('/api/document/getComments/' + documentId)
+        .then(response => {
+          this.commentData = response.data.data
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    },
+    commentOnDocument() {
+      if (this.commentForm.content != null || this.commentForm.content != '') {
+        this.$axios
+          .post(
+            '/api/document/commentOnDocument/' + this.documentDetail.id,
+            QS.stringify(this.commentForm)
+          )
+          .then(response => {
+            this.reload()
+          })
+          .catch(error => {
+            console.error(error)
+          })
+      }
+    },
     getAllDocument() {
       this.$axios
         .get('/api/document/getAllDocument')
@@ -297,16 +383,19 @@ export default {
         })
         .catch(_ => {})
     },
+    handleCloseWriteCommentDialog() {
+      this.showWriteCommentDialog = false
+    },
     next() {
-      this.uploadDocumentData.uploadDocumentAction =
-        '/api/document/uploadDocumentFile/' + this.uploadDocumentData.documentId
       this.uploadDocumentData.active++
       if (this.uploadDocumentData.active == 1) {
         this.$axios
           .post('/api/document/uploadDocument', QS.stringify(this.form))
           .then(response => {
-            console.log(response.data)
             this.uploadDocumentData.documentId = response.data.data
+            this.uploadDocumentData.uploadDocumentAction =
+              '/api/document/uploadDocumentFile/' +
+              this.uploadDocumentData.documentId
           })
           .catch(error => {
             console.error(error)
@@ -331,7 +420,6 @@ export default {
       this.dialogVisible = false
     },
     searchDocument() {
-      //alert(this.content)
       var data = {
         content: this.content
       }
@@ -358,14 +446,14 @@ export default {
       console.log(this.content)
       console.log(this.html)
     },
-    handleNodeClick(data) {
-      console.log(data)
-    },
     onSubmit() {
       console.log('submit!')
     },
     getToken() {
       this.token.Authorization = localStorage.getItem('TOKEN')
+    },
+    handleChange(val) {
+      console.log(val)
     }
   },
   mounted() {
@@ -380,9 +468,6 @@ export default {
 }
 .downloadButton {
   float: left;
-}
-.commentArea {
-  width: auto;
 }
 .dialog {
   height: auto;

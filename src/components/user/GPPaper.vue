@@ -12,11 +12,11 @@
           <h3>毕业论文状态</h3>
           <div><br /></div>
         </div>
-        <div style="margin-top:20px;display: inline-block;">
+        <!-- <div style="margin-top:20px;display: inline-block;">
           <el-button type="primary"
                      :disabled="uploadGpPaperButtonDisable"
                      @click="uploadGpPaper()">上传毕业论文<i class="el-icon-upload el-icon--right"></i></el-button>
-        </div>
+        </div> -->
         <div style="margin-top:20px;margin-left:20px;display: inline-block;">
           <el-button type="primary"
                      :disabled="modifyGpPaperButtonDisable"
@@ -33,6 +33,11 @@
               <i class="el-icon-download el-icon--right"></i>
             </template>
           </el-button>
+        </div>
+        <div style="margin-top:20px;margin-left:20px;display: inline-block;">
+          <el-button type="danger"
+                     v-show="showDeleteButton"
+                     @click="deleteGpPaper()">删除毕业论文<i class="el-icon-edit el-icon--right"></i></el-button>
         </div>
       </div>
 
@@ -209,6 +214,7 @@ export default {
       token: {
         Authorization: ''
       },
+      showDeleteButton: false,
       downloadPdfUrl: '',
       progressWidth: 100,
       gpPaperStatus: 0,
@@ -260,12 +266,26 @@ export default {
         this.modifyGpPaper()
       }
     },
+    deleteGpPaper() {
+      // delete uploaded paper
+      this.$axios
+        .post('/api/paper/deletePaper/' + this.gpPaper.id + '/' + 1)
+        .then(response => {
+          if (response.data.status == 1) {
+            this.reload()
+          }
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    },
     getMyGpPaper() {
       this.$axios
         .get('/api/paper/getMyPaper/1')
         .then(response => {
           if (response.data.status == 1) {
             this.gpPaper = response.data.data[0]
+            this.showDeleteButton = true
             this.uploadGpPaperDisable = true
             this.uploadGpPaperButtonDisable = true
             this.modifyGppaperInfoPaneDisable = false
