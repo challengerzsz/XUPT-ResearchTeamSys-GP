@@ -23,6 +23,15 @@
         </div>
       </template>
     </el-table-column>
+    <el-table-column prop="status"
+                     label="状态">
+      <template slot-scope="scope">
+        <div slot="reference"
+             class="name-wrapper">
+          <el-tag size="medium">{{ scope.row.status }}</el-tag>
+        </div>
+      </template>
+    </el-table-column>
     <el-table-column prop="filePath"
                      label="专利证书">
       <template slot-scope="scope">
@@ -33,15 +42,7 @@
         </div>
       </template>
     </el-table-column>
-    <el-table-column prop="status"
-                     label="状态">
-      <template slot-scope="scope">
-        <div slot="reference"
-             class="name-wrapper">
-          <el-tag size="medium">{{ scope.row.status }}</el-tag>
-        </div>
-      </template>
-    </el-table-column>
+
     <el-table-column prop="patentTime"
                      label="时间">
     </el-table-column>

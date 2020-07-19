@@ -11,7 +11,7 @@
     <el-menu-item index="0">用户中心</el-menu-item>
 
     <div class="userCenterFunction">
-      <el-badge value="new"
+      <!-- <el-badge value="new"
                 class="item">
         <el-popover placement="bottom"
                     width="200px"
@@ -28,7 +28,7 @@
                      icon="el-icon-bell">消息</el-button>
 
         </el-popover>
-      </el-badge>
+      </el-badge> -->
       <el-button class="logoutButton"
                  type="info"
                  icon="el-icon-s-home"

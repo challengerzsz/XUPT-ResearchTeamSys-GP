@@ -16,18 +16,9 @@
     <div>
       <el-table :data="tableData"
                 style="width: 100%">
-        <!-- <el-table-column label="报销人学号"
-                         style="width:10%">
-          <template slot-scope="scope">
-            <div slot="reference"
-                 class="name-wrapper">
-              <el-tag size="medium">{{ scope.row.userAccount }}</el-tag>
-            </div>
-          </template>
-        </el-table-column> -->
 
         <el-table-column label="报销人姓名"
-                         style="width:10%">
+                         style="width:20px">
           <template slot-scope="scope">
             <div slot="reference"
                  class="name-wrapper">
@@ -40,7 +31,7 @@
         </el-table-column>
 
         <el-table-column label="报销类型"
-                         style="width:10%">
+                         style="width:20px">
           <template slot-scope="scope">
             <div slot="reference"
                  class="name-wrapper">
@@ -50,49 +41,49 @@
         </el-table-column>
 
         <el-table-column label="单价"
-                         style="width:10%">
+                         style="width:20px">
           <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ scope.row.unitPrice }}</span>
+            <span>{{ scope.row.unitPrice }}</span>
           </template>
         </el-table-column>
 
         <el-table-column label="数量"
-                         style="width:10%">
+                         style="width:20px">
           <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ scope.row.amount }}</span>
+            <span>{{ scope.row.amount }}</span>
           </template>
         </el-table-column>
 
         <el-table-column label="总价"
-                         style="width:10%">
+                         style="width:20px">
           <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ scope.row.totalPrice }}</span>
+            <span>{{ scope.row.totalPrice }}</span>
           </template>
         </el-table-column>
 
         <el-table-column label="备注"
-                         style="width:10%">
+                         style="width:20px">
           <template slot-scope="scope">
             <span style="margin-left: 10px">{{ scope.row.comment }}</span>
           </template>
         </el-table-column>
 
         <el-table-column label="时间"
-                         style="width:10%">
+                         style="width:20px">
           <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ scope.row.date }}</span>
+            <span>{{ scope.row.date }}</span>
           </template>
         </el-table-column>
 
         <el-table-column label="状态"
-                         style="width:10%">
+                         style="width:20px">
           <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ scope.row.status }}</span>
+            <span>{{ scope.row.status }}</span>
           </template>
         </el-table-column>
 
         <el-table-column label="操作"
-                         style="width:10%">
+                         style="width:20px">
           <template slot-scope="scope">
             <el-button size="mini"
                        @click="handleEdit(scope.$index, scope.row)">编 辑</el-button>
