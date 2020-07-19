@@ -30,12 +30,8 @@ export default {
           key: '小组名:',
           value: ''
         },
-        guideTeacherName: {
-          key: '指导老师姓名:',
-          value: ''
-        },
-        guideTeacherAccount: {
-          key: '指导老师账号:',
+        guideTeacherInfo: {
+          key: '指导老师信息:',
           value: ''
         },
         teamDirection: {
@@ -55,10 +51,12 @@ export default {
       this.$axios
         .get('/api/team/getMyTeamInfo')
         .then(response => {
-          this.teamInfo.guideTeacherAccount.value =
-            response.data.data.guideTeacherAccount
-          this.teamInfo.guideTeacherName.value =
-            response.data.data.guideTeacherName
+          // .join(';') + ';'
+          response.data.data.guideTeachers.forEach(element => {
+            this.teamInfo.guideTeacherInfo.value +=
+              element.userName + ' (' + element.userAccount + ')' + ';'
+          })
+
           this.teamInfo.teamName.value = response.data.data.teamName
           //   this.teamInfo.teamImg = response.data.data.teamImg
           this.teamInfo.studentCount.value = response.data.data.studentCount

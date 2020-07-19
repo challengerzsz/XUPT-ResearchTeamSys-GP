@@ -17,7 +17,7 @@
             <template slot-scope="scope">
               <div slot="reference"
                    class="name-wrapper">
-                <el-tag size="medium">{{ scope.row.guideTeacherAccount }}</el-tag>
+                <el-tag size="medium">{{ scope.row.guideTeachers[0].userName }}</el-tag>
               </div>
             </template>
           </el-table-column>
@@ -28,7 +28,7 @@
                    class="name-wrapper">
                 <el-tag size="medium">
                   <i class="el-icon-user"></i>
-                  {{ scope.row.guideTeacherName }}
+                  {{ scope.row.guideTeachers[0].userAccount }}
                 </el-tag>
               </div>
             </template>
@@ -75,13 +75,27 @@
         <div class="createTeamDiv">
           <el-form :model="teamForm"
                    ref="teamForm">
-            <el-form-item prop="defaultGuideTeacherName"
-                          label="指导老师姓名"
+
+            <el-form-item label="选择指导老师"
                           :label-width="formLabelWidth">
-              <!-- <el-input v-model="teamForm.guideTeacherName"></el-input> -->
-              <!-- 2:老师 -->
-              <!-- 3:老师 -->
-              <el-autocomplete style="float:left;width:100%"
+              <el-select v-model="teamForm.selectTeacher"
+                         multiple
+                         value-key="userAccount"
+                         placeholder="请选择">
+                <el-option v-for="item in allTeacher"
+                           :key="item.value"
+                           :label="item.userName + ' ' + item.userAccount"
+                           :value="item">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <!-- <el-form-item prop="defaultGuideTeacherName"
+                          label="指导老师姓名"
+                          :label-width="formLabelWidth"> -->
+            <!-- <el-input v-model="teamForm.guideTeacherName"></el-input> -->
+            <!-- 2:老师 -->
+            <!-- 3:老师 -->
+            <!-- <el-autocomplete style="float:left;width:100%"
                                popper-class="my-autocomplete"
                                v-model="teamForm.defaultGuideTeacherName"
                                :fetch-suggestions="createTeamQuerySearchAsync"
@@ -92,14 +106,14 @@
                   <span class="account">{{ item.userAccount }}</span>
                 </template>
               </el-autocomplete>
-            </el-form-item>
-            <el-form-item prop="guideTeacherAccount"
+            </el-form-item> -->
+            <!-- <el-form-item prop="guideTeacherAccount"
                           label="指导老师账号"
                           :label-width="formLabelWidth">
               <el-input disabled
                         v-model="teamForm.guideTeacherAccount"
                         autocomplete="off"></el-input>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item prop="teamName"
                           label="小组名"
                           :label-width="formLabelWidth">
@@ -126,7 +140,7 @@
       <!-- -------------------------------------------------------------------------------------->
       <!-- -------------------------------------------------------------------------------------->
 
-      <el-tab-pane label="分配小组成员"
+      <el-tab-pane label="分配或移动小组成员"
                    name="arrangeTeamMembers">
         <div class="arrangeTeamMembersDiv">
 
@@ -138,6 +152,7 @@
               <el-autocomplete popper-class="search-input"
                                v-model="arrangeTeamMembersFrom.guideTeacherName"
                                :fetch-suggestions="createTeamQuerySearchAsync"
+                               :trigger-on-focus="true"
                                placeholder="请输入指导老师姓名检索小组信息"
                                @select="handleArrangeTeamMembersSelect">
 
@@ -269,7 +284,8 @@ export default {
       types: [],
       teamForm: {
         id: '',
-        defaultGuideTeacherName: '',
+        // defaultGuideTeacherName: '',
+        selectTeacher: [],
         guideTeacherAccount: '',
         guideTeacherName: '',
         guideTeacherInfo: [],
@@ -285,6 +301,7 @@ export default {
         teamStudentCount: null,
         researchDir: null
       },
+      allTeacher: [],
       noTeamStudent: [],
       selectStudent: []
     }
@@ -298,15 +315,12 @@ export default {
     },
     createTeam() {
       var data = {
-        guideTeacherAccount: this.teamForm.guideTeacherAccount,
-        guideTeacherName: this.teamForm.guideTeacherName + '',
+        guideTeachers: this.teamForm.selectTeacher,
         teamName: this.teamForm.teamName,
         teamDirection: this.teamForm.teamDirection.join(';') + ';'
       }
       this.$axios
-        .post('/api/team/createTeam', QS.stringify(data), {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        })
+        .post('/api/team/createTeam', data)
         .then(response => {
           this.reload()
         })
@@ -328,7 +342,7 @@ export default {
       this.$axios
         .get('/api/user/getUserSimpleInfo/2')
         .then(response => {
-          this.teamForm.guideTeacherInfo = response.data.data
+          this.allTeacher = response.data.data
         })
         .catch(error => {
           console.error(error)
@@ -357,7 +371,8 @@ export default {
       this.arrangeTeamMembersFrom.researchDir = item.teamDirection
     },
     createTeamQuerySearchAsync(queryString, cb) {
-      var teacherInfo = this.teamForm.guideTeacherInfo
+      var teacherInfo = this.allTeacher
+
       var results = queryString
         ? teacherInfo.filter(this.createStateFilter(queryString))
         : teacherInfo

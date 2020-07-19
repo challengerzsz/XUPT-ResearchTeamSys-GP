@@ -94,7 +94,7 @@ export default {
         ],
         sex: [{ required: true, message: '请选择用户性别', trigger: 'change' }],
         classify: [
-          { required: true, message: '请选择用户性别', trigger: 'change' }
+          { required: false, message: '请选择用户类型', trigger: 'change' }
         ],
         role: [
           { required: true, message: '请选择用户角色', trigger: 'change' }

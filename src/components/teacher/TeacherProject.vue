@@ -8,6 +8,24 @@
       <el-row style="float:left">
         <el-button type="primary"
                    @click="uploadProject('uploadProjectForm')">上传项目信息</el-button>
+        <el-input style="width:600px;margin-left:300px"
+                  placeholder="请输入内容"
+                  v-model="searchContent"
+                  class="input-with-select">
+          <el-select style="width:100px"
+                     v-model="defaultSelect"
+                     placeholder="请选择"
+                     slot="prepend">
+            <el-option v-for="item in options1"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value"></el-option>
+          </el-select>
+
+          <el-button slot="append"
+                     @click="searchProject()"
+                     icon="el-icon-search"></el-button>
+        </el-input>
       </el-row>
     </span>
 
@@ -21,7 +39,7 @@
                 style="width: 100%">
         <el-table-column prop="projectNo"
                          label="项目编号"
-                         width="auto">
+                         width="200px">
           <template slot-scope="scope">
             <div slot="reference"
                  class="name-wrapper">
@@ -30,7 +48,8 @@
           </template>
         </el-table-column>
         <el-table-column prop="projectName"
-                         label="项目名">
+                         label="项目名"
+                         width="100px">
           <template slot-scope="scope">
             <div slot="reference"
                  class="name-wrapper">
@@ -39,7 +58,8 @@
           </template>
         </el-table-column>
         <el-table-column prop="type"
-                         label="类型">
+                         label="类型"
+                         width="100px">
           <template slot-scope="scope">
             <div slot="reference"
                  class="name-wrapper">
@@ -48,7 +68,8 @@
           </template>
         </el-table-column>
         <el-table-column prop="level"
-                         label="级别">
+                         label="级别"
+                         width="100px">
           <template slot-scope="scope">
             <div slot="reference"
                  class="name-wrapper">
@@ -57,10 +78,28 @@
           </template>
         </el-table-column>
         <el-table-column prop="hostName"
-                         label="主持人">
+                         label="主持人"
+                         width="100px">
         </el-table-column>
         <el-table-column prop="members"
-                         label="参与人员">
+                         label="参与人员"
+                         width="300px">
+        </el-table-column>
+        <el-table-column prop="filePath"
+                         label="项目附件">
+          <template slot-scope="scope">
+            <div slot="reference"
+                 class="name-wrapper">
+              <span v-if="scope.row.filePath == null">
+                <el-tag size="medium">未上传附件</el-tag>
+              </span>
+              <span v-if="scope.row.filePath != null">
+                <el-tag size="medium"><a :href="scope.row.filePath"
+                     target="_blank">下载附件</a></el-tag>
+              </span>
+
+            </div>
+          </template>
         </el-table-column>
         <el-table-column prop="options"
                          label="操作">
@@ -69,9 +108,15 @@
             <div slot="reference"
                  class="name-wrapper">
               <el-button size="small"
+                         type="primary"
                          @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
               <el-button size="small"
+                         type="danger"
                          @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+              <el-button type="success"
+                         v-show="scope.row.filePath == null"
+                         size="small"
+                         @click="uploadFile(scope.row)">上传附件</el-button>
             </div>
 
           </template>
@@ -147,6 +192,33 @@
                    v-show="modifyButton">修改</el-button>
       </span>
     </el-dialog>
+
+    <!-- -----------------------------------------上传附件弹窗 -->
+    <el-dialog :visible.sync="showUploadFileDialog"
+               width="700px"
+               height="500px"
+               :before-close="handleCloseUploadFileDialog"
+               class="dialog">
+      <el-divider>补充上传项目附件</el-divider>
+      <el-upload class="upload-demo"
+                 drag
+                 :on-success="handleUploadProjectFileSuccess"
+                 :headers="token"
+                 :action="uploadProjectFileUrl"
+                 multiple>
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">
+          将文件拖到此处，或
+          <em>点击上传</em>
+        </div>
+        <div class="el-upload__tip"
+             slot="tip">只能上传.pdf文件</div>
+      </el-upload>
+      <el-button style="margin-top: 12px;"
+                 @click="uploadFileDone"
+                 v-show="showDoneButton">完成</el-button>
+
+    </el-dialog>
   </div>
 
 </template>
@@ -156,6 +228,24 @@ export default {
   inject: ['reload'],
   data() {
     return {
+      defaultSelect: 0,
+      searchContent: null,
+      options1: [
+        {
+          value: 0,
+          label: '项目名'
+        },
+        {
+          value: 1,
+          label: '主持人'
+        }
+      ],
+      token: {
+        Authorization: ''
+      },
+      showDoneButton: false,
+      uploadProjectFileUrl: '',
+      showUploadFileDialog: false,
       dialogName: '',
       buttonName: '',
       tableData: null,
@@ -204,10 +294,31 @@ export default {
           value: '三等奖',
           label: '三等奖'
         }
-      ]
+      ],
+      vIfContent: '未上传附件'
     }
   },
   methods: {
+    searchProject() {
+      if (this.searchContent != null || this.searchContent != '') {
+        this.$axios
+          .get('/api/dailyWork/project/search/' + this.defaultSelect, {
+            params: {
+              searchContent: this.searchContent
+            }
+          })
+          .then(response => {
+            if (response.data.status == 1) {
+              this.tableData = response.data.data
+            } else {
+              this.tableData = null
+            }
+          })
+      }
+    },
+    getToken() {
+      this.token.Authorization = localStorage.getItem('TOKEN')
+    },
     handleDelete(index, row) {
       this.$confirm('确认删除该项目记录？', '提示', {
         confirmButtonText: '确定',
@@ -248,6 +359,9 @@ export default {
       //   this.modifyFormShow = true
       this.dialogName = '修改项目信息'
     },
+    handleUploadProjectFileSuccess() {
+      this.showDoneButton = true
+    },
     modifyProjectSubmit() {
       this.$axios
         .post(
@@ -264,6 +378,10 @@ export default {
           console.error(error)
         })
     },
+    uploadFile(row) {
+      this.showUploadFileDialog = true
+      this.uploadProjectFileUrl = '/api/dailyWork/project/uploadFile/' + row.id
+    },
     uploadProject(str) {
       this.uploadProjectDialogVisible = true
       this.modifyButton = false
@@ -271,6 +389,10 @@ export default {
       //   this.uploadFormShow = true
       //   this.modifyFormShow = false
       this.dialogName = '上传项目信息'
+    },
+    uploadFileDone() {
+      showUploadFileDialog = false
+      this.reload()
     },
     getAllProjectInfo() {
       this.$axios
@@ -286,6 +408,9 @@ export default {
     },
     handleUploadProjectDialogClose() {
       this.uploadProjectDialogVisible = false
+    },
+    handleCloseUploadFileDialog() {
+      this.showUploadFileDialog = false
     },
     uploadProjectSubmit() {
       this.$axios
@@ -305,6 +430,7 @@ export default {
     }
   },
   mounted() {
+    this.getToken()
     this.getAllProjectInfo()
   }
 }

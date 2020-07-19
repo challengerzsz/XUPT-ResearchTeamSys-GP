@@ -55,7 +55,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="patentTime"
-                         label="专利申请时间">
+                         label="时间">
           <template slot-scope="scope">
             <div slot="reference"
                  class="name-wrapper">
@@ -122,7 +122,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="专利申请时间">
+          <el-form-item label="时间">
             <el-date-picker v-model="uploadPatentForm.patentTime"
                             type="date"
                             format="yyyy 年 MM 月 dd 日"
@@ -206,7 +206,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="专利申请时间">
+          <el-form-item label="时间">
             <el-date-picker v-model="modifyPatenForm.patentTime"
                             type="date"
                             format="yyyy 年 MM 月 dd 日"

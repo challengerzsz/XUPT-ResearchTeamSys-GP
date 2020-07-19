@@ -13,7 +13,7 @@
                 style="width: 100%">
         <el-table-column prop="title"
                          label="周报标题"
-                         width="180">
+                         width="300px">
           <template slot-scope="scope">
             <div slot="reference"
                  class="name-wrapper">
@@ -23,9 +23,11 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button size="mini"
+            <el-button size="medium"
+                       type="success"
                        @click="handleSelect(scope.$index, scope.row)">查看周报内容</el-button>
-            <el-button size="mini"
+            <el-button size="mediu"
+                       type="primary"
                        @click="getComment(scope.$index, scope.row)">查看周报批注</el-button>
           </template>
         </el-table-column>
@@ -182,25 +184,8 @@ export default {
         })
     },
     getWeeklyReportName() {
-      var date = new Date()
-      var w = date.getDay()
-      var d = date.getDate()
-      if (w == 0) {
-        w = 7
-      }
-      var week = ['第一周', '第二周', '第三周', '第四周']
-      var config = {
-        getMonth: date.getMonth() + 1,
-        getYear: date.getFullYear(),
-        getWeek: week[Math.ceil((d + 6 - w) / 7) - 1]
-      }
-      this.weeklyReportName =
-        config.getYear +
-        '年 ' +
-        config.getMonth +
-        '月 ' +
-        config.getWeek +
-        '周报'
+      var config = this.getNowDateAndNowWeek(new Date().getTime())
+      this.weeklyReportName = config.Monday + ' - ' + config.Sunday + ' 周报'
     },
     change(value, render) {
       // render 为 markdown 解析后的结果[html]
@@ -231,6 +216,56 @@ export default {
           done()
         })
         .catch(_ => {})
+    },
+
+    /**
+     * 获取选择当前的第几周，当前的周一、周日
+     * time 选择日期的时间戳
+     */
+    getNowDateAndNowWeek(time) {
+      //选中的时间戳
+      var timestamp = time
+      var serverDate = new Date(time)
+
+      //本周周日的的时间
+      var sundayTiem =
+        timestamp + (7 - serverDate.getDay()) * 24 * 60 * 60 * 1000
+      var SundayData = new Date(sundayTiem)
+      //年
+      var tomorrowY = SundayData.getFullYear()
+      //月
+      var tomorrowM =
+        SundayData.getMonth() + 1 < 10
+          ? '0' + (SundayData.getMonth() + 1)
+          : SundayData.getMonth() + 1
+      //日
+      var tomorrowD =
+        SundayData.getDate() < 10
+          ? '0' + SundayData.getDate()
+          : SundayData.getDate()
+
+      // 本周周一的时间
+      var mondayTime =
+        timestamp - (serverDate.getDay() - 1) * 24 * 60 * 60 * 1000
+      var mondayData = new Date(mondayTime)
+      //年
+      var mondayY = mondayData.getFullYear()
+      //月
+      var mondayM =
+        mondayData.getMonth() + 1 < 10
+          ? '0' + (mondayData.getMonth() + 1)
+          : mondayData.getMonth() + 1
+      //日
+      var mondayD =
+        mondayData.getDate() < 10
+          ? '0' + mondayData.getDate()
+          : mondayData.getDate()
+      //输出值
+      var config = {
+        Sunday: tomorrowY + '/' + tomorrowM + '/' + tomorrowD,
+        Monday: mondayY + '/' + mondayM + '/' + mondayD
+      }
+      return config
     }
   },
   mounted() {
