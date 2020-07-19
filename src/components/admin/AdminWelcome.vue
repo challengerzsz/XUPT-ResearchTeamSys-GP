@@ -68,14 +68,14 @@
       <div class="layui-col-sm6 layui-col-md3">
         <div class="layui-card">
           <div class="layui-card-header">
-            下载
+            文献附件下载
             <span class="layui-badge layui-bg-cyan layuiadmin-badge">月</span>
           </div>
           <div class="layui-card-body">
-            <p class="layuiadmin-big-font">33,555</p>
+            <p class="layuiadmin-big-font">22</p>
             <p>
               新下载
-              <span class="layuiadmin-span-color">10%
+              <span class="layuiadmin-span-color">100%
                 <i class="layui-inline layui-icon layui-icon-face-smile-b"></i></span>
             </p>
           </div>
@@ -84,14 +84,14 @@
       <div class="layui-col-sm6 layui-col-md3">
         <div class="layui-card">
           <div class="layui-card-header">
-            下载
+            报销记录新增
             <span class="layui-badge layui-bg-cyan layuiadmin-badge">月</span>
           </div>
           <div class="layui-card-body">
-            <p class="layuiadmin-big-font">33,555</p>
+            <p class="layuiadmin-big-font">12</p>
             <p>
-              新下载
-              <span class="layuiadmin-span-color">10%
+              新增
+              <span class="layuiadmin-span-color">100%
                 <i class="layui-inline layui-icon layui-icon-face-smile-b"></i></span>
             </p>
           </div>
@@ -100,14 +100,14 @@
       <div class="layui-col-sm6 layui-col-md3">
         <div class="layui-card">
           <div class="layui-card-header">
-            下载
+            成果新增
             <span class="layui-badge layui-bg-cyan layuiadmin-badge">月</span>
           </div>
           <div class="layui-card-body">
-            <p class="layuiadmin-big-font">33,555</p>
+            <p class="layuiadmin-big-font">10</p>
             <p>
-              新下载
-              <span class="layuiadmin-span-color">10%
+              新增
+              <span class="layuiadmin-span-color">100%
                 <i class="layui-inline layui-icon layui-icon-face-smile-b"></i></span>
             </p>
           </div>
@@ -116,14 +116,14 @@
       <div class="layui-col-sm6 layui-col-md3">
         <div class="layui-card">
           <div class="layui-card-header">
-            下载
+            新增用户
             <span class="layui-badge layui-bg-cyan layuiadmin-badge">月</span>
           </div>
           <div class="layui-card-body">
-            <p class="layuiadmin-big-font">33,555</p>
+            <p class="layuiadmin-big-font">8</p>
             <p>
-              新下载
-              <span class="layuiadmin-span-color">10%
+              新增
+              <span class="layuiadmin-span-color">100%
                 <i class="layui-inline layui-icon layui-icon-face-smile-b"></i></span>
             </p>
           </div>

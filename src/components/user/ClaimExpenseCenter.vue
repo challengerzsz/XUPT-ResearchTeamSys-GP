@@ -16,7 +16,7 @@
     <div>
       <el-table :data="tableData"
                 style="width: 100%">
-        <el-table-column label="报销人学号"
+        <!-- <el-table-column label="报销人学号"
                          style="width:10%">
           <template slot-scope="scope">
             <div slot="reference"
@@ -24,7 +24,7 @@
               <el-tag size="medium">{{ scope.row.userAccount }}</el-tag>
             </div>
           </template>
-        </el-table-column>
+        </el-table-column> -->
 
         <el-table-column label="报销人姓名"
                          style="width:10%">
@@ -91,7 +91,8 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" style="width:10%">
+        <el-table-column label="操作"
+                         style="width:10%">
           <template slot-scope="scope">
             <el-button size="mini"
                        @click="handleEdit(scope.$index, scope.row)">编 辑</el-button>

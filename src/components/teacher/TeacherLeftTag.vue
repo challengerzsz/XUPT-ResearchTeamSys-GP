@@ -71,7 +71,7 @@
                             @click="showClaimExpense()">报销</el-menu-item>
               <el-menu-item index="2-7"
                             @click="showProject()">项目</el-menu-item>
-              <el-menu-item index="2-8">统计</el-menu-item>
+              <!-- <el-menu-item index="2-8">统计</el-menu-item> -->
             </el-menu-item-group>
           </el-submenu>
         </el-menu>

@@ -396,6 +396,7 @@ export default {
     },
     uploadPatentComplete() {
       this.uploadPatentDialogVisible = false
+      alert(111)
       this.reload()
     },
     handleUploadPatentFileSuccess() {

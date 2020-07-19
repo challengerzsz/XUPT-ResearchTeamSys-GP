@@ -31,7 +31,7 @@
             <div slot="reference"
                  class="name-wrapper">
               <el-button size="medium"
-                         @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                         @click="handleEdit(scope.$index, scope.row)">修改</el-button>
 
               <el-button size="medium"
                          type="danger"
@@ -52,7 +52,7 @@
     <el-dialog title="上传小论文"
                :visible.sync="uploadPaperDialogVisible"
                width="650px"
-               :before-close="handleModifyDialogClose">
+               :before-close="handleUploadDialogClose">
       <el-steps :active="uploadPaperActive"
                 align-center
                 finish-status="success">
@@ -266,7 +266,7 @@ export default {
       this.modifyForm.id = row.id
     },
     handleModifyDialogClose() {
-      this.$confirm('确认关闭？')
+      this.$confirm('确认关闭111？')
         .then(_ => {
           this.resetModifyDialog()
         })
@@ -324,7 +324,7 @@ export default {
       })
         .then(() => {
           this.$axios
-            .post('/api/paper/deleteSmallPaper/' + row.id + '/0')
+            .post('/api/paper/deletePaper/' + row.id + '/0')
             .then(response => {
               if (response.data.status == 1) {
                 this.reload()
