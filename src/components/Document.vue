@@ -101,12 +101,6 @@
               <h3 v-if="documentDetail">{{documentDetail.topic}}</h3>
             </div>
           </el-collapse-item>
-          <el-collapse-item title="使用方法"
-                            name="3">
-            <div>
-              <h3 v-if="documentDetail">{{documentDetail.useMethod}}</h3>
-            </div>
-          </el-collapse-item>
           <el-collapse-item title="单位(机构)"
                             name="4">
             <div>
@@ -119,10 +113,16 @@
               <h3 v-if="documentDetail">{{documentDetail.abstractContent}}</h3>
             </div>
           </el-collapse-item>
+          <el-collapse-item title="使用方法"
+                            name="3">
+            <div>
+              <h2 v-if="documentDetail">{{documentDetail.useMethod}}</h2>
+            </div>
+          </el-collapse-item>
           <el-collapse-item title="创新点"
                             name="6">
             <div>
-              <h3 v-if="documentDetail">{{documentDetail.innovation}}</h3>
+              <h2 v-if="documentDetail">{{documentDetail.innovation}}</h2>
             </div>
           </el-collapse-item>
         </el-collapse>
