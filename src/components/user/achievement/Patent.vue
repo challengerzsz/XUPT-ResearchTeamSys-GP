@@ -37,8 +37,13 @@
       <template slot-scope="scope">
         <div slot="reference"
              class="name-wrapper">
-          <el-tag size="medium"><a :href="scope.row.filePath"
-               target="_blank">下载附件</a></el-tag>
+          <span v-if="scope.row.filePath == null">
+            <el-tag size="medium">未上传附件</el-tag>
+          </span>
+          <span v-if="scope.row.filePath != null">
+            <el-tag size="medium"><a :href="scope.row.filePath"
+                 target="_blank">下载附件</a></el-tag>
+          </span>
         </div>
       </template>
     </el-table-column>

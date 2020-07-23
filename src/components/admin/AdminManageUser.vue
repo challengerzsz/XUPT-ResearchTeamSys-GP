@@ -4,10 +4,8 @@
       <el-tabs v-model="activeName"
                @tab-click="handleClick">
         <el-tab-pane label="学生"
-                     @click="getAllStudent()"
                      name="3"></el-tab-pane>
         <el-tab-pane label="老师"
-                     @click="getUser('1')"
                      name="2"></el-tab-pane>
       </el-tabs>
     </div>
@@ -46,7 +44,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div>
+    <!-- <div>
       <el-pagination @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
                      :current-page="currentPage"
@@ -55,7 +53,7 @@
                      layout="total, sizes, prev, pager, next, jumper"
                      :total="totalCount">
       </el-pagination>
-    </div>
+    </div> -->
 
   </div>
 </template>
@@ -64,18 +62,30 @@
 export default {
   mounted() {
     this.getAllResearchDireciton()
+    this.default()
   },
   name: 'adminMangeUser',
   data() {
     return {
       tableData: null,
-      activeName: '1',
+      activeName: '3',
       currentPage: 1,
       totalCount: 0,
       researchDirections: null
     }
   },
   methods: {
+    default() {
+      this.$axios
+        .get('/api/user/getAllUsers/' + 3)
+        .then(response => {
+          this.totalCount = response.data.data.length
+          this.tableData = response.data.data
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    },
     handleClick(tab, event) {
       this.$axios
         .get('/api/user/getAllUsers/' + tab.name)
@@ -98,7 +108,6 @@ export default {
       this.$axios
         .get('/api/admin/getAllResearchDirections')
         .then(response => {
-          console.log(response.data)
           this.researchDirections = response.data.data
         })
         .catch(error => {

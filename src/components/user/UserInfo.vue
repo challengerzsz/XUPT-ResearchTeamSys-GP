@@ -23,7 +23,8 @@
                       v-model="form.account"></el-input>
           </el-form-item>
           <el-form-item label="姓名">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.name"
+                      :disabled="form.role == 2"></el-input>
           </el-form-item>
           <el-form-item label="性别">
             <el-radio v-model="form.male"
@@ -31,7 +32,8 @@
             <el-radio v-model="form.male"
                       label="1">女</el-radio>
           </el-form-item>
-          <el-form-item label="学历">
+          <el-form-item label="学历"
+                        v-show="form.role == 3">
             <el-select style="width:100%;"
                        size="medium"
                        v-model="form.education"
@@ -78,7 +80,8 @@ export default {
         male: '',
         type: [],
         desc: '',
-        education: ''
+        education: '',
+        role: null
       },
       types: [],
       educations: [
@@ -110,6 +113,7 @@ export default {
           this.form.education = response.data.data.classify
           this.form.type.pop()
           this.form.id = response.data.data.id
+          this.form.role = response.data.data.role
         })
         .catch(error => {
           console.error(error)
@@ -136,9 +140,7 @@ export default {
         .post('/api/user/modifyInfo', QS.stringify(data), {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         })
-        .then(response => {
-          console.log(response.data)
-        })
+        .then(response => {})
         .catch(error => {
           console.error(error)
         })
@@ -160,11 +162,15 @@ export default {
     },
     getToken() {
       this.token.Authorization = localStorage.getItem('TOKEN')
+    },
+    showClassify() {
+      return this.form.role == 3
     }
   },
   mounted() {
     this.getUserInfo()
     this.getToken()
+    this.showClassify()
   }
 }
 </script>

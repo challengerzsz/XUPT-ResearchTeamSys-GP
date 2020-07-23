@@ -15,7 +15,8 @@
                          width="200">
         </el-table-column>
         <el-table-column prop="roleName"
-                         label="角色">
+                         label="角色"
+                         :formatter="setRole">
         </el-table-column>
         <el-table-column prop="ban"
                          label="状态"
@@ -40,7 +41,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div>
+    <!-- <div>
       <el-pagination @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
                      :current-page="currentPage"
@@ -49,7 +50,7 @@
                      layout="total, sizes, prev, pager, next, jumper"
                      :total="totalCount">
       </el-pagination>
-    </div>
+    </div> -->
     <el-dialog title="修改用户权限"
                :modal-append-to-body='false'
                :visible.sync="dialogFormVisible"
@@ -71,9 +72,9 @@
                       :label-width="formLabelWidth">
           <el-select v-model="form.roleId"
                      placeholder="请选择更新的角色">
-            <el-option label="TEACHER"
+            <el-option label="教师"
                        value=2></el-option>
-            <el-option label="STUDENT"
+            <el-option label="学生"
                        value=3></el-option>
           </el-select>
         </el-form-item>
@@ -111,6 +112,11 @@ export default {
     }
   },
   methods: {
+    setRole(row, column) {
+      if (row.roleName == 'TEACHER') return '教师'
+      else if (row.roleName == 'ADMIN') return '管理员'
+      else return '学生'
+    },
     getAllUserRole() {
       this.$axios
         .get('/api/admin/getAllUserRole')

@@ -9,7 +9,7 @@
           <TeacherLeftTag></TeacherLeftTag>
         </el-aside>
         <el-main>
-          <router-view />
+          <router-view v-if="isRouterAlive" />
         </el-main>
       </el-container>
     </el-container>
@@ -26,14 +26,22 @@ export default {
     TeacherHeader,
     TeacherLeftTag
   },
-  data() {
-    const item = {
-      date: '2016-05-02',
-      name: '王小虎',
-      address: '上海市普陀区金沙江路 1518 弄'
-    }
+  provide() {
     return {
-      tableData: Array(20).fill(item)
+      reload: this.reload
+    }
+  },
+  data() {
+    return {
+      isRouterAlive: true
+    }
+  },
+  methods: {
+    reload() {
+      this.isRouterAlive = false
+      this.$nextTick(function() {
+        this.isRouterAlive = true
+      })
     }
   },
   mounted() {

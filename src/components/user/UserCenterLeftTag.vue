@@ -23,6 +23,16 @@
                             index="1-3">科研小组信息</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
+          <el-menu-item index="4"
+                        @click="showDocument()">
+            <i class="el-icon-document"></i>
+            <span slot="title">文献管理</span>
+          </el-menu-item>
+          <el-menu-item index="5"
+                        @click="showWeeklyManagePage()">
+            <i class="el-icon-document"></i>
+            <span slot="title">周报管理</span>
+          </el-menu-item>
           <el-submenu index="2">
             <template slot="title">
               <i class="el-icon-menu"></i>
@@ -37,16 +47,6 @@
                             @click="showGpPaper()">毕业论文</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
-          <el-menu-item index="4"
-                        @click="showDocument()">
-            <i class="el-icon-document"></i>
-            <span slot="title">文献管理</span>
-          </el-menu-item>
-          <el-menu-item index="5"
-                        @click="showWeeklyManagePage()">
-            <i class="el-icon-document"></i>
-            <span slot="title">周报管理</span>
-          </el-menu-item>
           <el-submenu index="3">
             <template slot="title">
               <i class="el-icon-menu"></i>

@@ -211,8 +211,8 @@
           将文件拖到此处，或
           <em>点击上传</em>
         </div>
-        <div class="el-upload__tip"
-             slot="tip">只能上传.pdf文件</div>
+        <!-- <div class="el-upload__tip"
+             slot="tip">只能上传.pdf文件</div> -->
       </el-upload>
       <el-button style="margin-top: 12px;"
                  @click="uploadFileDone"
@@ -265,34 +265,30 @@ export default {
       },
       typeOptions: [
         {
-          value: '国家级',
-          label: '国家级'
+          value: '科研',
+          label: '科研'
         },
         {
-          value: '省级',
-          label: '省级'
-        },
-        {
-          value: '市级',
-          label: '市级'
-        },
-        {
-          value: '区级',
-          label: '区级'
+          value: '教研',
+          label: '教研'
         }
       ],
       levelOptions: [
         {
-          value: '一等奖',
-          label: '一等奖'
+          value: '国家级',
+          label: '国家级'
         },
         {
-          value: '二等奖',
-          label: '二等奖'
+          value: '省部级',
+          label: '省部级'
         },
         {
           value: '三等奖',
           label: '三等奖'
+        },
+        {
+          value: '市级',
+          label: '市级'
         }
       ],
       vIfContent: '未上传附件'

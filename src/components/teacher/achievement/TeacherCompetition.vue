@@ -181,6 +181,33 @@
                    @click="sumbitUpdate()">确 认</el-button>
       </div>
     </el-dialog>
+
+    <!-- -----------------------------------------上传附件弹窗 -->
+    <el-dialog :visible.sync="showUploadFileDialog"
+               width="700px"
+               height="500px"
+               :before-close="handleCloseUploadFileDialog"
+               class="dialog">
+      <el-divider>补充上传竞赛附件</el-divider>
+      <el-upload class="upload-demo"
+                 drag
+                 :on-success="handleUploadCompetitionFileSuccess"
+                 :headers="token"
+                 :action="uploadCompetitionFileUrl"
+                 multiple>
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">
+          将文件拖到此处，或
+          <em>点击上传</em>
+        </div>
+        <!-- <div class="el-upload__tip"
+             slot="tip">只能上传.pdf文件</div> -->
+      </el-upload>
+      <el-button style="margin-top: 12px;"
+                 @click="uploadFileDone"
+                 v-show="showDoneButton">完成</el-button>
+
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -189,6 +216,9 @@ export default {
   inject: ['reload'],
   data() {
     return {
+      uploadCompetitionFileUrl: '',
+      showUploadFileDialog: false,
+      showDoneButton: false,
       formLabelWidth: '100px',
       dialogFormVisible: false,
       token: {
@@ -218,6 +248,16 @@ export default {
     }
   },
   methods: {
+    handleUploadCompetitionFileSuccess() {
+      this.showDoneButton = true
+    },
+    handleCloseUploadFileDialog() {
+      this.showUploadFileDialog = false
+    },
+    uploadFileDone() {
+      this.showUploadFileDialog = false
+      this.reload()
+    },
     //修改竞赛信息
     sumbitUpdate() {
       this.$axios
@@ -316,6 +356,11 @@ export default {
     },
     reset() {
       this.uploadPaperDialogVisible = false
+    },
+    uploadFile(row) {
+      this.showUploadFileDialog = true
+      this.uploadCompetitionFileUrl =
+        '/api/achievement/competition/uploadFile/' + row.id
     }
   },
   mounted() {
