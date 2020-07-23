@@ -24,6 +24,8 @@ axios.interceptors.response.use(
   data => {
     if (data.data.status == 0) {
       Message.error({ message: data.data.msg });
+    } else if (data.data.status == 1) {
+      Message.success({ message: data.data.msg });
     }
     return data;
   },
@@ -33,7 +35,7 @@ axios.interceptors.response.use(
     } else if (err.response.status == 401) {
       Message.error({ message: "未通过鉴权!" });
     } else {
-      Message.error({ message: "未知错误!" });
+      Message.error({ message: "服务端错误!" });
     }
     return Promise.resolve(err);
   }

@@ -6,7 +6,7 @@
     <span>
       <el-row style="float:left">
         <el-button type="primary"
-                   @click="uploadSoftwareCopyright()">上传专利信息</el-button>
+                   @click="uploadSoftwareCopyright()">上传软件著作权信息</el-button>
       </el-row>
     </span>
     <span style="float:left;width:100%">
@@ -141,8 +141,8 @@
             将文件拖到此处，或
             <em>点击上传</em>
           </div>
-          <div class="el-upload__tip"
-               slot="tip">只能上传.pdf文件</div>
+          <!-- <div class="el-upload__tip"
+               slot="tip">只能上传.pdf文件</div> -->
         </el-upload>
       </div>
 
@@ -151,6 +151,39 @@
         <el-button type="primary"
                    v-show="showButton"
                    @click="uploadSCDialogButtonClick">{{uploadSCDialogButtonName}}</el-button>
+      </span>
+    </el-dialog>
+
+    <!-- -----------------------------------------------修改专利信息弹出框-------- -->
+    <el-dialog title="修改专利信息"
+               :visible.sync="modifyDialogVisible"
+               width="500px"
+               center>
+      <el-form ref="modifyForm"
+               :model="modifyForm"
+               style="margin-top:40px"
+               label-width="110px">
+        <el-form-item label="软件著作权名称">
+          <el-input v-model="modifyForm.softwareCopyrightName"></el-input>
+        </el-form-item>
+        <el-form-item label="参与人员">
+          <el-input v-model="modifyForm.members"></el-input>
+        </el-form-item>
+        <el-form-item label="申请时间">
+          <el-date-picker v-model="modifyForm.time"
+                          type="date"
+                          format="yyyy 年 MM 月 dd 日"
+                          value-format="yyyy-MM-dd"
+                          placeholder="选择日期">
+          </el-date-picker>
+        </el-form-item>
+
+      </el-form>
+
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button type="primary"
+                   @click="modifySoftwareCopyright">修改</el-button>
       </span>
     </el-dialog>
   </div>
@@ -171,13 +204,20 @@ export default {
         members: '',
         time: ''
       },
+      modifyForm: {
+        id: null,
+        softwareCopyrightName: '',
+        members: '',
+        time: ''
+      },
       uploadSCActive: 0,
       uploadSCDialogButtonName: '下一步',
       showUploadSCFrom: true,
       showUploadSCFile: false,
       uploadSCFileApi: '',
       uploadSCId: '',
-      showButton: true
+      showButton: true,
+      modifyDialogVisible: false
     }
   },
   methods: {
@@ -200,12 +240,12 @@ export default {
       this.uploadSCDialogVisible = true
     },
     handleEdit(index, row) {
-      //   this.modifyPatentDialogVisible = true
-      //   this.modifyPatenForm.id = row.id
-      //   this.modifyPatenForm.patentName = row.patentName
-      //   this.modifyPatenForm.members = row.members
-      //   this.modifyPatenForm.status = row.status
-      //   this.modifyPatenForm.patentTime = row.patentTime
+      this.modifyDialogVisible = true
+      this.modifyForm.id = row.id
+      this.modifyForm.members = row.members
+      this.modifyForm.softwareCopyrightName = row.softwareCopyrightName
+      this.modifyForm.members = row.members
+      this.modifyForm.time = row.time
     },
     handleDelete(index, row) {
       this.$confirm('确认删除该软件著作权记录？', '提示', {
@@ -283,6 +323,20 @@ export default {
         this.showButton = true
         this.uploadSCDialogButtonName = '完成'
       }
+    },
+    modifySoftwareCopyright() {
+      this.$axios
+        .post(
+          '/api/achievement/softWareCopyright/modify',
+          QS.stringify(this.modifyForm)
+        )
+        .then(response => {
+          this.modifyDialogVisible = false
+          this.reload()
+        })
+        .catch(error => {
+          console.error(error)
+        })
     }
   },
   mounted() {

@@ -75,7 +75,6 @@ export default {
         var form = layui.form
         // 监听提交
         form.on('submit(login)', function(data) {
-          console.log(QS.stringify(data.field))
           axios
             .post('/api/login', QS.stringify(data.field))
             .then(response => {
@@ -83,7 +82,6 @@ export default {
               if (rspStatus == 1) {
                 let backendToken = response.data.data
                 window.localStorage.setItem('TOKEN', backendToken)
-                console.log(backendToken)
                 let str = jwt.decode(backendToken.replace('Bearer ', ''))
                 const currentUserRole = JSON.parse(str.authorities)[0].authority
                 const roleAdmin = 'ROLE_ADMIN'
@@ -114,7 +112,6 @@ export default {
         .post('/api/login', QS.stringify(data))
         .then(response => {
           var rspStatus = response.data.status
-          console.log(rspStatus)
           // err
           //   if (rspStatus != 1) {
           //     this.$message.error(response.data.msg)

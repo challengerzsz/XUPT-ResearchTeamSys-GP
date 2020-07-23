@@ -40,8 +40,13 @@
           <template slot-scope="scope">
             <div slot="reference"
                  class="name-wrapper">
-              <el-tag size="medium"><a :href="scope.row.filePath"
-                   target="_blank">下载专利附件</a></el-tag>
+              <span v-if="scope.row.filePath == null">
+                <el-tag size="medium">未上传附件</el-tag>
+              </span>
+              <span v-if="scope.row.filePath != null">
+                <el-tag size="medium"><a :href="scope.row.filePath"
+                     target="_blank">下载附件</a></el-tag>
+              </span>
             </div>
           </template>
         </el-table-column>
@@ -145,8 +150,8 @@
               将文件拖到此处，或
               <em>点击上传</em>
             </div>
-            <div class="el-upload__tip"
-                 slot="tip">只能上传.pdf文件</div>
+            <!-- <div class="el-upload__tip"
+                 slot="tip">只能上传.pdf文件</div> -->
           </el-upload>
         </div>
       </div>
@@ -229,8 +234,8 @@
               将文件拖到此处，或
               <em>点击上传</em>
             </div>
-            <div class="el-upload__tip"
-                 slot="tip">只能上传.pdf文件 如果重新上传附件会直接覆盖旧文件</div>
+            <!-- <div class="el-upload__tip"
+                 slot="tip">只能上传.pdf文件 如果重新上传附件会直接覆盖旧文件</div> -->
           </el-upload>
         </div>
       </div>

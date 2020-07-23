@@ -52,6 +52,7 @@
 
           <template slot-scope="scope">
             <el-button type="success"
+                       size="small"
                        icon="el-icon-document-copy"
                        @click="seeDetail(scope.row)"
                        circle></el-button>
@@ -67,7 +68,7 @@
 
           <template slot-scope="scope">
             <el-button type="primary"
-                       size="medium"><a :href="scope.row.pdfUrl"
+                       size="small"><a :href="scope.row.pdfUrl"
                  style="color:#FFFFFF"
                  target="_blank">下载附件</a><i class="el-icon-download el-icon--right"></i></el-button>
 
@@ -212,10 +213,12 @@
             <el-input v-model="form.organ"></el-input>
           </el-form-item>
           <el-form-item label="创新点">
-            <el-input v-model="form.innovation"></el-input>
+            <el-input type="textarea"
+                      v-model="form.innovation"></el-input>
           </el-form-item>
           <el-form-item label="使用方法">
-            <el-input v-model="form.useMethod"></el-input>
+            <el-input type="textarea"
+                      v-model="form.useMethod"></el-input>
           </el-form-item>
           <el-form-item label="摘要(中文)">
             <el-input type="textarea"
@@ -243,8 +246,8 @@
             将文件拖到此处，或
             <em>点击上传</em>
           </div>
-          <div class="el-upload__tip"
-               slot="tip">只能上传.pdf文件</div>
+          <!-- <div class="el-upload__tip"
+               slot="tip">只能上传.pdf文件</div> -->
         </el-upload>
       </div>
       <el-button style="margin-top: 12px;"
