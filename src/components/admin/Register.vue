@@ -9,7 +9,7 @@
                     prop="userName">
         <el-input v-model="registerForm.userName"></el-input>
       </el-form-item>
-      <el-form-item label="用户学号"
+      <el-form-item label="账号"
                     prop="userAccount">
         <el-input v-model="registerForm.userAccount"
                   placeholder="今后作为用户登录账号"></el-input>
@@ -83,42 +83,42 @@ export default {
         role: '',
         classify: '',
         researchDirection: '',
-        guideTeacher: ''
+        guideTeacher: '',
       },
       rules: {
         userName: [
-          { required: true, message: '请输入姓名', trigger: 'change' }
+          { required: true, message: '请输入姓名', trigger: 'change' },
         ],
         userAccount: [
-          { required: true, message: '请输入用户学号', trigger: 'change' }
+          { required: true, message: '请输入用户学号', trigger: 'change' },
         ],
         sex: [{ required: true, message: '请选择用户性别', trigger: 'change' }],
         classify: [
-          { required: false, message: '请选择用户类型', trigger: 'change' }
+          { required: false, message: '请选择用户类型', trigger: 'change' },
         ],
         role: [
-          { required: true, message: '请选择用户角色', trigger: 'change' }
+          { required: true, message: '请选择用户角色', trigger: 'change' },
         ],
         researchDirection: [
-          { required: true, message: '请选择研究方向', trigger: 'change' }
-        ]
+          { required: true, message: '请选择研究方向', trigger: 'change' },
+        ],
       },
-      researchDirections: null
+      researchDirections: null,
     }
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.registerForm.role == 2) {
             this.registerForm.classify = null
           }
           this.$axios
             .post('/api/user/register', QS.stringify(this.registerForm))
-            .then(response => {
+            .then((response) => {
               this.$refs[formName].resetFields()
             })
-            .catch(error => {
+            .catch((error) => {
               console.error(error)
             })
         } else {
@@ -135,17 +135,17 @@ export default {
     getAllResearchDirection() {
       this.$axios
         .get('/api/researchDirection/getAll')
-        .then(response => {
+        .then((response) => {
           this.researchDirections = response.data.data
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error)
         })
-    }
+    },
   },
   mounted() {
     this.getAllResearchDirection()
-  }
+  },
 }
 </script>
 <style scoped>

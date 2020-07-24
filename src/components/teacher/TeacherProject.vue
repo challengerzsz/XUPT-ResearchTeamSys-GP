@@ -49,7 +49,7 @@
         </el-table-column>
         <el-table-column prop="projectName"
                          label="项目名"
-                         width="100px">
+                         width="200px">
           <template slot-scope="scope">
             <div slot="reference"
                  class="name-wrapper">
@@ -83,17 +83,18 @@
         </el-table-column>
         <el-table-column prop="members"
                          label="参与人员"
-                         width="300px">
+                         width="350px">
         </el-table-column>
         <el-table-column prop="filePath"
-                         label="项目附件">
+                         label="项目附件"
+                         width="100px">
           <template slot-scope="scope">
             <div slot="reference"
                  class="name-wrapper">
-              <span v-if="scope.row.filePath == null">
+              <span v-if="scope.row.filePath == null || scope.row.filePath == ''">
                 <el-tag size="medium">未上传附件</el-tag>
               </span>
-              <span v-if="scope.row.filePath != null">
+              <span v-if="scope.row.filePath != ''">
                 <el-tag size="medium"><a :href="scope.row.filePath"
                      target="_blank">下载附件</a></el-tag>
               </span>
@@ -114,7 +115,7 @@
                          type="danger"
                          @click="handleDelete(scope.$index, scope.row)">删除</el-button>
               <el-button type="success"
-                         v-show="scope.row.filePath == null"
+                         v-show="scope.row.filePath == null || scope.row.filePath == ''"
                          size="small"
                          @click="uploadFile(scope.row)">上传附件</el-button>
             </div>
@@ -228,20 +229,21 @@ export default {
   inject: ['reload'],
   data() {
     return {
+      showUploadFileDialog: false,
       defaultSelect: 0,
       searchContent: null,
       options1: [
         {
           value: 0,
-          label: '项目名'
+          label: '项目名',
         },
         {
           value: 1,
-          label: '主持人'
-        }
+          label: '主持人',
+        },
       ],
       token: {
-        Authorization: ''
+        Authorization: '',
       },
       showDoneButton: false,
       uploadProjectFileUrl: '',
@@ -261,37 +263,37 @@ export default {
         type: '',
         level: '',
         hostName: '',
-        members: ''
+        members: '',
       },
       typeOptions: [
         {
           value: '科研',
-          label: '科研'
+          label: '科研',
         },
         {
           value: '教研',
-          label: '教研'
-        }
+          label: '教研',
+        },
       ],
       levelOptions: [
         {
           value: '国家级',
-          label: '国家级'
+          label: '国家级',
         },
         {
           value: '省部级',
-          label: '省部级'
+          label: '省部级',
         },
         {
           value: '三等奖',
-          label: '三等奖'
+          label: '三等奖',
         },
         {
           value: '市级',
-          label: '市级'
-        }
+          label: '市级',
+        },
       ],
-      vIfContent: '未上传附件'
+      vIfContent: '未上传附件',
     }
   },
   methods: {
@@ -300,10 +302,10 @@ export default {
         this.$axios
           .get('/api/dailyWork/project/search/' + this.defaultSelect, {
             params: {
-              searchContent: this.searchContent
-            }
+              searchContent: this.searchContent,
+            },
           })
-          .then(response => {
+          .then((response) => {
             if (response.data.status == 1) {
               this.tableData = response.data.data
             } else {
@@ -319,24 +321,24 @@ export default {
       this.$confirm('确认删除该项目记录？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       })
         .then(() => {
           this.$axios
             .post('/api/dailyWork/project/delete/' + row.id)
-            .then(response => {
+            .then((response) => {
               if (response.data.status == 1) {
                 this.reload()
               }
             })
-            .catch(error => {
+            .catch((error) => {
               console.error(error)
             })
         })
         .catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消操作'
+            message: '已取消操作',
           })
         })
     },
@@ -364,13 +366,13 @@ export default {
           '/api/dailyWork/project/modifyProject',
           QS.stringify(this.uploadProjectForm)
         )
-        .then(response => {
+        .then((response) => {
           if (response.data.status == 1) {
             this.uploadProjectDialogVisible = false
             this.reload()
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error)
         })
     },
@@ -393,12 +395,12 @@ export default {
     getAllProjectInfo() {
       this.$axios
         .get('/api/dailyWork/project/getAll')
-        .then(response => {
+        .then((response) => {
           if (response.data.status == 1) {
             this.tableData = response.data.data
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error)
         })
     },
@@ -414,20 +416,20 @@ export default {
           '/api/dailyWork/project/upload',
           QS.stringify(this.uploadProjectForm)
         )
-        .then(response => {
+        .then((response) => {
           if (response.data.status == 1) {
             this.uploadProjectDialogVisible = false
             this.reload()
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error)
         })
-    }
+    },
   },
   mounted() {
     this.getToken()
     this.getAllProjectInfo()
-  }
+  },
 }
 </script>

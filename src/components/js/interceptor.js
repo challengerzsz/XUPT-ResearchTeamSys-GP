@@ -24,8 +24,8 @@ axios.interceptors.response.use(
   data => {
     if (data.data.status == 0) {
       Message.error({ message: data.data.msg });
-    } else if (data.data.status == 1) {
-      Message.success({ message: data.data.msg });
+    } else if (data.data.status == 4) {
+      Message.error({ message: "登录失败,账号或密码错误" });
     }
     return data;
   },

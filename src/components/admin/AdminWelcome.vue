@@ -65,7 +65,7 @@
           </div>
         </div>
       </div>
-      <div class="layui-col-sm6 layui-col-md3">
+      <!-- <div class="layui-col-sm6 layui-col-md3">
         <div class="layui-card">
           <div class="layui-card-header">
             文献附件下载
@@ -128,7 +128,7 @@
             </p>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="layui-col-md12">
         <div class="layui-card">
           <div class="layui-card-header">系统信息</div>
@@ -214,7 +214,7 @@ export default {
       memberCount: null,
       paperCount: null,
       achievementCount: null,
-      documentCount: null
+      documentCount: null,
     }
   },
   methods: {
@@ -230,20 +230,20 @@ export default {
     getTotalCount() {
       this.$axios
         .get('/api/admin/countAll')
-        .then(response => {
+        .then((response) => {
           this.teamCount = response.data.data.teamCount
           this.memberCount = response.data.data.memberCount
           this.paperCount = response.data.data.paperCount
           this.achievementCount = response.data.data.achievementCount
           this.documentCount = response.data.data.documentCount
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error)
         })
-    }
+    },
   },
   mounted() {
     this.showTime(), this.getTotalCount()
-  }
+  },
 }
 </script>

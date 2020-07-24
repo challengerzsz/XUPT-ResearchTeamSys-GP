@@ -12,27 +12,6 @@
               <span style="margin-left: 10px">{{ scope.row.id }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="指导老师账号"
-                           width="180">
-            <template slot-scope="scope">
-              <div slot="reference"
-                   class="name-wrapper">
-                <el-tag size="medium">{{ scope.row.guideTeachers[0].userName }}</el-tag>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column label="指导老师姓名"
-                           width="180">
-            <template slot-scope="scope">
-              <div slot="reference"
-                   class="name-wrapper">
-                <el-tag size="medium">
-                  <i class="el-icon-user"></i>
-                  {{ scope.row.guideTeachers[0].userAccount }}
-                </el-tag>
-              </div>
-            </template>
-          </el-table-column>
           <el-table-column label="小组名"
                            width="180">
             <template slot-scope="scope">
@@ -45,14 +24,38 @@
               </div>
             </template>
           </el-table-column>
+          <el-table-column label="指导老师姓名"
+                           width="250px">
+            <template slot-scope="scope">
+              <div slot="reference"
+                   class="name-wrapper">
+                <el-tag style="margin-left:5px"
+                        v-for="(item, index) in scope.row.guideTeachers"
+                        :key="index"><i class="el-icon-user"></i>{{ item.userName }}</el-tag>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="小组学生信息"
+                           width="300px">
+            <template slot-scope="scope">
+              <div slot="reference"
+                   class="name-wrapper">
+                <el-tag size="medium"
+                        style="margin-left:2px"
+                        v-for="(item, index) in scope.row.students"
+                        :key="index">{{ item.userName }}</el-tag>
+              </div>
+            </template>
+          </el-table-column>
+
           <el-table-column label="学生数量"
-                           width="180">
+                           width="80px">
             <template slot-scope="scope">
               <span style="margin-left: 10px">{{ scope.row.studentCount }}</span>
             </template>
           </el-table-column>
           <el-table-column label="小组研究方向"
-                           width="180">
+                           width="200">
             <template slot-scope="scope">
               <span style="margin-left: 10px">{{ scope.row.teamDirection }}</span>
             </template>
@@ -140,9 +143,11 @@
       <!-- -------------------------------------------------------------------------------------->
       <!-- -------------------------------------------------------------------------------------->
 
-      <el-tab-pane label="分配或移动小组成员"
+      <el-tab-pane label="分配小组成员"
                    name="arrangeTeamMembers">
-        <div class="arrangeTeamMembersDiv">
+        <el-divider content-position="left">为尚未分配小组的学生分配小组</el-divider>
+        <div class="arrangeTeamMembersDiv"
+             style="margin-top:50px;">
 
           <el-form :model="arrangeTeamMembersFrom"
                    ref="arrangeTeamMembersFrom">
@@ -222,6 +227,89 @@
         </div>
 
       </el-tab-pane>
+      <el-tab-pane label="移动小组成员"
+                   name="moveMembers">
+        <el-divider content-position="left">为已分配小组的学生移动小组</el-divider>
+        <div class="arrangeTeamMembersDiv">
+
+          <el-form :model="arrangeTeamMembersFrom"
+                   ref="arrangeTeamMembersFrom">
+            <el-form-item label="选择移入小组的指导老师"
+                          prop="guideTeacherName"
+                          :label-width="formLabelWidth">
+              <el-autocomplete popper-class="search-input"
+                               v-model="arrangeTeamMembersFrom.guideTeacherName"
+                               :fetch-suggestions="createTeamQuerySearchAsync"
+                               :trigger-on-focus="true"
+                               placeholder="请输入指导老师姓名检索小组信息"
+                               @select="handleArrangeTeamMembersSelect">
+
+                <template slot-scope="{ item }">
+                  <div class="name">{{ item.userName }}</div>
+                  <span class="account">{{ item.userAccount }}</span>
+                </template>
+              </el-autocomplete>
+            </el-form-item>
+            <el-form-item label="移入小组的指导老师账号"
+                          prop="guideTeacherAccount"
+                          :label-width="formLabelWidth">
+              <el-input v-model="arrangeTeamMembersFrom.guideTeacherAccount"
+                        disabled
+                        autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="选择移入小组"
+                          prop="teamName"
+                          :label-width="formLabelWidth">
+              <el-autocomplete popper-class="search-input"
+                               v-model="arrangeTeamMembersFrom.teamName"
+                               :fetch-suggestions="getTeamSearchAsync"
+                               placeholder="请输入指导老师负责小组名进行检索"
+                               @select="handleGetTeamSelect">
+
+                <template slot-scope="{ item }">
+                  <div class="name">{{ item.teamName }}</div>
+                  <span class="account">{{ item.teamDirection }}</span>
+                </template>
+              </el-autocomplete>
+            </el-form-item>
+            <el-form-item label="小组成员数"
+                          prop="teamStudentCount"
+                          :label-width="formLabelWidth">
+              <el-input v-model="arrangeTeamMembersFrom.teamStudentCount"
+                        disabled
+                        autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="小组研究方向"
+                          prop="researchDir"
+                          :label-width="formLabelWidth">
+              <el-input v-model="arrangeTeamMembersFrom.researchDir"
+                        disabled
+                        autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="选择需要移动小组的学生"
+                          :label-width="formLabelWidth">
+              <el-select v-model="selectStudent"
+                         multiple
+                         placeholder="请选择">
+                <el-option v-for="item in allStudent"
+                           :key="item.value"
+                           :label="item.userName + ' ' + item.userAccount"
+                           :value="item.userAccount">
+                </el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item>
+              <el-button @click="resetForm('arrangeTeamMembersFrom')">重 置</el-button>
+              <el-button type="primary"
+                         @click="submitArrangeTeamMember()">提 交</el-button>
+            </el-form-item>
+
+          </el-form>
+
+        </div>
+
+      </el-tab-pane>
     </el-tabs>
 
     <el-dialog title="修改小组信息"
@@ -270,16 +358,17 @@ export default {
   inject: ['reload'],
   data() {
     return {
+      allStudent: null,
       activeName: 'teamPreview',
       tableData: null,
-      formLabelWidth: '120px',
+      formLabelWidth: '200px',
       dialogFormVisible: false,
       form: {
         id: '',
         guideTeacherAccount: '',
         guideTeacherName: '',
         teamName: '',
-        teamDirection: []
+        teamDirection: [],
       },
       types: [],
       teamForm: {
@@ -290,7 +379,7 @@ export default {
         guideTeacherName: '',
         guideTeacherInfo: [],
         teamName: '',
-        teamDirection: []
+        teamDirection: [],
       },
       timeout: null,
       arrangeTeamMembersFrom: {
@@ -299,11 +388,11 @@ export default {
         guideTeacherTeam: [],
         teamName: '',
         teamStudentCount: null,
-        researchDir: null
+        researchDir: null,
       },
       allTeacher: [],
       noTeamStudent: [],
-      selectStudent: []
+      selectStudent: [],
     }
   },
   methods: {
@@ -317,34 +406,34 @@ export default {
       var data = {
         guideTeachers: this.teamForm.selectTeacher,
         teamName: this.teamForm.teamName,
-        teamDirection: this.teamForm.teamDirection.join(';') + ';'
+        teamDirection: this.teamForm.teamDirection.join(';') + ';',
       }
       this.$axios
         .post('/api/team/createTeam', data)
-        .then(response => {
+        .then((response) => {
           this.reload()
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error)
         })
     },
     getAllTeamResearchDirection() {
       this.$axios
         .get('/api/researchDirection/getAll')
-        .then(response => {
+        .then((response) => {
           this.types = response.data.data
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error)
         })
     },
     getAllguideTeacher() {
       this.$axios
         .get('/api/user/getUserSimpleInfo/2')
-        .then(response => {
+        .then((response) => {
           this.allTeacher = response.data.data
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error)
         })
     },
@@ -360,7 +449,7 @@ export default {
       }, 2000 * Math.random())
     },
     createGetTeamFilter(queryString) {
-      return teamInfo => {
+      return (teamInfo) => {
         return teamInfo.teamName.indexOf(queryString) === 0
       }
     },
@@ -383,7 +472,7 @@ export default {
       }, 2000 * Math.random())
     },
     createStateFilter(queryString) {
-      return state => {
+      return (state) => {
         return state.userName.indexOf(queryString) === 0
       }
     },
@@ -406,44 +495,44 @@ export default {
       this.$confirm('确认删除该小组？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       })
         .then(() => {
           this.$axios
             .post('/api/team/deleteTeam/' + row.id)
-            .then(response => {
+            .then((response) => {
               this.reload()
             })
-            .catch(error => {
+            .catch((error) => {
               console.error(error)
             })
         })
         .catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消操作'
+            message: '已取消操作',
           })
         })
     },
     getAllTeamInfo() {
       this.$axios
         .get('/api/team/getAllTeam')
-        .then(response => {
+        .then((response) => {
           this.tableData = response.data.data
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error)
         })
     },
     modifyTeamInfo() {
       this.$axios
         .post('/api/team/modifyTeamInfo', QS.stringify(this.form), {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         })
-        .then(response => {
+        .then((response) => {
           this.reload()
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error)
         })
     },
@@ -452,10 +541,10 @@ export default {
       this.arrangeTeamMembersFrom.guideTeacherName = item.userName
       this.$axios
         .get('/api/team/getTeamInfoByTeacherAccount/' + item.userAccount)
-        .then(response => {
+        .then((response) => {
           this.arrangeTeamMembersFrom.guideTeacherTeam = response.data.data
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error)
         })
     },
@@ -464,29 +553,41 @@ export default {
         teamId: this.teamForm.id,
         guideTeacherAccount: this.arrangeTeamMembersFrom.guideTeacherAccount,
         guideTeacherName: this.arrangeTeamMembersFrom.guideTeacherName,
-        memberAccountList: this.selectStudent
+        memberAccountList: this.selectStudent,
       }
       this.$axios
         .post('/api/admin/arrangeTeamMember', data)
-        .then(response => {
+        .then((response) => {
           this.reload()
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error)
         })
     },
     getAllNoteamStudent() {
       this.$axios
         .get('/api/user/getAllNoTeamStudent')
-        .then(response => {
+        .then((response) => {
           if (response.data.status === 1) {
             this.noTeamStudent = response.data.data
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error)
         })
-    }
+    },
+    getAllStudent() {
+      this.$axios
+        .get('/api/user/getAllUsers/3')
+        .then((response) => {
+          if (response.data.status === 1) {
+            this.allStudent = response.data.data
+          }
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
   },
 
   mounted() {
@@ -494,7 +595,8 @@ export default {
     this.getAllTeamResearchDirection()
     this.getAllguideTeacher()
     this.getAllNoteamStudent()
-  }
+    this.getAllStudent()
+  },
 }
 </script>
 <style scoped>
@@ -520,7 +622,7 @@ li {
   padding: 1px;
 }
 .arrangeTeamMembersDiv {
-  margin: 0 100px;
+  margin-top: 50px;
   width: 500px;
 }
 .el-autocomplete {
