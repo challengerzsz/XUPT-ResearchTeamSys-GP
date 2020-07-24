@@ -35,25 +35,31 @@
         </el-table-column>
         <el-table-column prop="guideTeacherAccount"
                          label="指导老师账号"
+                         v-if="this.selectTab == 3"
                          width="150"
                          :formatter="setGuideTeacherAccount">
         </el-table-column>
         <el-table-column prop="guideTeacherName"
                          label="指导老师姓名"
+                         v-if="this.selectTab == 3"
                          :formatter="setGuideTeacherName">
         </el-table-column>
+        <el-table-column prop="options"
+                         label="操作">
+          <template slot-scope="scope">
+
+            <div slot="reference"
+                 class="name-wrapper">
+              <el-button size="small"
+                         type="danger"
+                         @click="handleDelete(scope.$index, scope.row)">删除用户</el-button>
+            </div>
+
+          </template>
+        </el-table-column>
       </el-table>
+
     </div>
-    <!-- <div>
-      <el-pagination @size-change="handleSizeChange"
-                     @current-change="handleCurrentChange"
-                     :current-page="currentPage"
-                     :page-sizes="[5,10,20]"
-                     :page-size="100"
-                     layout="total, sizes, prev, pager, next, jumper"
-                     :total="totalCount">
-      </el-pagination>
-    </div> -->
 
   </div>
 </template>
@@ -65,35 +71,52 @@ export default {
     this.default()
   },
   name: 'adminMangeUser',
+  inject: ['reload'],
   data() {
     return {
       tableData: null,
       activeName: '3',
       currentPage: 1,
       totalCount: 0,
-      researchDirections: null
+      researchDirections: null,
+      selectTab: 3,
     }
   },
   methods: {
+    handleDelete(index, row) {
+      this.$confirm('确认删除该用户？该操作无法撤销！')
+        .then((_) => {
+          this.$axios
+            .get('/api/user/delete/' + row.id)
+            .then((response) => {
+              this.reload()
+            })
+            .catch((error) => {
+              console.error(error)
+            })
+        })
+        .catch((_) => {})
+    },
     default() {
       this.$axios
         .get('/api/user/getAllUsers/' + 3)
-        .then(response => {
+        .then((response) => {
           this.totalCount = response.data.data.length
           this.tableData = response.data.data
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error)
         })
     },
     handleClick(tab, event) {
+      this.selectTab = tab.name
       this.$axios
         .get('/api/user/getAllUsers/' + tab.name)
-        .then(response => {
+        .then((response) => {
           this.totalCount = response.data.data.length
           this.tableData = response.data.data
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error)
         })
     },
@@ -107,10 +130,10 @@ export default {
     getAllResearchDireciton() {
       this.$axios
         .get('/api/admin/getAllResearchDirections')
-        .then(response => {
+        .then((response) => {
           this.researchDirections = response.data.data
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error)
         })
     },
@@ -138,7 +161,7 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
-    }
-  }
+    },
+  },
 }
 </script>

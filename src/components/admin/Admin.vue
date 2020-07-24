@@ -28,29 +28,29 @@ export default {
   name: 'admin',
   components: {
     AdminHeader,
-    AdminLeftTag
+    AdminLeftTag,
   },
   provide() {
     return {
-      reload: this.reload
+      reload: this.reload,
     }
   },
   data() {
     return {
-      isRouterAlive: true
+      isRouterAlive: true,
     }
   },
   methods: {
     reload() {
       this.isRouterAlive = false
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         this.isRouterAlive = true
       })
-    }
+    },
   },
   mounted() {
     this.$router.push({ path: '/admin/welcome' })
-  }
+  },
 }
 </script>
 
@@ -69,9 +69,12 @@ export default {
   background-color: #ffffff;
   color: #333;
   text-align: center;
-  height: 800px;
+  height: 100%;
   width: 500px;
   line-height: 100%;
+}
+.el-aside {
+  height: 100%;
 }
 .userCenterHeader {
   position: relative;
