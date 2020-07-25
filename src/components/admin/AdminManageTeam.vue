@@ -6,12 +6,6 @@
                    name="teamPreview">
         <el-table :data="tableData"
                   style="width: 100%">
-          <el-table-column label="小组ID"
-                           width="100">
-            <template slot-scope="scope">
-              <span style="margin-left: 10px">{{ scope.row.id }}</span>
-            </template>
-          </el-table-column>
           <el-table-column label="小组名"
                            width="180">
             <template slot-scope="scope">
@@ -578,7 +572,7 @@ export default {
     },
     getAllHavaTeamStudent() {
       this.$axios
-        .get('/api/user/getAllHavaTeamStudent')
+        .get('/api/user/getAllHaveTeamStudents')
         .then((response) => {
           if (response.data.status === 1) {
             this.allStudent = response.data.data
