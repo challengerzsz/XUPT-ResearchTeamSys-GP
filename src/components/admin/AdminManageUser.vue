@@ -165,3 +165,16 @@ export default {
   },
 }
 </script>
+<style scope>
+.el-table {
+  overflow: auto;
+}
+.el-table .el-table__body-wrapper,
+.el-table .el-table__header-wrapper,
+.el-table .el-table__footer-wrapper {
+  overflow: visible;
+}
+.el-table::after {
+  position: relative !important;
+}
+</style>
