@@ -576,9 +576,9 @@ export default {
           console.error(error)
         })
     },
-    getAllStudent() {
+    getAllHavaTeamStudent() {
       this.$axios
-        .get('/api/user/getAllUsers/3')
+        .get('/api/user/getAllHavaTeamStudent')
         .then((response) => {
           if (response.data.status === 1) {
             this.allStudent = response.data.data
@@ -595,7 +595,7 @@ export default {
     this.getAllTeamResearchDirection()
     this.getAllguideTeacher()
     this.getAllNoteamStudent()
-    this.getAllStudent()
+    this.getAllHavaTeamStudent()
   },
 }
 </script>
